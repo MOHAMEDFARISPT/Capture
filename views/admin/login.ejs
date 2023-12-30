@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - www.codingnepalweb.com -->
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glassmorphism Login Form | CodingNepal</title>
+  <link rel="stylesheet" href="/stylesheet/adminlogin.css">
+</head>
+<body>
+  <div class="wrapper">
+    <form action="/admin/loginpost" method="post">
+      <h2> Admin Panel</h2>
+        <div class="input-field">
+        <input type="text"  name="email" onkeyup="validateEmail()">
+        <span id="emailerror"  class="Error text-danger" ></span>
+        <label>Enter your email</label>
+      </div>
+      <div class="input-field">
+        <input type="password"  name="password"  onkeyup="validatepass()">
+        <span id="passworderror"  class="Error text-danger"></span>
+        <label>Enter your password</label>
+      </div>
+
+      <!-- <div class="forget">
+        <label for="remember">
+          <input type="checkbox" id="remember">
+          <p>Remember me</p>
+        </label>
+      </div> -->
+      <button type="submit"  onclick="">Log In</button>
+      <span id="submiterror"  class="Error text-danger" ></span>
+      <div class="register">
+      </div>
+    </form>
+  </div>
+
+
+  <script src="/loginvalidate.js"></script>
+</body>
+</html>

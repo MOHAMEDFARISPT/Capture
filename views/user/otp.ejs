@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glassmorphism Login Form | CodingNepal</title>
+    <link rel="favicon" href="">
+    <link rel="stylesheet" href="/stylesheet/adminlogin.css">
+</head>
+<body>
+  <style>
+    body{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #f0f0f0;
+    }
+
+    .wrapper {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      width: 300px;
+      padding: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h2 {
+      color: #fff;
+      text-align: center;
+    }
+
+    .input-field {
+      margin: 15px 0;
+      position: relative;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.8);
+      outline: none;
+    }
+
+    label {
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
+      color: #fff;
+      pointer-events: none;
+      transition: 0.5s;
+    }
+
+    input:focus + label,
+    input:valid + label {
+      top: 0;
+      font-size: 12px;
+      color: #030404;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #3498db;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #2980b9;
+    }
+
+    .register {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .countdown {
+      color: #fff;
+      margin-top: 10px;
+    }
+  
+  /* ... existing styles ... */
+
+  .countdown {
+    color: #000; /* Change color to black */
+    font-weight: bold; /* Make text bold */
+    margin-top: 10px;
+  }
+
+
+  </style>
+
+<div class="wrapper">
+  <form action="/otp" method="post" onsubmit="return validateForm()">
+      <h2>Verify</h2>
+      <div class="input-field">
+          <input type="otp" name="otp" id="otpInput" required>
+          <label>Enter OTP</label>
+      </div>
+      <p class="countdown" id="countdown"></p>
+      <button type="submit">Verify OTP</button>
+      <div class="register"></div>
+  </form>
+
+  <!-- Resend OTP form -->
+ 
+      <div id="resend-otp" style="display:none" >
+        <form id="resendOtpForm" action="/resendotp" method="post">
+          <button type="submit" id="resendOtpButton" disabled>Resend OTP</button>
+        </form>
+      </div>
+ 
+</div>
+
+<script>
+  function validateForm() {
+      var otpInput = document.getElementById("otpInput");
+      var otpValue = otpInput.value;
+
+      // Check if OTP is exactly 6 digits and consists of numbers
+      if (!/^\d{6}$/.test(otpValue)) {
+          alert("Please enter a valid 6-digit OTP.");
+          return false;
+      }
+
+      // You can add additional validation if needed
+
+      return true;
+  }
+
+  // Countdown Timer
+  var countdownSeconds = 30;
+  var countdownElement = document.getElementById("countdown");
+  var resendOtpButton = document.getElementById("resendOtpButton");
+
+  function startCountdown() {
+      var countdownInterval = setInterval(function () {
+          countdownElement.innerText = "Time left: " + countdownSeconds + " seconds";
+
+          if (countdownSeconds === 0) {
+              clearInterval(countdownInterval);
+              countdownElement.innerText = "Time's up!";
+              document.getElementById('resend-otp').style.display="block"
+              resendOtpButton.removeAttribute("disabled");
+          } else {
+              countdownSeconds--;
+          }
+      }, 1000);
+  }
+
+  // Start the countdown when the page loads
+  document.addEventListener("DOMContentLoaded", startCountdown);
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+<aside class="col-md-4 col-lg-3">
+    <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard" aria-selected="true">Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab" aria-controls="tab-orders" aria-selected="false">Orders</a>
+        </li>
+        <li class="nav-item">
+            <a  href="/Edit-account"   role="tab"  aria-controls="tab-downloads" aria-selected="false">Edit Account</a>
+
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">Adresses</a>
+        </li>
+        <li class="nav-item">
+            <a href="/Add-address" role="tab" aria-controls="tab-account" aria-selected="false">Add Address</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" id="logout-link">Sign Out</a>
+        </li>
+    </ul>
+</aside>
+
+
+<script>
+    // Add an event listener to the Sign Out link
+    $(document).ready(function () {
+        $('#logout-link').on('click', function (e) {
+            e.preventDefault(); // Prevent the default link behavior
+
+            // Show SweetAlert confirmation dialog
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You will be logged out!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, log me out!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If the user confirms, redirect to the logout page
+                    window.location.href = '/logout';
+                }
+            });
+        });
+    });
+</script>
