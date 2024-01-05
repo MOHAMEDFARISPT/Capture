@@ -7,6 +7,9 @@ const session=require('express-session')
  const {isblocked}=require('../middlewares/checkisblocked')
  const {checkingsession,backtologin}=require("../middlewares/isauthenticated")
 
+ const checkout=require("../controller/chekoutcontroller")
+  
+
 
 
 
@@ -53,8 +56,10 @@ router.post('/Edit-accounts/:id',userprofilecontroller.editaccountpost)
 router.get("/Add-address",checkingsession,isblocked,userprofilecontroller.addaddress)
 //addaddresspost
  router.post("/adaddress",checkingsession,isblocked,userprofilecontroller.addresspost)
-
-
+//Edit Addressget
+router.get('/edit-address/:addressId',checkingsession,isblocked,userprofilecontroller.EditAddress)
+//Edit Addresspost
+router.post('/update-address/:addressId',checkingsession,isblocked,userprofilecontroller.updateAddress)
 
 //cart 
 router.get("/cart",checkingsession,isblocked,cartcontroller.cart)
@@ -72,7 +77,39 @@ router.get("/cart",checkingsession,isblocked,cartcontroller.cart)
  router.delete('/item-delete/:productId', cartcontroller.Cartiteamdelete);
 
  //getcheckout
- router.get("/checkout",user.checkout)
+ router.get("/checkout",checkingsession,isblocked,checkout.checkoutget)
+
+ //add-address in checkout
+ router.post("/add-address-chkout",checkingsession,isblocked,checkout.addaddress)
+ 
+ //delete address
+ router.delete('/delete-address/:addressId',checkingsession,isblocked,checkout.deleteaddress)
+
+ //selection
+
+ router.post("/productselection/:productId",checkout.selectionbox)
+
+
+ //payment method
+
+ router.post("/place-order",checkingsession,isblocked,checkout.addresspaymentmethod)
+
+//success page
+ router.get("/success",checkingsession,isblocked,user.success)
+
+//order detailes
+ router.get('/orderdetails/:orderId',checkingsession,isblocked,userprofilecontroller.myorderdetailes)
+
+ //cancel order
+ router.post('/cancel-order',checkingsession,isblocked,userprofilecontroller.cancelOrder);
+
+
+
+
+
+
+
+
 
 
 

@@ -45,6 +45,14 @@ router.post('/unlistcategory/:categoryid',categorycontroller.unlistcategory)
 router.get('/Editcategory',categorycontroller.Editcategory)
 router.post('/Editcategory/:Id',upload.single('categoryImage'),categorycontroller.Editcategorypost)
 
+router.get("/orderlist",admin.listorders)
+router.get("/orderdetailes/:orderId",admin.orderdetailes)
+
+
+ //CHANGE ORDER STATUS
+
+ router.post('/update-order-status',admin.changeorderstatus)
+
 //remove image
 
 router.post("/removeImage",productcontroller.removeImage)

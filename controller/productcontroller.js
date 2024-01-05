@@ -8,7 +8,7 @@ const categorymodel=require('../model/categoryschema')
 
 const productlist=async(req,res)=>{
  const product=await productmodel.find({}).populate('category')
- console.log(product)
+ 
 
 
  res.render("admin/products",{product})
@@ -23,11 +23,7 @@ const addproduct=async(req,res)=>{
 }
 
 const formad=async(req,res)=>{
-    console.log("body",req.body)
-    console.log("pathhh",req.files)
-    console.log("success")
-    console.log(req.body.description)
-    console.log(req.body.productname)
+   
 
 
    const formdatas={
@@ -72,7 +68,7 @@ const Editproduct=async(req,res)=>{
 
    const product=await productmodel.findOne({_id:req.query.id})
    const category=await categorymodel.find({})
-   console.log("product",product)
+   
    if(product){
     res.render("admin/editproducts",{product,category})
    }else{

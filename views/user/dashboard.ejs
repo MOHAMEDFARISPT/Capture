@@ -2,8 +2,39 @@
 <html lang="en">
     <%- include('../userpartials/head')%>
     <%- include('../userpartials/naavhead')%>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-SmLEJ0p5FqOARcNo98s5oP2IvlK8TJLlvJYUxpJlJ/kxGlS99Cj3VSw64IUln0qD" crossorigin="anonymous">
+
+  
+   
+ 
 
 <!-- molla/dashboard.html  22 Nov 2019 10:03:13 GMT -->
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    a {
+        text-decoration: none;
+        color: #0b1016;
+    }
+</style>
 
 
 <body>
@@ -43,27 +74,80 @@
 								    	<br>
 								    	
 
-                                       
-                                      
-
-
-
-
 
 								    </div><!-- .End .tab-pane -->
+                                    <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
+								    	<div class="table-responsive table-product">
+                                           <!-- user/dashboard.ejs -->
 
-								    <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
-								    	<p>No order has been made yet.</p>
-								    	<a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
+<!-- Other HTML content -->
+
+
+
+<h2>My Orders</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Product Image</th>
+            <th>Product Name</th>
+            <th>Order ID</th>
+            <th>Total</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+            <th>Cancel</th> <!-- New column for Cancel button -->
+        </tr>
+    </thead>
+    <!-- Assuming you have included the necessary HTML structure -->
+    <tbody>
+        <% if (orders && orders.length > 0) { %>
+        <% orders.forEach(order => { %>
+          <% order.products.forEach(product => { %>
+            <tr>
+              <td><img src="<%= product.productId.productImage[0] %>" alt="Product Image" width="50" height="50"></td>
+              <td><%= product.productId.productname %></td>
+              <td><%= order.orderId %></td>
+              <td>$<%= product.total.toFixed(2) %></td>
+              <td><%= formatDate(order.date) %></td>
+              <td><%= product.cancelstatus %></td>
+              <td>
+                <a href="/orderdetails/<%= order._id %>?productid=<%= product.productId._id %>" class="btn btn-link">View Details</a>
+              </td>
+              <td>
+               
+                <!-- Inside your EJS template -->
+     <button class="btn btn-danger" onclick="cancelOrder('<%= order._id %>', '<%= product.productId._id %>')">Cancel Order</button>
+
+              
+                
+              </td>
+            </tr>
+          <% }); %>
+        <% }); %>
+        <% } else { %> 
+            <tr>
+                <td colspan="8">No Orders Available </td>
+            </tr>
+            <% } %>
+          
+    </tbody>
+</table>
+
+
+
+<!-- Other HTML content -->
+
+<% function formatDate(date) {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(date).toLocaleDateString(undefined, options);
+} %>
+                                        </div>
+                                        
+								    	
 								    </div><!-- .End .tab-pane -->
-
-								    <div class="tab-pane fade" id="tab-downloads" role="tabpanel" aria-labelledby="tab-downloads-link">
-								    	<p>No downloads available yet.</p>
-								    	<a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
-								    </div><!-- .End .tab-pane -->
-
-								
-								   
+	
+    
 
 								    	
 
@@ -72,43 +156,50 @@
 
 
                                     <div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
-                                        <!-- <p>The following addresses will be used on the checkout page by default.</p> -->
-
-                                        <% if(address!==null && address!==undefined && address.addresses.length>0) {%>
-                                        <div class="row">
-                                        <% address.addresses.forEach((item) => { %>
-                                            
-                                        <div class="col-lg-12" style="height: 30%;">
-                                            <div class="card card-dashboard">
-                                                <div class="card-body">
-                                                   
-                                                        <p><%= item.fullname %></p>
-                                                        <p><%= item.contact %></p>
-                                                        <p><%= item.pincode %></p>
-                                                        <p><%= item.state %></p>
-                                                        <p><%= item.address %></p>
-                                                        <p><%= item.locality %></p>
-                                                        <p><%= item.city %></p>
-                                                        <!-- Other content -->
-                                                
-                                                
-                                                    <!-- <a href="#">Edit <i class="icon-edit"></i></a></p> -->
-                                                </div><!-- End .card-body -->
-                                            </div><!-- End .card-dashboard -->
-                                        </div><!-- End .col-lg-6 -->
+                                        <% if(address !== null && address !== undefined && address.addresses.length > 0) { %>
+                                            <div class="row">
+                                                <% address.addresses.forEach((item) => { %>
+                                                    <div class="col-lg-12" style="height: 30%;">
+                                                        <div class="card card-dashboard">
+                                                            <div class="card-body">
+                                                                <p><%= item.fullname %></p>
+                                                                <p><%= item.contact %></p>
+                                                                <p><%= item.pincode %></p>
+                                                                <p><%= item.state %></p>
+                                                                <p><%= item.address %></p>
+                                                                <p><%= item.locality %></p>
+                                                                <p><%= item.city %></p>
+                                                                <!-- Other content -->
+                                                                
+                                                                <!-- Edit button -->
+                                                                <a href="/edit-address/<%= item._id %>" class="btn btn-primary">
+                                                                    Edit <i class="icon-edit"></i>
+                                                                </a>
                                     
-                                        <% }); %>
-                                        <% } else{ %>
+                                                                <!-- Delete button -->
+                                                               <button class="btn btn-danger ml-2" onclick="deleteAddress('<%= item._id %>')"> 
+                                                                    Delete <i class="fas fa-trash-alt"></i></button>
+                                                              
+                                                            </div><!-- End .card-body -->
+                                                        </div><!-- End .card-dashboard -->
+                                                    </div><!-- End .col-lg-6 -->
+                                                <% }); %>
+                                            </div>
+                                        <% } else { %>
                                             <div class="col-lg-12" style="height: 30%;">
                                                 <div class="card card-dashboard">
                                                     <div class="card-body">
                                                         <p>YOU DON'T HAVE ANY ADDRESS</p>
-                                                        </div>
-                                                </div></div>
-                                            <%} %>
+                                                        <a href="/add-address" class="btn btn-primary">Add Address</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <% } %>
                                     </div>
-                                    </div>
-
+                                    
+                                    
+                                    
+                                    
 
 
 
@@ -498,6 +589,81 @@
     <script src="assets/js/owl.carousel.min.js"></script>
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
+
+
+
+
+
+    <!-- Inside your script tag or in a separate JavaScript file -->
+<script>
+    async function cancelOrder(orderId, productId) {
+        
+        try {
+            // Make a fetch request to your backend endpoint
+            const response = await fetch('/cancel-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ orderId, productId }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error cancelling order');
+            }
+
+            const data = await response.json();
+            window.location.reload()
+            
+            // Handle the response from the backend if needed
+            console.log('Response from backend:', data);
+
+            // Optionally, update the UI or perform additional actions
+        } catch (error) {
+            console.error('Error cancelling order:', error);
+
+            // Handle errors, show a message, etc.
+        }
+    }
+</script>
+
+
+
+<script>
+    function deleteAddress(addressId) {
+        // Confirm with the user before proceeding with the deletion
+     
+          alert(addressId)
+            fetch(`/delete-address/${addressId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Add any additional headers if needed
+                },
+              
+                // You can include a request body if necessary
+                // body: JSON.stringify({ /* your data */ }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                window.location.reload()
+                // Handle the response from the server
+                console.log('Delete successful', data);
+                // You can perform any additional actions here
+            })
+            .catch(error => {
+                // Handle errors here
+                console.error('Error:', error);
+            });
+        }
+
+</script>
+
 </body>
 
 

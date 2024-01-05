@@ -1,198 +1,152 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Signup Page</title>
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css">
-  <link rel="stylesheet" href="/assets/css/signup.css">
-  
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Molla - Bootstrap eCommerce Template</title>
-  <meta name="keywords" content="HTML5 Template">
-  <meta name="description" content="Molla - Bootstrap eCommerce Template">
-  <meta name="author" content="p-themes">
-  <!-- Favicon -->
 
-  <meta name="apple-mobile-web-app-title" content="Molla">
-  <meta name="application-name" content="Molla">
-  <meta name="msapplication-TileColor" content="#cc9966">
-  <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
-  <meta name="theme-color" content="#ffffff">
-
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
-  <link rel="manifest" href="/assets/images/icons/site.html">
-  <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
-  <link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
-  <link rel="stylesheet" href="/assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
-  <!-- Plugins CSS File -->
-  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/assets/css/plugins/owl-carousel/owl.carousel.css">
-  <link rel="stylesheet" href="/assets/css/plugins/magnific-popup/magnific-popup.css">
-  <link rel="stylesheet" href="/assets/css/plugins/jquery.countdown.css">
-  <!-- Main CSS File -->
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="stylesheet" href="/assets/css/skins/skin-demo-6.css">
-  <link rel="stylesheet" href="/assets/css/demos/demo-6.css">
-
-</head>
 <style>
-    body{
-background:url("https://i.pinimg.com/564x/30/ac/69/30ac69851b027bdfd6961b51daf9a1fd.jpg") ;
-background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            /* Ensure the background covers the full height of the viewport */
-           
-            
-    }
-    .form-box {
-        background: rgba(255, 255, 255, 0.8); /* Adjust the alpha value (0.8) for transparency */
-        border-radius: 15px;
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        width: 500px;
+ * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+    #tab-account-link {
+       background: url("https://i.pinimg.com/564x/30/ac/69/30ac69851b027bdfd6961b51daf9a1fd.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         padding: 20px;
-        margin: auto;
-        margin-top: 50px; /* Adjust the top margin as needed */
+        width: 100%;
+        height: 100%;
     }
+  
+
+
 </style>
-<body class="align">
-  <!-- <div class="grid">
-    <form action="https://httpbin.org/post" method="POST" class="form login">
-      <div class="form__field">
-        <label for="signup__firstname">First Name</label>
-        <input id="signup_firstname" type="text" name="firstname" class="form_input" placeholder="First Name" required>
-      </div>
-      <div class="form__field">
-        <label for="signup__lastname">Last Name</label>
-        <input id="signup_lastname" type="text" name="lastname" class="form_input" placeholder="Last Name" required>
-      </div>
-      <div class="form__field">
-        <label for="signup__email">Email</label>
-        <input id="signup_email" type="text" name="email" class="form_input" placeholder="Email" required>
-      </div>
-      <div class="form__field">
-        <label for="signup__contact">Contact</label>
-        <input id="signup_contact" type="text" name="contact" class="form_input" placeholder="Contact" required>
-      </div>
-      <div class="form__field">
-        <label for="signup__password">Password</label>
-        <input id="signup_password" type="password" name="password" class="form_input" placeholder="Password" required>
-      </div>
-      <div class="form__field">
-        <label for="signup__confirm_password">Confirm Password</label>
-        <input id="signup_confirm_password" type="password" name="confirm_password" class="form_input" placeholder="Confirm Password" required>
-      </div>
-      <div class="form__field">
-        <input type="submit" value="Sign Up">
-      </div>
-    </form>
-    <p class="text--center">Already a member? <a href="#">Sign in</a> <svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/images/icons.svg#arrow-right"></use></svg></p>
-  </div>
-  <svg xmlns="http://www.w3.org/2000/svg" class="icons">
-    <symbol id="arrow-right" viewBox="0 0 1792 1792"><path d="M1600 960q0 54-37 91l-651 651q-39 37-91 37-51 0-90-37l-75-75q-38-38-38-91t38-91l293-293H245q-52 0-84.5-37.5T128 1024V896q0-53 32.5-90.5T245 768h704L656 474q-38-36-38-90t38-90l75-75q38-38 90-38 53 0 91 38l651 651q37 35 37 90z"/></symbol>
-    <symbol id="lock" viewBox="0 0 1792 1792"><path d="M640 768h512V576q0-106-75-181t-181-75-181 75-75 181v192zm832 96v576q0 40-28 68t-68 28H416q-40 0-68-28t-28-68V864q0-40 28-68t68-28h32V576q0-184 132-316t316-132 316 132 132 316v192h32q40 0 68 28t28 68z"/></symbol>
-    <symbol id="user" viewBox="0 0 1792 1792"><path d="M1600 1405q0 120-73 189.5t-194 69.5H459q-121 0-194-69.5T192 1405q0-53 3.5-103.5t14-109T236 1084t43-97.5 62-81 85.5-53.5T538 832q9 0 42 21.5t74.5 48 108 48T896 971t133.5-21.5 108-48 74.5-48 42-21.5q61 0 111.5 20t85.5 53.5 62 81 43 97.5 26.5 108.5 14 109 3.5 103.5zm-320-893q0 159-112.5 271.5T896 896 624.5 783.5 512 512t112.5-271.5T896 128t271.5 112.5T1280 512z"/></symbol>
-  </svg> -->
-
-
-
-
-
-<div class="container">
-  <br>
-  <br><br>
-
-  <div class="form-box">
-    
-
-
-        
-    <form  id="myForm" action="/Edit-accounts/<%= data._id %>" method="post"  >
-        <div class="form-group">
-            <label for="firstname">firstname</label>
-            <input type="text" class="form-control" id="register-fname" name="firstname" placeholder="" value="<%= data.firstname%>" onkeyup="validateFirstname()"  >
-            <span id="firstnameError" class="Error text-danger"></span>
-
-        </div><!-- End .form-group -->
-
-       <div class="form-group">
-            <label for="lastname">lastname</label>
-            <input type="text" class="form-control" id="register-lname" name="lastname" placeholder=""  value="<%= data.lastname %>" onkeyup="validateLastname()" >
-            <span id="lastnameError" class="Error text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label for="contact">phone no</label>
-            <input type="text" class="form-control" id="register-contact" name="contact" placeholder="" value="<%= data.contact %>" onkeyup="validateContact()">
-            <span id="contactError" class="Error text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label for="email">email</label>
-            <input type="email" class="form-control" id="register-email" name="email" placeholder="" value="<%= data.email %>" onkeyup="validateEmail()">
-            <span   text-danger id="emailError"    class="Error  text-danger" ></span>
-        </div>
-       
-
-        <div class="form-footer">
+<div class="tab-pane fade" id="tab-account-link" role="tabpanel" aria-labelledby="tab-account-link">
+    <div style="max-width: 800px; margin: auto;">
+        <div class="card" style="max-width: 600px; margin: auto; padding: 20px;">
+            <form action="/update-address/<%= Address._id %>" method="post" onsubmit="return validateForm()">
+                <div style="margin-bottom: 15px;">
+                    <label for="fullname" style="display: block; margin-bottom: 5px;">Full Name</label>
+                    <input type="text" id="fullname" name="fullname" style="width: 100%; padding: 8px; box-sizing: border-box;" placeholder="Enter Full Name" value="<%= Address.fullname%>">
+                    <span id="fullnameError" style="color: red;"></span>
+                </div>
             
-
-            <!-- <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="register-policy" required>
-                <label class="custom-control-label" for="register-policy">I agree to the <a href="#">privacy policy</a> *</label>
-            </div>
-            End .custom-checkbox -->
+                <div style="margin-bottom: 15px;">
+                    <label for="contact" style="display: block; margin-bottom: 5px;">Phone Number:</label>
+                    <input type="tel" id="contact" name="contact" style="width: 100%; padding: 8px; box-sizing: border-box;" placeholder="Enter Phone Number"  value="<%= Address.contact%>">
+                    <span id="contactError" style="color: red;"></span>
+                </div>
+            
+                <div style="margin-bottom: 15px;">
+                    <label for="pincode" style="display: block; margin-bottom: 5px;">Pincode:</label>
+                    <input type="text" id="pincode" name="pincode" style="width: 100%; padding: 8px; box-sizing: border-box;" placeholder="Enter Pincode" value="<%= Address.pincode%>">
+                    <span id="pincodeError" style="color: red;"></span>
+                </div>
+            
+                <div style="margin-bottom: 15px;">
+                    <label for="state" style="display: block; margin-bottom: 5px;">State:</label>
+                    <input type="text" id="state" name="state" style="width: 100%; padding: 8px; box-sizing: border-box;" placeholder="Enter State"  value="<%= Address.state%>">
+                    <span id="stateError" style="color: red;"></span>
+                </div>
+            
+                <div style="margin-bottom: 15px;">
+                    <label for="address" style="display: block; margin-bottom: 5px;">Address:</label>
+                    <textarea id="address" name="address" style="width: 100%; padding: 8px; box-sizing: border-box;" rows="4" placeholder="Enter Address"><%=Address.address %></textarea>
+                    <span id="addressError" style="color: red;"></span>
+                </div>
+            
+                <div style="margin-bottom: 15px;">
+                    <label for="locality" style="display: block; margin-bottom: 5px;">Locality:</label>
+                    <input type="text" id="locality" name="locality" style="width: 100%; padding: 8px; box-sizing: border-box;" placeholder="Enter Locality"  value="<%=Address.locality %>">
+                    <span id="localityError" style="color: red;"></span>
+                </div>
+            
+                <div style="margin-bottom: 15px;">
+                    <label for="district" style="display: block; margin-bottom: 5px;">District:</label>
+                    <input type="text" id="district" name="district" style="width: 100%; padding: 8px; box-sizing: border-box;" placeholder="Enter District"  value="<%=Address.district %>">
+                    <span id="districtError" style="color: red;"></span>
+                </div>
+            
+                <button type="submit" style="background-color: #4caf50; color: white; padding: 10px 15px; border: none; cursor: pointer;">Update Address</button>
+            </form>
+            
+            <script>
+                function validateForm() {
+                    // Reset error messages
+                    resetErrors();
+            
+                    // Get form inputs
+                    var fullname = document.getElementById('fullname').value.trim();
+                    var contact = document.getElementById('contact').value.trim();
+                    var pincode = document.getElementById('pincode').value.trim();
+                    var state = document.getElementById('state').value.trim();
+                    var address = document.getElementById('address').value.trim();
+                    var locality = document.getElementById('locality').value.trim();
+                    var district = document.getElementById('district').value.trim();
+            
+                    // Validation for Full Name
+                    if (fullname === '' || /^\s*$/.test(fullname)) {
+                        displayError('fullnameError', 'Full Name cannot be empty.');
+                        return false;
+                    }
+            
+                    // Validation for Contact
+                    if (contact === '' || !/^\d{10}$/.test(contact)) {
+                        displayError('contactError', 'Enter a valid 10-digit phone number.');
+                        return false;
+                    }
+            
+                    // Validation for Pincode
+                    if (pincode === '' || !/^\d{6}$/.test(pincode)) {
+                        displayError('pincodeError', 'Enter a valid 6-digit pincode.');
+                        return false;
+                    }
+            
+                    // Validation for State
+                    if (state === '' || /^\s*$/.test(state)) {
+                        displayError('stateError', 'State cannot be empty.');
+                        return false;
+                    }
+            
+                    // Validation for Address
+                    if (address === '' || /^\s*$/.test(address)) {
+                        displayError('addressError', 'Address cannot be empty.');
+                        return false;
+                    }
+            
+                    // Validation for Locality
+                    if (locality === '' || /^\s*$/.test(locality)) {
+                        displayError('localityError', 'Locality cannot be empty.');
+                        return false;
+                    }
+            
+                    // Validation for District
+                    if (district === '' || /^\s*$/.test(district)) {
+                        displayError('districtError', 'District cannot be empty.');
+                        return false;
+                    }
+            
+                    // Form is valid
+                    return true;
+                }
+            
+                function resetErrors() {
+                    // Reset all error messages
+                    var errorFields = ['fullnameError', 'contactError', 'pincodeError', 'stateError', 'addressError', 'localityError', 'districtError'];
+                    for (var i = 0; i < errorFields.length; i++) {
+                        document.getElementById(errorFields[i]).textContent = '';
+                    }
+                }
+            
+                function displayError(field, message) {
+                    // Display error message for the specified field
+                    document.getElementById(field).textContent = message;
+                }
+            </script>
+            
+           
         </div>
-            <div class="form-group">
-              <button type="submit" class="btn btn-primary btn-block mb-4" onclick="return validForm()">
-             Edit Address
-              </button>
-
-                    
-                    <!-- <i class="icon-long-arrow-right"></i> -->
-               
-                <span id="submitError" class="Error text-danger"></span>
-                </div>
-       <!-- End .form-footer -->
-    </form>
-            <div class="form-choice">
-                <p class="text-center">or sign in with</p>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <a href="#" class="btn btn-login btn-g">
-                            <i class="icon-google"></i>
-                            Login With Google
-                        </a>
-                    </div><!-- End .col-6 -->
-                    <div class="col-sm-6">
-                        <a href="#" class="btn btn-login  btn-f">
-                            <i class="icon-facebook-f"></i>
-                            Login With Facebook
-                        </a>
-                    </div><!-- End .col-6 -->
-                </div><!-- End .row -->
-            </div><!-- End .form-choice -->
         
-      
-                        </div><!-- End .form-tab -->
-                    </div><!-- End .form-box -->
+    </div>
 
 
-                </div>
+</div>
 
-
-<script src="/signupvalidate.js"></script>
-
-
-
-
-
-</body>
-</html>

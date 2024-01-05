@@ -3,6 +3,9 @@ const usermodel=require("../model/userschema")
 
 const bcrypt=require('bcrypt')
 const  {AdminModel}=require("../model/adminschema")
+const addressModel = require('../model/addressschema');
+const ordermodel=require('../model/orderschema')
+const productmodel=require('../model/productschema')
 
 
 
@@ -104,10 +107,83 @@ usermodel.find({})
             console.error('Error destroying session:', err);
         } else {
             // Redirect to the login page or any other desired page after logout
-            res.redirect('admin/adminlogin');
+            res.redirect('/admin/adminlogin');
         }
     }); // <-- Add this closing parenthesis
 };
+
+
+
+const listorders=async(req,res)=>{
+
+    const orders = await ordermodel.find({})
+  .populate('products.productId')
+  .populate('userId');
+//   .populate('userId');  // Assuming userId references the 'users' model
+
+    console.log("orderddddddddd"+orders);
+res.render('admin/orderlist',{orders})
+
+
+}
+
+
+const orderdetailes=async(req,res)=>{
+try {
+    const orderId=req.params.orderId;
+    console.log(orderId);
+    const order = await ordermodel.findOne({_id:orderId}).populate('products.productId').populate('userId')
+    
+    
+    res.render("admin/orderdetailesadmin",{order})
+} catch (error) {
+    console.error(error)
+}
+   
+}
+
+
+const changeorderstatus=async(req,res)=>{
+    console.log("//////{   order stats  } ////////////"+req.body);
+    const orderId = req.body.orderId;
+    const orderStatus = req.body.selectedOrderStatus?.toLowerCase();
+
+  console.log(orderStatus);
+  console.log(orderId);
+
+  try {
+    const orderproduct=await ordermodel.findById(orderId).populate('products.productId')
+    console.log("////./././././"+orderproduct);
+    if (orderproduct) {
+        // Update orderStatus for the main orderproduct
+        orderproduct.orderStatus = orderStatus;
+    
+        // Update cancelstatus for each product in the order
+        const productUpdates = orderproduct.products.map(async (item) => {
+            item.cancelstatus = orderStatus;
+            await item.save(); // Assuming item is a Mongoose model instance
+        });
+    
+        // Wait for all product updates to complete
+        await Promise.all(productUpdates);
+    
+        // Save the main orderproduct
+        await orderproduct.save();
+    
+        console.log('Order status and product cancel status updated successfully');
+    
+    
+        res.status(200).json({ message: 'Order status updated successfully' });
+   
+    }
+   
+  } catch (error) {
+    console.error('Error updating order status:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
 
 
 
@@ -126,6 +202,9 @@ module.exports={
     loginpost,
     listusers,
     blockUser,
-    logout
+    logout,
+    listorders,
+    orderdetailes,
+    changeorderstatus
 
 }

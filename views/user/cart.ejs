@@ -40,8 +40,8 @@
 	                			<table class="table table-cart table-mobile">
 									<thead>
 										<tr>
+                                          <th>select</th>
 											<th>product</th>
-                                           <th>ProductName</th>
 											<th>Price</th>
 											<th>Quantity</th>
 											<th>Total</th>
@@ -54,6 +54,15 @@
                                             <% userCart.products.forEach(product => { %>
                                            
 										<tr>
+                                            <td>
+                                                <input 
+                                                    type="checkbox" 
+                                                    id="product-checkbox-<%= product._id %>"
+                                                    <%= product.isSelected ? 'checked' : '' %>
+                                                    onchange="selectProduct('<%= product.product._id %>')" 
+                                                >
+                                            </td>
+                                            
 											<td class="product-col">
 												<div class="product">
 													<figure class="product-media">
@@ -61,41 +70,36 @@
 															<img src="<%= product.product.productImage[0] %>" alt="Product image">
 														</a>
 													</figure>
-                                                    
-                                                      
-                                                  
 
-													<!-- End .product-title -->
-												</div>
-                                                <td>
-                                                    <h3 class="product-title">
-                                                        <a href="#"><%= product.product.productname %></a>
-                                                    </h3>
-                                                </td><!-- End .product -->
+													<h3 class="product-title">
+														<a href="#"><%= product.product.productname %></a>
+													</h3><!-- End .product-title -->
+												</div><!-- End .product -->
 											</td>
-											<td class="price-col"> <%= product.product.price %></td>
+											<td class="price-col">$<%= product.product.price %></td>
 											<td class="quantity-col">
                                                 <form action="/quantity-update" method="POST" style="display: flex; flex-direction: column; align-items: center;">
                                                     <input type="hidden" name="productId" value="<%= product.product._id %>">
                                                     <div class="cart-product-quantity">
-                                                        <input type="number" class="form-control" name="quantity" value="<%= product.quantity %>" min="1" max="<%= product.product.quantity %>" step="1" data-decimals="0" required style="text-align: center;">
+                                                        <input type="number" class="form-control" name="quantity" value="<%= product.quantity %>" min="1" max="<%= product.product.currentQut %>" step="1" data-decimals="0" required style="text-align: center;">
                                                     </div>
-                                                    <button type="submit" class="submit-button" style="padding: 3px 8px; background-color: rgb(17, 34, 17); border-radius: 5px; margin-top: 5px; color: white;">Confirm</button>
+                                                    <button type="submit" class="submit-button" style="padding: 3px 8px; background-color: green; border-radius: 5px; margin-top: 5px; color: white;">Confirm</button>
                                                 </form>
                                                 
                                                 
-                                                
+                                                <!-- End .cart-product-quantity -->
                                             </td>
-                                            <td class="total-col"><%= product.quantity * product.product.price %></td>
-                                           
+                                            
+                                            <td class="total-col">$<%= product.quantity * product.product.price %></td>
                                             <td class="remove-col">
                                                 <button class="btn-remove" onclick="removeProduct('<%= product.product._id %>')">
                                                     <i class="icon-close"></i>
                                                 </button>
-                                                </td>
-                                               
-                                              
-										</tr>
+                                            </td>
+                                            
+                                            
+                                            
+                                                                                    </tr>
 
                                         <% }); %>
                                         <% } else { %>
@@ -105,6 +109,8 @@
                                         <% } %>
 										
 									</tbody>
+                                    
+                                    
 								</table><!-- End .table table-wishlist -->
 
 	                			<div class="cart-bottom">
@@ -568,6 +574,8 @@
 
     <script>
         async function removeProduct(productId) {
+           
+          
             try {
                 const confirmation = await Swal.fire({
                     icon: 'warning',
@@ -617,6 +625,40 @@
             }
         }
     </script>
+
+
+<script>
+    function selectProduct(productId) {
+       
+
+       
+        // Fetch request to send product ID and isSelected state to the backend
+        fetch(`/productselection/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+           
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload()
+                return response.json();
+              
+            }
+            throw new Error('Failed to update product selection');
+            
+        })
+        .then(data => {
+            console.log(data); // Handle success response from the backend if needed
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    }
+</script>
+
+
     
     
 </body>

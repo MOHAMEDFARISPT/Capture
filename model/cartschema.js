@@ -13,11 +13,17 @@ const cartSchema = new Schema({
         },
         quantity: {
             type: Number
+        },
+        isSelected: {
+            type: Boolean,
+            default:false
         }
+
     }],
     totalamount: {
         type: Number
-    }
+    },
+    
 }, { timestamps: true });
 
 const cartModel = mongoose.model('cart', cartSchema);

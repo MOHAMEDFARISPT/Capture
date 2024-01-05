@@ -9,6 +9,8 @@ const session=require('express-session');
 const { productlist } = require('./productcontroller');
 const { EventEmitterAsyncResource } = require('nodemailer/lib/xoauth2');
 const { query } = require('express');
+const addressModel = require('../model/addressschema');
+const ordermodel=require('../model/orderschema')
 
 const login=(req,res)=>{
  
@@ -243,7 +245,11 @@ const otpverification = async (req, res) => {
           // Redirect after successful verification
           return res.status(200).redirect('/login');
       } else {
-          return res.send("Invalid OTP or your time has expired");
+          return res.send('<script>alert("Invalid OTP or your time has expired"); window.location.href = "/otp";</script>')
+          
+          
+          
+          
       }
   } catch (error) {
       console.error("Error in OTP verification:", error);
@@ -389,13 +395,15 @@ const resetPasswordPost =async(req,res)=>{
 
 
 
+const success=(req,res)=>{
 
-const checkout=(req,res)=>{
-  res.render("user/checkout")
+ 
+  res.render("user/sucessconfirm")
 }
   
 
-  
+
+
 
 
 
@@ -424,7 +432,9 @@ module.exports = {
     resetPasswordPost,
     product,
     category,
-    checkout
+    success,
+    
+   
   
     
 
