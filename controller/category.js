@@ -107,32 +107,39 @@ const Editcategory=async (req,res)=>{
     
   }
 }
-
-const Editcategorypost= async (req, res) => {
+const Editcategorypost = async (req, res) => {
   try {
     console.log('///////////////////////////////////////////////////////');
     const category = await Categorymodel.findOne({ _id: req.params.Id });
     console.log(category);
-    if (category) {
-      
-       
-      category.categoryname = req.body.categoryname; 
-      category.image=req.file?.path.replace(/\\/g,'/').replace('public/','/') || category.image,
-   
-     category.description = req.body.description;
 
-      
+    if (category) {
+      // Check if the updated category name conflicts with existing categories
+      const existingCategory = await Categorymodel.findOne({
+        categoryname: req.body.categoryname,
+        _id: { $ne: category._id } // Exclude the current category from the search
+      });
+
+      if (existingCategory) {
+        // Handle the case where the updated category name conflicts with an existing category
+        console.log('Category name already exists');
+        res.redirect('/admin/category'); // Redirect to an appropriate page or show an error
+        return;
+      }
+
+      // Update the category details
+      category.categoryname = req.body.categoryname;
+      category.image = req.file?.path.replace(/\\/g, '/').replace('public/', '/') || category.image;
+      category.description = req.body.description;
+
       await category.save();
-      console.log("category saved");
-      
-      res.redirect('/admin/category'); // Change '/success' to the appropriate success page URL
-  
-      // Change '/error' to the appropriate error page URL
+      console.log('Category saved successfully');
+      res.redirect('/admin/category'); // Redirect to a success page
     }
   } catch (error) {
     console.log(error);
     // Handle any errors that occur during the update process
-    res.redirect('admin/categeryedit'); // Redirect to an edit page
+    res.redirect('admin/categeryedit'); // Redirect to an edit page or show an error
   }
 };
 

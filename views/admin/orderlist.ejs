@@ -1,0 +1,91 @@
+<script  src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.17.0/font/bootstrap-icons.css">
+
+<%- include('../adminpartials/header')%>
+
+<%- include('../adminpartials/slidebar')%>
+
+<div class="page-body">
+    <!-- ... (existing code) ... -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card card-table">
+                    <div class="card-body">
+                        <div class="title-header option-title d-sm-flex d-block">
+                            <h5>Products List</h5>
+                            <div class="right-options">
+                                <ul>
+                                    <li>
+                                        <a class="btn btn-solid" href="/admin/addproducts">Add Product</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="table-responsive">
+                                <table class="table all-package theme-table table-product" id="table_id">
+                                    <thead>
+                                        <tr>
+                                            <th>Order Id</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Total</th>
+                                            <th>Payment Method</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% orders.forEach(order => { %>
+                                                <tr>
+                                                    <td><%= order.orderId %></td>
+                                                    <td><%= order.userId.firstname%></td>
+                                                    <td><%= order.userId.email%></td>
+                                                    <td><%= order. totalAmount%></td>
+                                                    <td><%= order.paymentMethod%></td>
+                                                    <td><%= order.date.toLocaleDateString()%></td>
+                                                    <td><%= order.orderStatus %></td>
+                                                   
+                                                   <td>
+                                                    <a href="/admin/orderdetailes/<%= order._id %>">view Detailes</a>
+                                                  
+                                                    
+                                                    
+                                                    
+                                                   </td> 
+                                                   
+                                                   
+                                                </tr>
+                                        <% }) %>
+                                    </tbody>
+                                    
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container-fluid Ends-->
+
+    <div class="container-fluid">
+        <!-- footer start-->
+        <footer class="footer">
+            <div class="row">
+                <div class="col-md-12 footer-copyright text-center">
+                    <p class="mb-0">Copyright 2022 © Fastkart theme by pixelstrap</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+
+
+
+<%- include('../adminpartials/footer')%>

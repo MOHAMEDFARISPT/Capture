@@ -30,7 +30,8 @@ const addressSchema = new Schema({
         district:{
             type:String,
             required:true
-        }
+        },
+        
        
     }],
     user: {

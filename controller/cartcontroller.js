@@ -160,6 +160,8 @@ const Cartiteamdelete = async (req, res) => {
     }
 };
 
+
+
         
    
     
@@ -185,7 +187,8 @@ module.exports={
    cartpost,
    cart,
    updateQuantity,
-   Cartiteamdelete
+   Cartiteamdelete,
+   
    
 
 }
