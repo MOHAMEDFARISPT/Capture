@@ -2,11 +2,44 @@
 <html lang="en">
     <%- include('../userpartials/head')%>
     <%- include('../userpartials/naavhead')%>
+<style>
+    .dotted-box {
+  border: 2px dotted #ed9033;
+  padding: 10px;
+  padding-left: 10px;
+  margin-top: 10px;
+  width: 150px;
+  height: 60px;
+}
+
+.coupon-code {
+  margin: 0;
+  font-size: 18px;
+}
+
+</style>
+
+<script>
+    // Add a timeout function to hide the alert after a specific duration
+    setTimeout(function () {
+        var alertDiv = document.getElementById('alertMessage');
+        if (alertDiv) {
+            alertDiv.style.display = 'none';
+        }
+    }, 2000); // 5000 milliseconds (adjust as needed)
+</script>
+
 
    
     <head>
         <!-- Other head elements -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+        <!-- Add these links in the head section of your HTML -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-T9yT0dqSpN3Z0D8kDgpdb7j7Pjk1Jl8pfg5JkfvSf" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-o9z3LhKIJOY9i8K6v6RsrCwoVh1kkcACVbIq5nCqezAVo7dEdpXjPUm3+a5SNfYA" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyPr+W8fVRSzflExlqZuodcGz8f4eJvntM" crossorigin="anonymous"></script>
+
     </head>
 
 
@@ -50,17 +83,22 @@
 									</thead>
 
 									<tbody>
+                                        <% if (sessionMessage) { %>
+                                            <div id="alertMessage" class="alert alert-info">
+                                                <%= sessionMessage %>
+                                            </div>
+                                        <% } %>
                                         <% if (userCart && userCart.products.length > 0) { %>
                                             <% userCart.products.forEach(product => { %>
                                            
 										<tr>
                                             <td>
                                                 <input 
-                                                    type="checkbox" 
-                                                    id="product-checkbox-<%= product._id %>"
-                                                    <%= product.isSelected ? 'checked' : '' %>
-                                                    onchange="selectProduct('<%= product.product._id %>')" 
-                                                >
+    type="checkbox" 
+    id="product-checkbox-<%= product._id %>"
+    <%= product.isSelected ? 'checked' : '' %>
+    onchange="selectProduct('<%= product.product._id %>')" 
+>
                                             </td>
                                             
 											<td class="product-col">
@@ -113,6 +151,9 @@
                                     
 								</table><!-- End .table table-wishlist -->
 
+
+
+
 	                			<div class="cart-bottom">
 			            			<div class="cart-discount">
 			            				<form action="#">
@@ -125,18 +166,32 @@
 			            				</form>
 			            			</div><!-- End .cart-discount -->
 
+
+
+
+
 			            			<a href="#" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i class="icon-refresh"></i></a>
 		            			</div><!-- End .cart-bottom -->
 	                		</div><!-- End .col-lg-9 -->
 	                		<aside class="col-lg-3">
 	                			<div class="summary summary-cart">
-	                				<h3 class="summary-title">Cart Total</h3><!-- End .summary-title -->
 
+
+                                   
+  
+                                      
+	                				<h3 class="summary-title">Cart Total</h3><!-- End .summary-title -->
+                                    <% const selectedProducts = userCart.products.filter(product => product.isSelected) %>
+                                    <% const totalSelectedAmount = selectedProducts.reduce((total, product) => total + (product.product.price * product.quantity), 0) %>
+                                
+                                    <% console.log('Selected Products:', selectedProducts); %>
+                                   
+                                    
 	                				<table class="table table-summary">
 	                					<tbody>
 	                						<tr class="summary-subtotal">
 	                							<td>Subtotal:</td>
-	                							<td><%= userCart.totalamount %></td>
+	                							<td> <%= totalSelectedAmount.toFixed(2) %></td>
 	                						</tr><!-- End .summary-subtotal -->
 	                						<tr class="summary-shipping">
 	                							<td>Shipping:</td>
@@ -173,14 +228,11 @@
 	                							<td>$00.00</td>
 	                						</tr><!-- End .summary-shipping-row -->
 
-	                						<tr class="summary-shipping-estimate">
-	                							<td>Estimate for Your Country<br> <a href="dashboard.html">Change address</a></td>
-	                							<td>&nbsp;</td>
-	                						</tr><!-- End .summary-shipping-estimate -->
+	                						
 
 	                						<tr class="summary-total">
 	                							<td>Total:</td>
-	                							<td><%= userCart.totalamount %></td>
+	                							<td> <%= totalSelectedAmount.toFixed(2) %> </td>
 	                						</tr><!-- End .summary-total -->
 	                					</tbody>
 	                				</table><!-- End .table table-summary -->
@@ -188,13 +240,41 @@
 	                				<a href="/checkout" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
 	                			</div><!-- End .summary -->
 
-		            			<a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
+		            			<a href="/category" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
 	                		</aside><!-- End .col-lg-3 -->
 	                	</div><!-- End .row -->
 	                </div><!-- End .container -->
                 </div><!-- End .cart -->
             </div><!-- End .page-content -->
+
+
+
+
+           
         </main><!-- End .main -->
+
+
+
+       
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <footer class="footer">
         	<div class="footer-middle">
@@ -658,6 +738,81 @@
     }
 </script>
 
+<!-- Add this in the head section of your HTML file -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+
+<script>
+    async function applyCoupon(couponId) {
+        alert(couponId);
+
+        // Your backend API endpoint with parameters in the route
+        const apiUrl = `/couponapply/${couponId}`;
+
+        try {
+            // Make a fetch request
+            const response = await fetch(apiUrl, {
+                method: 'POST', // Adjust the method accordingly
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Add any additional headers if needed
+                },
+                // No need to include a request body for a POST request in this case
+            });
+
+            if (!response.ok) {
+                throw new Error(`Network response was not ok (${response.status} ${response.statusText})`);
+            }
+
+            const data = await response.json();
+
+            // Handle the response from the server
+            if (data.message=="Coupon has already been applied by the current user.") {
+                // Use SweetAlert to show a customized alert
+                Swal.fire({
+                    icon: 'Error',
+                    title: 'you have already have applied  a coupon',
+                    text: data.message,
+                });
+            } else if(data.message=="Coupon Has Been Already  Applied"){
+                Swal.fire({
+                    icon: 'Error',
+                    title: 'Coupon Has Been Already  Applied',
+                    text: data.message,
+                });
+            }else if(data.message=="coupon has expired"){
+                Swal.fire({
+                    icon: 'Error',
+                    title: "coupon has expired",
+                    text: data.message,
+                });
+            } else if (data.message == 'coupon applied successfully') {
+    Swal.fire({
+        icon: 'success',
+        title: 'Coupon Applied Successfully',
+        text: `Coupon applied successfully. Discounted Total: ${data.discountedTotal}`,
+    });
+} else if (data.message == "coupon is not applicable to the current total price") {
+    Swal.fire({
+        icon: 'error',
+        title: "Coupon Not Applicable",
+        text: data.message,
+    });
+}
+        } catch (error) {
+            // Handle errors
+            console.error('Error:', error.message);
+
+            // Use SweetAlert to show an error alert
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An error occurred while applying the coupon. Please try again later.',
+            });
+        }
+    }
+</script>
 
     
     

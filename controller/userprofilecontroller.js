@@ -7,9 +7,13 @@ const addressmodel=require('../model/addressschema')
 const cartModel = require("../model/cartschema")
 const ordermodel=require("../model/orderschema")
 const productmodel=require('../model/productschema')
+const bcrypt = require('bcrypt');
+const Wallet=require('../model/walletschema')
 
-const account = async (req, res) => {
+const account = async (req, res,next) => {
+
   try {
+
     let userloggedin = false;
   if(req.session && req.session.userdata){
     userloggedin=true;
@@ -24,23 +28,38 @@ const account = async (req, res) => {
       // You might want to redirect to an error page or handle this differently
       return res.render('user/dashboard', { data, address: null ,userloggedin});
     }
-    const orders=await  ordermodel.find({userId:data._id}).populate("products.productId")
+
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = 5; // Set the number of orders per page
+
+    // Calculate the skip value based on the page and limit
+    const skip = (page - 1) * limit;
+
+    // Find total count of orders (without retrieving documents)
+    const totalCount = await ordermodel.countDocuments({ userId: data._id });
+
+    // Calculate total pages
+    const totalPages = Math.ceil(totalCount / limit);
+    const orders=await  ordermodel.find({userId:data._id}).populate("products.productId").sort({ createdAt: -1 })
+      .limit(limit)
+      .skip(skip);
     console.log("//////////orders//////////////"+orders);
 
+
+    const wallet=await Wallet.findOne({user:data._id})
+    console.log("wallet",wallet)
+
     
-    res.render('user/dashboard', {orders,data, address,userloggedin });
+    res.render('user/dashboard',{wallet,orders,data, address,userloggedin ,totalPages,page});
   } catch (error) {
     // Handle any errors that occurred during the process
     console.error("Error in the 'account' controller:", error);
-    res.status(500).send("Internal Server Error");
+    next(error)
+    // res.status(500).send("Internal Server Error");
   }
 };
 
-const editaccount=(req,res)=>{
-    const data=req.session.userdata
-
-    res.render('user/editaccount',{data})
-}
 const editaccountpost=async(req,res)=>{
   console.log("////////////////////")
     console.log("params",req.params.id)
@@ -78,7 +97,7 @@ const addaddress=(req,res)=>{
 
 
 
-const addresspost = async (req, res) => {
+const addresspost = async (req, res,next) => {
   console.log("session data"+req.session.userdata);
   const { fullname, contact, pincode, state, address, locality, district } = req.body;
 
@@ -128,7 +147,7 @@ const addresspost = async (req, res) => {
     
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    next(error)
   }
 };
 
@@ -192,34 +211,98 @@ const updateAddress = async (req, res) => {
 
 
 
-const cancelOrder=async(req,res)=>{
+// const cancelOrder=async(req,res)=>{
   
-  const orderId=req.body.orderId;
-  const productId=req.body.productId
+//   const orderId=req.body.orderId;
+//   const productId=req.body.productId
+//   const reason=req.body.reason
+//   console.log("reason"+reason)
+//   console.log(orderId);
+//   console.log(productId);
   
-  const orderproduct=await ordermodel.findById(orderId).populate('products.productId')
-if(!orderproduct){
-  return res.status(404).json({message:'order not found'})
+//   const orderproduct=await ordermodel.findById(orderId).populate('products.productId')
+// if(!orderproduct){
+//   return res.status(404).json({message:'order not found'})
 
-}
-    const matchedproduct = orderproduct.products.find(prdct => prdct.productId._id.toString() === productId);
-   if(!matchedproduct){
-    return res.status(404).json({message:'Product is not found'})
-   }
-   const product=await productmodel.findById(productId);
-if(!product){
-  return res.status(404).json({ message: 'Product not found in the database' });
-}
-product.quantity +=matchedproduct.quantity
-await product.save()
+// }
+//     const matchedproduct = orderproduct.products.find(prdct => prdct.productId._id.toString() === productId);
+//    if(!matchedproduct){
+//     return res.status(404).json({message:'Product is not found'})
+//    }
+//    const product=await productmodel.findById(productId);
+// if(!product){
+//   return res.status(404).json({ message: 'Product not found in the database' });
+// }
+// product.quantity +=matchedproduct.quantity
+// await product.save()
+// matchedproduct.reason='reason';
   
-matchedproduct.cancelstatus = 'canceled';
+// matchedproduct.cancelstatus = 'canceled';
 
-    await orderproduct.save()
-    console.log("product cancelled")
-    res.status(200).json({message:'product cancelled!!'})
-  }
+//     await orderproduct.save()
+//     console.log("product cancelled")
+//     res.status(200).json({message:'product cancelled!!'})
+//   }
  
+const cancelOrder = async (req, res) => {
+  try {
+      const { orderId, productId, reason } = req.body;
+
+      const orderProduct = await ordermodel.findById(orderId).populate('products.productId');
+
+      if (!orderProduct) {
+          return res.status(404).json({ message: 'Order not found' });
+      }
+
+      const matchedProduct = orderProduct.products.find(prdct => prdct.productId._id.toString() === productId);
+
+      if (!matchedProduct) {
+          return res.status(404).json({ message: 'Product is not found' });
+      }
+
+      const product = await productmodel.findById(productId);
+
+      if (!product) {
+          return res.status(404).json({ message: 'Product not found in the database' });
+      }
+
+      product.quantity += matchedProduct.quantity;
+
+      const userWallet = await Wallet.findOne({ user: orderProduct.userId });
+      console.log("ORDERPRODUCT",orderProduct)
+      console.log("userWallet",userWallet);
+      if (orderProduct.paymentMethod === 'wallet' || orderProduct.paymentMethod === 'razorpay') {
+        // Add the cancelled amount back to the wallet balance
+        userWallet.balance += matchedProduct.total;
+
+        // Add a transaction record to the wallet's transactions array
+        userWallet.transactions.push({
+            amount: matchedProduct.total,
+            type: 'credit',
+            description: `Refund for cancelled product - ${matchedProduct.productId.productname}`,
+        });
+
+        // Save the wallet changes
+        await userWallet.save();
+    }
+
+
+      // Save the cancellation reason in the database
+      matchedProduct.reason = reason; // Update this line to save the provided reason
+      matchedProduct.cancelstatus = 'canceled';
+
+      await product.save();
+      await orderProduct.save();
+
+      console.log('Product canceled');
+      res.status(200).json({ message: 'Product canceled!!' });
+  } catch (error) {
+      console.error('Error cancelling order:', error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+module.exports = { cancelOrder };
 
 
 
@@ -271,6 +354,45 @@ const myorderdetailes = async (req, res) => {
   }
 };
 
+const changepassword = async (req, res) => {
+  try {
+    const currentpass = req.body.currentpassword;
+    const newpassword = req.body.newpassword;
+    const confirmpassword = req.body.confirmpassword;
+    const userID = req.session.userdata._id;
+
+    const user = await usermodel.findById(userID);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const isMatched = await bcrypt.compare(currentpass, user.password);
+
+    if (!isMatched) {
+      return res.status(400).json({ error: 'Current password is incorrect' });
+    }
+
+    if (newpassword !== confirmpassword) {
+      return res.status(400).json({ error: 'New password and confirm password do not match' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newpassword, 10);
+    user.password = hashedPassword;
+
+    await user.save();
+    return res.status(200).json({ success: 'Password updated successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+
+
+
+
 
 
 const logout = (req, res) => {
@@ -295,11 +417,12 @@ const logout = (req, res) => {
 
 module.exports={
     account,
-    editaccount,
+ 
     editaccountpost,
     addaddress,
     addresspost,
     EditAddress,
+    changepassword,
     updateAddress, 
     myorderdetailes,
     cancelOrder,

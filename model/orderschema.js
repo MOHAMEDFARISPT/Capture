@@ -6,10 +6,11 @@ const orderSchema = new mongoose.Schema({
         type: String,
         unique: true,
         default: function () {
-            const randomString = crypto.randomBytes(6).toString('hex').toUpperCase();
-            return `ord${randomString}`;
+          const randomString = crypto.randomBytes(6).toString('hex').toUpperCase();
+          return `ord${randomString}`;
         },
-    },
+      },
+   
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users',
@@ -17,7 +18,8 @@ const orderSchema = new mongoose.Schema({
     },
     date: {
         type: Date,
-        default: Date.now(),
+        default: Date.now,
+        required:false
        
     },
     totalAmount: {
@@ -108,6 +110,15 @@ const orderSchema = new mongoose.Schema({
     paymentStatus: {
         type: String,
         default: 'pending',
+    },
+    couponDetails:{
+        appliedCoupon:{
+           type: String,
+           default:null
+        },
+
+        discountedAmount:Number,
+        
     },
 }, {
     timestamps: true, // Corrected: Use 'timestamps' instead of 'timeseries'

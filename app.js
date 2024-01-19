@@ -9,7 +9,7 @@ const session=require("express-session")
 const adminRouter = require('./routes/admin');
 const usersRouter = require('./routes/users');
 const {error}=require("console")
-
+const errorHandler=require('./middlewares/errorhandler')
 require("dotenv").config();
                     
 const app = express();
@@ -36,6 +36,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
+
+
+
 app.use(session({
   secret: 'your-secret-key', // Change this to a random and secure secret key
   resave: false,
@@ -44,15 +47,30 @@ app.use(session({
 }));
 
 
+
+
+
+
+
+
+// Example middleware to handle CORS (if applicable)
+
+
 app.use('/admin', adminRouter);
 app.use('/', usersRouter);
 
+app.get('*',(req,res,next)=>{
+ 
+  res.render('user/404')
+  })
+app.use(errorHandler)
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  // next(createError(404));
-  next()
-});
+
+// // catch 404 and forward to error handler
+// app.use(function(req, res, next) {
+//   // next(createError(404));
+//   // next()
+// });
 
 // mongoose.connect(process.env.DB_MONGO,{
 

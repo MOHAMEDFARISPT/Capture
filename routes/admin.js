@@ -3,6 +3,7 @@ var router = express.Router();
 var admin = require('../controller/admincontroller');
 var categorycontroller = require('../controller/category');
 var productcontroller=require('../controller/productcontroller')
+const salesreport=require('../controller/salesreportcontroller')
 const multer = require('multer');
 const path = require('path');
 
@@ -53,12 +54,41 @@ router.get("/orderdetailes/:orderId",admin.orderdetailes)
 
  router.post('/update-order-status',admin.changeorderstatus)
 
+ //coupons
+
+ router.get("/coupons",admin.coupons)
+ router.get('/add-coupons',admin.addcoupons)
+ 
+//coupon form post
+router.post('/coupons/create-coupon',admin.postcoupon)
+ // Example route definition
+router.delete('/coupons/:couponId', admin.coupondelete);
+router.get('/editcoupon',admin.editcoupon)
+router.post('/admin/editcouponpost/:couponId',admin.editcouponpost)
+
+//list/inlistcoupon
+router.post("/listuser/:couponid",admin.listCoupon)
+
 //remove image
 
 router.post("/removeImage",productcontroller.removeImage)
 
 //logout
 router.get("/adminlogout",admin.logout)
+
+
+ //daily sales reports
+ router.get("/dailyreports",salesreport.dailysalesreports)
+
+ router.get('/monthlyreport',salesreport.monthlyreport)
+
+ router.get('/yearlyreports',salesreport.yearlysalesreport)
+
+ //coupon
+
+
+
+
 
 
 

@@ -1,0 +1,125 @@
+
+<%- include('../adminpartials/header')%>
+
+<%- include('../adminpartials/slidebar')%>
+
+
+<div class="page-body ">
+
+    <!-- New Product Add Start -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-sm-8 m-auto">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-header-2">
+                                    <h5>Edit Coupon Detailes</h5>
+                                </div>
+
+                              
+                            <!-- admin/editcoupon.ejs -->
+
+<form class="theme-form theme-form-2 mega-form" action="/admin/editcouponpost/<%=coupondetailes._id %>" method="post">
+
+   
+    <!-- Coupon Name -->
+    <div class="mb-4 row align-items-center">
+        <label class="form-label-title col-sm-3 mb-5">Coupon Name</label>
+        <div class="col-sm-9">
+            <input class="form-control" type="text" name="couponcode" value="<%= coupondetailes.couponcode %>" required>
+        </div>
+    </div>
+
+    <!-- Coupon Description -->
+    <div class="mb-4 row align-items-center">
+        <label class="form-label-title col-sm-3 mb-5">Description</label>
+        <div class="col-sm-9">
+            <input class="form-control" type="text" name="description" value="<%= coupondetailes.description %>" required>
+        </div>
+    </div>
+
+    <!-- Coupon discount percentage -->
+    <div class="mb-4 row align-items-center">
+        <label class="form-label-title col-sm-3 mb-5">Discount Percentage</label>
+        <div class="col-sm-9">
+            <input class="form-control" type="text" name="Discountpercentage" value="<%= coupondetailes.discount_percentage %>" required>
+        </div>
+    </div>
+
+    <!-- Coupon Maximum Discount Amount -->
+    <div class="mb-4 row align-items-center">
+        <label class="form-label-title col-sm-3 mb-0">Maximum Discount Amount</label>
+        <div class="col-sm-9">
+            <input class="form-control" type="text" name="maximumdiscountamount" value="<%= coupondetailes.max_discount_amount %>" required>
+        </div>
+    </div>
+
+    <!--  minimum Amount   -->
+    <div class="mb-4 row align-items-center">
+        <label class="form-label-title col-sm-3 mb-0">Minimum Amount</label>
+        <div class="col-sm-9">
+            <input class="form-control" type="text" name="minimumamount" value="<%= coupondetailes.min_amount %>" required>
+        </div>
+    </div>
+
+    <!-- maximum Amount-->
+    <div class="mb-4 row align-items-center">
+        <label class="form-label-title col-sm-3 mb-0">Maximum Amount</label>
+        <div class="col-sm-9">
+            <input class="form-control" type="text" name="maximumamount" value="<%= coupondetailes.max_amount %>" required>
+        </div>
+    </div>
+
+    <div class="mb-4 row align-items-center">
+        <label class="form-label-title col-sm-3 mb-5">Expiration Date</label>
+        <div class="col-sm-9">
+            <input class="form-control" type="date" name="expirationDate" value="<%= coupondetailes.expiry_date %>" required>
+        </div>
+    </div>
+
+    <!-- Size Dropdown Field -->
+    <div class="mb-4 row align-items-center">
+        <label class="form-label-title col-sm-3 mb-0">Status</label>
+        <div class="col-sm-9">
+            <select class="form-control" name="status" required>
+                <option value="Active" <%= coupondetailes.status === 'Active' ? 'selected' : '' %>>Active</option>
+                <option value="InActive" <%= coupondetailes.status === 'InActive' ? 'selected' : '' %>>InActive</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="mb-4 row align-items-center">
+        <div class="col-sm-9 offset-sm-3">
+            <button type="submit" class="btn btn-primary" id="submitButton">Save Changes</button>
+        </div>
+    </div>
+</form>
+
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- New Product Add End -->
+
+    <!-- footer Start -->
+    <div class="container-fluid">
+        <footer class="footer">
+            <div class="row">
+                <div class="col-md-12 footer-copyright text-center">
+                    <p class="mb-0">Copyright 2022 © Fastkart theme by pixelstrap</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- footer En -->
+</div>
+
+<%- include('../adminpartials/footer')%>

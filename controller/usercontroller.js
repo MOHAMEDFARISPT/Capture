@@ -11,6 +11,8 @@ const { EventEmitterAsyncResource } = require('nodemailer/lib/xoauth2');
 const { query } = require('express');
 const addressModel = require('../model/addressschema');
 const ordermodel=require('../model/orderschema')
+const easyinvoice = require('easyinvoice');
+const Wallet=require("../model/walletschema")
 
 const login=(req,res)=>{
  
@@ -64,17 +66,87 @@ const product=async(req,res)=>{
   res.render('user/products',{product,userloggedin})
 }
 
-const category=async(req,res)=>{
+
+
+
+const category = async (req, res) => {
+  let userloggedin = false;
+
+  if (req.session && req.session.userdata) {
+    userloggedin = true;
+  }
+
+  const categoryId = req.query.categoryId;
+  const searchQuery = req.query.search;
+
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 10;
+
+  let product;
+  let totalProducts;
+
+  try {
+    let query = { islist: true };
+
+    if (categoryId) {
+      query.category = categoryId;
+    }
+
+    if (searchQuery && searchQuery.length > 0) {
+      console.log(`Searching products with query: ${searchQuery}`);
+      const regexPattern = { $regex: searchQuery, $options: 'i' };
+      query.$or = [
+        { name: regexPattern },
+        { description: regexPattern }
+      ];
+      console.log('Regex pattern for name:', regexPattern);
+    }
+    product = await productmodel.find(query).populate('category').skip((page - 1) * limit).limit(limit);
+    console.log('Products found:', product.map(p => ({ name: p.productname, description: p.description })));
+    
+    totalProducts = await productmodel.countDocuments(query); // Count total products
+    
+    const totalPages = Math.ceil(totalProducts / limit);
+    
+    const category = await categorymodel.find();
+    
+    console.log("Products passed to EJS:", product);
+    res.render('user/category', {
+      category,
+      product,
+      userloggedin,
+      totalPages,
+      currentPage: page,
+      searchQuery 
+    });
+    
+  } catch (error) {
+    console.error(error);
+   next(error)
+  }
+};
+
+
+
+
+
+
+
+
+
+const wishlist=(req,res)=>{
   let userloggedin = false;
   if(req.session && req.session.userdata){
     userloggedin=true;
   }
-  const product=await productmodel.find({islist:true}).populate('category')
- console.log(product)
-  res.render('user/category',{product,userloggedin})
+  res.render("user/wishlist",{userloggedin})
 }
 
 
+const addtowishlist=(req,res)=>{
+
+
+}
 
 
 
@@ -179,7 +251,10 @@ const signuppost = async (req, res) => {
       const checkEmail = await usermodel.findOne({ email: email });
 
       if (checkEmail) {
-          res.redirect("/login");
+       
+        res.render('user/login', );
+
+
           return;
       }
 
@@ -236,7 +311,17 @@ const otpverification = async (req, res) => {
               email: req.session.userData.email,
               password: req.session.userData.password
           });
-         
+
+          await Wallet.create({
+            user: newUser._id,
+            balance: 0, // You can set an initial balance if needed
+            transactions: [],
+            pendingOrder: {
+                orderId: null,
+                amount: 0,
+                currency: null
+            }
+        });
 
           console.log(datas);
 
@@ -293,8 +378,9 @@ const loginpost = async(req, res) => {
         const passwordMatch =await bcrypt.compare(req.body.password, loguser.password);
         if (passwordMatch) {
          
-         
+          
           req.session.userdata=loguser
+          res.status(200)
           console.log("userdatasessiooon"+req.session.userdata);
           res.redirect('/');
         
@@ -395,10 +481,91 @@ const resetPasswordPost =async(req,res)=>{
 
 
 
-const success=(req,res)=>{
+const success = async (req, res) => {
+  try {
+    const orderId = req.params.orderId;
+    console.log("orderIdparaaaaaaaaaaaaams"+orderId)
 
- 
-  res.render("user/sucessconfirm")
+    const order = await ordermodel.find({orderId} );
+    console.log("orderrrrr",order)
+
+    if (order.length > 0) {
+        // Orders found, you can now use the 'orders' array
+        console.log('Found orders:', order);
+    } else {
+        // No orders found
+        console.log('No orders found');
+    }
+    
+    res.render("user/sucessconfirm",{order})
+    
+
+
+} catch (error) {
+    // Handle other errors
+    console.error('Error fetching order details:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+}
+};
+
+
+
+const invoice=async(req,res)=>{
+  const orderId=req.params.orderId
+console.log("paraaaaamsssssssseeeeeeeee"+req.params.orderId)
+const order=await ordermodel.findById(orderId).populate('userId').populate('products.productId')
+console.log("order"+order)
+
+
+const data = {
+  documentTitle: 'Invoice',
+  currency: 'USD',
+  taxNotation: 'gst', // or 'vat' or 'gst'
+  marginTop: 25,
+  marginRight: 25,
+  marginLeft: 25,
+  marginBottom: 25,
+  logo: 'https://example.com/logo.png', // Optional: Add your logo URL
+  sender: {
+    company: 'Sneak Peak Hub',
+    address: 'farismohammed097@gmail.com',
+    zip: '679338',
+    city: 'Valanchery',
+    state: 'Kerala',
+  },
+  client: {
+    company: `${order.userId.firstname}`,
+    phone: `${order.address.mobile}`,
+    address: `${order.address.homeAddess}`,
+    zip: `${order.address.pincode}`,
+    city: `${order.address.city}`,
+    state: `${order.address.state}`,
+  },
+  invoiceNumber: `INV-${orderId}`,
+  invoiceDate: new Date().toDateString(),
+  products: [],
+};
+
+for (const product of order.products) {
+  data.products.push({
+    quantity: `${product.quantity}`, // Assuming quantity is directly available in the product object
+    description: `${product.productId.productname}`,
+   
+    price: `${product.productId.price}`,
+  });
+}
+
+
+// Generate the PDF
+const result = await easyinvoice.createInvoice(data);
+
+// Set response headers to trigger a download
+res.setHeader('Content-Type', 'application/pdf');
+res.setHeader('Content-Disposition', `attachment; filename="invoice-${order._id}.pdf"`);
+
+// Send the PDF as a buffer to the response stream
+res.send(Buffer.from(result.pdf, 'base64'));
+
 }
   
 
@@ -433,6 +600,7 @@ module.exports = {
     product,
     category,
     success,
+    invoice
     
    
   

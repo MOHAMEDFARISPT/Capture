@@ -172,14 +172,14 @@
         priceError.innerText = '';
 
         // Validate Product Image
-        if (productImage.length > 0) {
-            for (var i = 0; i < productImage.length; i++) {
-                if (/^image\/(jpeg|jpg|png|WEBP)$/.test(productImage[i].type)) {
-                    productImageError.innerText = 'Invalid image file format. Only JPEG, JPG, PNG, or GIF allowed.';
-                    return false;
-                }
-            }
-        }
+        // if (productImage.length > 0) {
+        //     for (var i = 0; i < productImage.length; i++) {
+        //         if (/^image\/(jpeg|jpg|png|WEBP)$/.test(productImage[i].type)) {
+        //             productImageError.innerText = 'Invalid image file format. Only JPEG, JPG, PNG, or GIF allowed.';
+        //             return false;
+        //         }
+        //     }
+        // }
 
         // Validate Product Name
         if (productName === '') {

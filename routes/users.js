@@ -8,7 +8,8 @@ const session=require('express-session')
  const {checkingsession,backtologin}=require("../middlewares/isauthenticated")
 
  const checkout=require("../controller/chekoutcontroller")
-  
+ const wishlist=require("../controller/wishlistcontroller")
+  const wallet=require("../controller/walletcontroller")
 
 
 
@@ -48,7 +49,7 @@ router.get('/category',checkingsession,isblocked,user.category)
 router.get("/account",checkingsession,isblocked,userprofilecontroller.account)
 
 //edit Account
-router.get("/Edit-account",userprofilecontroller.editaccount)
+
 router.post('/Edit-accounts/:id',userprofilecontroller.editaccountpost)
 
 
@@ -63,6 +64,14 @@ router.post('/update-address/:addressId',checkingsession,isblocked,userprofileco
 
 //cart 
 router.get("/cart",checkingsession,isblocked,cartcontroller.cart)
+
+
+//coupon apply
+
+router.post("/couponapply/:couponId",checkingsession,isblocked,cartcontroller.couponapply)
+
+//remove coupon
+router.post('/cart/remove-coupon/:userId',checkingsession,isblocked,cartcontroller. removeCoupon);
 
  //Add to Cart
  router.post("/cartpost/:productId",checkingsession,isblocked,cartcontroller.cartpost)
@@ -85,6 +94,11 @@ router.get("/cart",checkingsession,isblocked,cartcontroller.cart)
  //delete address
  router.delete('/delete-address/:addressId',checkingsession,isblocked,checkout.deleteaddress)
 
+
+//change password
+router.post("/change-password",checkingsession,isblocked,userprofilecontroller.changepassword)
+
+
  //selection
 
  router.post("/productselection/:productId",checkout.selectionbox)
@@ -94,14 +108,36 @@ router.get("/cart",checkingsession,isblocked,cartcontroller.cart)
 
  router.post("/place-order",checkingsession,isblocked,checkout.addresspaymentmethod)
 
+ //razerpay verify
+ router.post('/rzrpay-verify:razorpayOrderId',checkingsession,isblocked,checkout.verifyrazerpay)
+
 //success page
- router.get("/success",checkingsession,isblocked,user.success)
+ router.get('/success/:orderId',checkingsession,isblocked,user.success)
+
+ //generate invoice
+ router.get('/generate-invoice/:orderId', checkingsession, isblocked, user.invoice);
 
 //order detailes
  router.get('/orderdetails/:orderId',checkingsession,isblocked,userprofilecontroller.myorderdetailes)
 
  //cancel order
  router.post('/cancel-order',checkingsession,isblocked,userprofilecontroller.cancelOrder);
+
+ //wishlist
+ router.get('/wishlist',checkingsession,isblocked,wishlist.wishlist)
+ router.post('/wishlist',checkingsession,isblocked,wishlist.addtowishlist)
+ router.delete('/wishlist/remove-item/:id',checkingsession,isblocked,wishlist.removewishlist)
+
+
+
+ 
+
+
+
+ //add amount to wallet using razorepay
+ router.post('/addamounttowallet',checkingsession,isblocked,wallet.addwalletamount)
+ //veriffication razorepay add amount to wallet
+ router.post('/rzrpay-verify',checkingsession,isblocked,wallet.verifyrazorpay)
 
 
 

@@ -4,9 +4,17 @@
     <%- include('../userpartials/head')%>
     <%- include('../userpartials/naavhead')%>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
     
 
     <style>
+         #appliedNotification {
+            width: 100%;
+        color: #4CAF50; /* White text color */
+        padding: 10px; /* Padding around the message */
+        border-radius: 5px; /* Rounded corners */
+        text-align: center; /* Center the text */
+    }
          .custom-radio {
             height: 20vh;
         border: 2px solid #ddd; /* Border color */
@@ -149,43 +157,43 @@
                                                                 <div id="addAddressForm" style="display: none;">
                                                                     <!-- Form fields for adding address -->
                                                                     <form id="newAddressForm">
-                                                                        <div class="form-group">
+                                                                        <div class="form-group" style="width: 500px;">
                                                                             <label for="fullname">Full Name:</label>
                                                                             <input type="text" class="form-control" name="fullname" id="fullname" placeholder="Enter Full Name" required>
                                                                             <span id="fullnameError" class="error" style="color: red;"></span>
                                                                         </div>
                                                                     
-                                                                        <div class="form-group">
+                                                                        <div class="form-group" style="width: 500px;">
                                                                             <label for="contact">Contact:</label>
                                                                             <input type="text" class="form-control" name="contact" id="contact" placeholder="Enter Contact" required>
                                                                             <span id="contactError" class="error" style="color: red;"></span>
                                                                         </div>
                                                                     
-                                                                        <div class="form-group">
+                                                                        <div class="form-group" style="width: 500px;">
                                                                             <label for="pincode">Pincode:</label>
                                                                             <input type="text" class="form-control" name="pincode" id="pincode" placeholder="Enter Pincode" required>
                                                                             <span id="pincodeError" class="error" style="color: red;"></span>
                                                                         </div>
                                                                     
-                                                                        <div class="form-group">
+                                                                        <div class="form-group" style="width: 500px;">
                                                                             <label for="state">State:</label>
                                                                             <input type="text" class="form-control" name="state" id="state" placeholder="Enter State" required>
                                                                             <span id="stateError" class="error" style="color: red;"></span>
                                                                         </div>
                                                                     
-                                                                        <div class="form-group">
+                                                                        <div class="form-group" style="width: 500px;">
                                                                             <label for="address">Address:</label>
                                                                             <textarea class="form-control" name="address" id="address" placeholder="Enter Address" rows="3" required></textarea>
                                                                             <span id="addressError" class="error" style="color: red;"></span>
                                                                         </div>
                                                                     
-                                                                        <div class="form-group">
+                                                                        <div class="form-group" style="width: 500px;">
                                                                             <label for="locality">Locality:</label>
                                                                             <input type="text" class="form-control" name="locality" id="locality" placeholder="Enter Locality" required>
                                                                             <span id="localityError" class="error" style="color: red;"></span>
                                                                         </div>
                                                                     
-                                                                        <div class="form-group">
+                                                                        <div class="form-group" style="width: 500px;">
                                                                             <label for="district">District:</label>
                                                                             <input type="text" class="form-control" id="district" placeholder="Enter District" required>
                                                                             <span id="districtError" class="error" style="color: red;"></span>
@@ -197,10 +205,10 @@
                                                                     </form>
                                                                 </div>
                                                             
-                                                                <div class="custom-radio-container">
+                                                                <div class="custom-radio-container" style="border: 5px groove white; width: 610px; height: 130px;"  >
                                                                     <% if (address != null && typeof address !== 'undefined' && address.addresses != null && address.addresses.length > 0) { %>
                                                                         <% address.addresses.forEach((item, index) => { %>
-                                                                            <div class="custom-radio" style="width: 600px;">
+                                                                            <div class="custom-radio" style="width: 600px; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
                                                                                 <div class="form-check">
                                                                                     <input
                                                                                         class="form-check-input"
@@ -209,7 +217,7 @@
                                                                                         name="selectedAddress"
                                                                                         value="<%= item._id %>"
                                                                                     >
-                                                                                    <label class="form-check-label" for="address<%= index %>">
+                                                                                    <label class="form-check-label" for="address<%= index %>" style="font-weight: bold;">
                                                                                         <%= item.fullname %> <br>
                                                                                         <%= item.address %> <br>
                                                                                         <%= item.city %> <%= item.state %> <%= item.pincode %>
@@ -220,6 +228,7 @@
                                                                         <% }); %>
                                                                     <% } %>
                                                                 </div>
+                                                                
                                                             </div>
                                                             
                                                         </div>
@@ -233,6 +242,8 @@
                                 <!-- Right Side: Order Details Card -->
                                 <div class="col-lg-5 mt-0" style="background-color: rgb(243, 243, 236);">
                                     <div class="summary" style="background-color: rgb(255, 255, 255);">
+                                        <h4 id="applyCouponLink" style="cursor: pointer; color: blue;">Apply Coupon</h4>
+                                      
                                         <h3 class="summary-title">Your Order</h3>
                                         <table class="table">
                                             <thead>
@@ -245,26 +256,56 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <% let grandTotal = 0; %>
+                                                <% let subtotal = 0; %>
                                                 <% userCart.products.forEach(product => { %>
                                                     <% if (product.isSelected) { %>
-                                                        <tr >
-                                                            <td scope="row" ><img src="<%= product.product.productImage[0] %>" alt="Product Image" style="width: 80px; height: auto;"></td>
-                                                            <td style="padding: 14px; "><%= product.product.productname %></td>
+                                                        <tr>
+                                                            <td scope="row"><img src="<%= product.product.productImage[0] %>" alt="Product Image" style="width: 80px; height: auto;"></td>
+                                                            <td style="padding: 14px;"><%= product.product.productname %></td>
                                                             <td style="padding: 14px;">₹<%= product.product.price.toFixed(2) %></td>
                                                             <td style="padding: 35px;"><%= product.quantity %></td>
-                                                            <% let totalAmount = product.product.price * product.quantity; %>
-                                                            <td style="padding: 14px;">₹<%= totalAmount.toFixed(2) %></td>
-                                                            <% grandTotal += totalAmount; %>
+                                                            <td style="padding: 14px;">₹<%= product.quantity * product.product.price.toFixed(2) %></td>
                                                         </tr>
+                                                        <% subtotal += product.quantity * product.product.price; %>
                                                     <% } %>
                                                 <% }); %>
+                                            
+                                                <!-- Display Subtotal -->
+                                                <tr>
+                                                    <td style="text-align: right;" >Subtotal :</td>
+                                                    <td colspan="3"></td>
+                                                    <td>₹<%= subtotal.toFixed(2) %></td>
+                                                </tr>
+                                            
+                                                <!-- Display Discount on Coupon -->
+                                                <% if (userCart.couponDetails.appliedCoupon) { %>
+                                                    <tr>
+                                                        <td colspan="2" style="text-align: start; color: #c02217;">Discount Applied :</td>
+                                                        <td colspan="2" ></td>
+                                                        <td style="color: #c02217;">-₹<%= userCart.couponDetails.discountedAmount.toFixed(2) %></td>
+                                                    </tr>
+                                                <% } %>
+                                            
                                                 <!-- Display the Grand Total in a separate row -->
                                                 <tr>
-                                                    <td colspan="4"></td>
-                                                    <td style="padding: 10px;"><strong>Total:  ₹<%= grandTotal.toFixed(2) %></strong></td>
+                                                    <% if (userCart.couponDetails.appliedCoupon) { %>
+                                                        <td colspan="4" style="text-align: end; color: #4CAF50;">
+                                                            (Coupon Applied)
+                                                            <button id="removeCouponButton" onclick="removeCoupon()" data-toggle="tooltip" data-placement="top" title="Remove Coupon">
+                                                                <i class="fas fa-times-circle" style="color: red;"></i>
+                                                            </button>
+                                                            <script>
+                                                                $('#removeCouponButton').tooltip();
+                                                            </script>
+                                                        </td>
+                                                        <td style="padding: 10px;"><strong>Total: ₹ <span id="OrdertotalAmount"><%= userCart.totalamount.toFixed(2) %></span></strong></td>
+                                                    <% } else { %>
+                                                        <td colspan="4"></td>
+                                                        <td style="padding: 10px;"><strong>Total: ₹ <span id="OrdertotalAmount"><%= userCart.totalamount.toFixed(2) %></span></strong></td>
+                                                    <% } %>
                                                 </tr>
                                             </tbody>
+                                            
                                         </table>
                         
                                      
@@ -280,17 +321,22 @@
                                                                                 
                                                                                 
                                                                                 <div class="payment-option">
-                                                                                    <input type="radio" id="payment-cod" name="payment-method" value="cod" onclick="selectPaymentMethod('cod')">
+                                                                                    <input type="radio" id="payment-cod" name="payment-method" value="cod" onclick="selectPayment('cod')">
                                                                                     <label for="payment-cod">Cash on delivery</label>
                                                                                 </div>
+
+                                                                                <div class="payment-option">
+                                                                                    <input type="radio" id="payment-cod" name="payment-method" value="Razorpay" onclick="selectPayment('razorpay')">
+                                                                                    <label for="payment-cod">Razorpay</label>
+                                                                                </div>
                                                                 
+
                                                                                 
-                                                                                
-                                                                                <!-- <div class="payment-option">
-                                                                                    <input type="radio" id="payment-check" name="payment-method" value="check">
-                                                                                    <label for="payment-check">Check payments</label>
+                                                                                <div class="payment-option">
+                                                                                    <input type="radio" id="payment-check" name="payment-method" value="Wallet" onclick="selectPayment('Wallet')">
+                                                                                    <label for="payment-check">Wallet</label>
                                                                                     
-                                                                                </div> -->
+                                                                                </div>
                                                                                 <!-- <div class="payment-option">
                                                                                     <input type="radio" id="payment-direct" name="payment-method" value="direct">
                                                                                     <label for="payment-direct">Direct bank transfer</label>
@@ -323,7 +369,50 @@
                         
                         
                         
-                          
+                        <div class="modal fade" id="couponModal" tabindex="-1" role="dialog" aria-labelledby="couponModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="couponModalLabel">Enter Coupon Code</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body p-3">
+                                        <!-- Input box for entering coupon code -->
+                                        <div class="form-group">
+                                           
+                                            <input type="text" class="form-control" id="couponCode" placeholder="Enter coupon code Here">
+                                        </div>
+                                        <!-- Text check below the input box -->
+                                        <small id="couponCodeError" class="text-danger"></small>
+                                        <!-- Add more content as needed -->
+
+                                        <% coupon.forEach(function(coupon) { %>
+                                            <div class="card mb-3">
+                                                <div class="card-body" style="display: flex; justify-content: space-around;  padding: 20px 0px 20px 20px;">
+                                                    <div>
+                                                    <h5 class="card-title"><%= coupon.couponcode %></h5>
+                                                    <p class="card-text"><%= coupon.description %></p>
+                                                    <p class="card-text"><strong>Discount Percentage:</strong> <%= coupon.discount_percentage %>%</p>
+                                                    <p class="card-text"><strong>Minimum Amount:</strong> ₹<%= coupon.min_amount %> </p>
+                                                    </div>
+                                                    <div> <button onclick="applyCoupon('<%= coupon.id %>')" class="btn btn-success">Apply</button> </div>
+                                                   
+                                                </div>
+                                            </div>
+                                        <% }); %>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div>
+                                        <p id="appliedNotification"> </p>
+                                    </div>
+                                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                                        <!-- <button type="button" class="btn btn-primary" onclick="applyCoupon()">Apply Coupon</button> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                  
                           
                           
                           
@@ -792,6 +881,18 @@
     <script src="assets/js/owl.carousel.min.js"></script>
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+   
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -808,92 +909,210 @@
 
 <!-- Include SweetAlert library -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 
 <script>
-    async function placeOrder() {
-        // Get the selected address
-        const selectedAddressId = document.querySelector('input[name="selectedAddress"]:checked')?.value;
+let payment = '';
 
-        if (!selectedAddressId) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Please select an address',
-            });
-            return;
-        }
+function selectPayment(value) {
 
-        // Get the selected payment method
-        const selectedPaymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value;
+    payment = value;
+}
 
-        if (!selectedPaymentMethod) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Please select a payment method',
-            });
-            return;
-        }
+async function placeOrder() {
+    const selectedAddressId = document.querySelector('input[name="selectedAddress"]:checked')?.value;
 
-        // Show a confirmation dialog
-        const confirmResult = await Swal.fire({
-            icon: 'question',
-            title: 'Confirm Order',
-            text: 'Are you sure you want to place the order?',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, Place Order',
-            cancelButtonText: 'Cancel',
+    if (!selectedAddressId) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Please select an address',
         });
+        return;
+    }
 
-        // If the user clicks "Yes, Place Order"
-        if (confirmResult.isConfirmed) {
+    const selectedPaymentMethod = payment;
+   
+
+    if (!selectedPaymentMethod) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Please select a payment method',
+        });
+        return;
+    }
+
+    const confirmResult = await Swal.fire({
+        icon: 'question',
+        title: 'Confirm Order',
+        text: 'Are you sure you want to place the order?',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Place Order',
+        cancelButtonText: 'Cancel',
+    });
+
+    if (confirmResult.isConfirmed) {
+        try {
+            const response = await fetch('/place-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ selectedAddressId, selectedPaymentMethod }),
+            });
+
+            console.log('Complete Response:', response);
+
+            const responseText = await response.text();
+            console.log('Response Text:', responseText);
+
+            let responseData;
             try {
-                // Use fetch to send data to your server
-                const response = await fetch('/place-order', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ selectedAddressId, selectedPaymentMethod }),
-                });
+                responseData = JSON.parse(responseText);
+                console.log('Parsed Response JSON:', responseData);
+            } catch (jsonError) {
+                console.error('Error parsing JSON:', jsonError);
+            }
 
-                if (!response.ok) {
-                    throw new Error('Error placing order');
+            if (response.ok) {
+                if (selectedPaymentMethod === 'cod') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Order Placed!',
+                        text: 'Your order has been placed successfully.',
+                        showCancelButton: true,
+                        confirmButtonText: 'OK',
+                    }).then((result) => {
+                        window.location.href = `/success/${responseData.order._id}`;
+                    });
+                } else if (selectedPaymentMethod === 'razorpay') {
+                    razorpayFunction(responseData);
+                }else if(selectedPaymentMethod === 'Wallet'){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Order Placed!',
+                        text: 'Your order has been placed successfully.',
+                        showCancelButton: true,
+                        confirmButtonText: 'OK',
+                    }).then((result) => {
+                        window.location.href = `/success/${responseData.order._id}`;
+                    });
+
+
+
+
+
+
+                } 
+                else {
+                    console.log('Unknown payment method');
                 }
-
-                const data = await response.json();
-
-                // Show success message with SweetAlert
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Order Placed!',
-                    text: 'Your order has been placed successfully.',
-                    showCancelButton: true,
-                    confirmButtonText: 'Continue Shopping',
-                    cancelButtonText: 'Go to Orders',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Continue shopping action (redirect to your shop page)
-                        window.location.href = '/';
-                    } else {
-                        // Go to orders action (redirect to your orders page)
-                        window.location.href = '/account';
-                    }
-                });
-
-                console.log(data);
-            } catch (error) {
-                console.error('Error placing order:', error.message);
-
-                // Show error message with SweetAlert
+            } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
                     text: 'There was an error placing your order. Please try again later.',
                 });
             }
+        } catch (error) {
+            console.error('Error placing order:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'There was an error placing your order. Please try again later.',
+            });
         }
     }
+}
+
+function razorpayFunction(res) {
+    console.log(res);
+
+    if (!res || !res.orderId || !res.key_id) {
+        console.error('Invalid response format');
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Invalid response format. Please try again later.',
+        });
+        return;
+    }
+
+    const options = {
+        key: res.key_id,
+        amount: res.order?.amount || 0, // Ensure 'amount' is defined
+        currency: res.order?.currency || 'INR', // Provide a default currency if not defined
+        name: "Sneak Peack Heaven",
+        description: "Shoes",
+        image: 'LOGO',
+        order_id: res.orderId,
+        handler: async function (response) {
+            console.log(response);
+
+            const data = {
+                orderCreationId: res.orderId,
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpayOrderId: response.razorpay_order_id,
+                razorpaySignature: response.razorpay_signature,
+            };
+
+            console.log('/////////////////////////////////////////////////');
+            console.log(data.orderCreationId);
+
+            try {
+                const verifyResponse = await fetch(`/rzrpay-verify,${data.orderCreationId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        data: {
+                            orderCreationId: res.orderId,
+                            razorpayPaymentId: response.razorpay_payment_id,
+                            razorpayOrderId: response.razorpay_order_id,
+                            razorpaySignature: response.razorpay_signature,
+                        }
+                    }),
+                });
+
+                const result = await verifyResponse.json();
+
+                if (result.msg === 'success') {
+                   
+                    Swal.fire({
+                        title: "Order placed !!",
+                        text: "Your Order has been confirmed.",
+                        icon: "success",
+                    }).then(() => {
+                        window.location.href = `/success/${result.foundorder.orderId}`;
+                    });
+                } else {
+                    alert("Some verification issue caused. Please try again after some time.");
+                }
+            } catch (error) {
+                console.error("Error during verification:", error);
+                alert(`An error occurred during verification: ${error.message}`);
+            }
+        },
+        prefill: {
+            name: "Soumya Dey",
+            email: "SoumyaDey@example.com",
+            contact: "9999999999",
+        },
+        notes: {
+            address: "Soumya Dey Corporate Office",
+        },
+        theme: {
+            color: "#000",
+        },
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+}
+
 </script>
 
 
@@ -952,6 +1171,8 @@
 
 
 </script>
+
+
 
 
 <script>
@@ -1020,6 +1241,121 @@
     }
 </script>
 
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Your custom script -->
+<script>
+    document.getElementById('applyCouponLink').addEventListener('click', function () {
+        $('#couponModal').modal('show');
+    });
+</script>
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+<script>
+    async function applyCoupon(couponId) {
+       
+        
+        // Your backend API endpoint with parameters in the route
+        const apiUrl = `/couponapply/${couponId}`;
+
+        try {
+            // Make a fetch request
+            const response = await fetch(apiUrl, {
+                method: 'POST', // Adjust the method accordingly
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Add any additional headers if needed
+                },
+                // No need to include a request body for a POST request in this case
+            });
+
+            if (!response.ok) {
+                throw new Error(`Network response was not ok (${response.status} ${response.statusText})`);
+            }
+
+            const data = await response.json();
+            console.log(data);
+
+            // Handle the response from the server
+            if (data.success === true) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Coupon Applied Successfully',
+                    text: `Coupon applied successfully. Discounted Total: ${data.discountedTotal}`,
+                    timer: 5000, // Set the timer for 5 seconds (adjust as needed)
+                    showConfirmButton: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Reload the page after the user clicks "OK"
+                        window.location.reload();
+                    }
+                });
+
+                document.getElementById('OrdertotalAmount').textContent = data.discountedTotal;
+                document.getElementById('appliedNotification').textContent = `Congratulations! You saved ${data.discountedAmount} in this Order`;
+            } else {
+                Swal.fire({
+                    icon: 'error', // Fix: Use lowercase 'error'
+                    title: data.message,
+                });
+            }
+        } catch (error) {
+            // Handle errors
+            console.error('Error:', error.message);
+
+            // Use SweetAlert to show an error alert
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An error occurred while applying the coupon. Please try again later.',
+            });
+        }
+    }
+</script>
+
+
+
+
+<script>
+       async function removeCoupon() {
+   
+                try {
+                    const userId = '<%= userCart.user %>'; // Replace with the actual user ID
+                    const response = await fetch(`/cart/remove-coupon/${userId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        window.location.reload()
+                        console.log(data); // Handle the response from the server
+                        // Optionally, update the UI based on the server response
+                    } else {
+                        console.error('Error:', response.status);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+</script>
     
 </body>
 

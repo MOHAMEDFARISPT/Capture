@@ -6,14 +6,31 @@ const categorymodel=require('../model/categoryschema')
 
 
 
-const productlist=async(req,res)=>{
- const product=await productmodel.find({}).populate('category')
- 
+const ITEMS_PER_PAGE = 10; // Number of items to display per page
 
+const productlist = async (req, res) => {
+  const page = +req.query.page || 1; // Get the requested page from query parameters
+  try {
+    const totalProducts = await productmodel.countDocuments({});
+    const products = await productmodel.find({})
+      .skip((page - 1) * ITEMS_PER_PAGE)
+      .limit(ITEMS_PER_PAGE)
+      .populate("category");
 
- res.render("admin/products",{product})
-   
-} 
+    res.render('admin/products', {
+      products,
+      currentPage: page,
+      hasNextPage: ITEMS_PER_PAGE * page < totalProducts,
+      hasPreviousPage: page > 1,
+      nextPage: page + 1,
+      previousPage: page - 1,
+      lastPage: Math.ceil(totalProducts / ITEMS_PER_PAGE),
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+};
      
    
    

@@ -53,16 +53,48 @@
   </head>
   <body>
     <div class="card">
-      <div style="border-radius: 200px; height: 200px; width: 200px; background: #F8FAF5; margin: 0 auto;">
-        <i class="checkmark">✓</i>
-      </div>
-      <h1>Success</h1> 
-      <p>Your Order Placed successfully<br/>Thank you!</p>
-      <div class="button-container">
-        <a href="/" class="button">Continue Shopping</a>
-        <a href="/account" class="button">My Orders</a>
-      </div>
+   
+        <div style="border-radius: 200px; height: 200px; width: 200px; background: #F8FAF5; margin: 0 auto;">
+          <i class="checkmark">✓</i>
+        </div>
+        <h1>Success</h1>
+        <p>Your Order Placed successfully<br/>Thank you!</p>
+        <div class="button-container">
+          <a href="/" class="button">Continue Shopping</a>
+          <a href="/account" class="button">My Orders</a>
+          <!-- Add the download button with a link to the invoice -->
+       <!-- Add an onclick event to the Download Invoice link -->
+<a href="/generate-invoice/<%= order.orderId%>" class="button" onclick="logOrderId('<%= order.orderId %>')">Download Invoice</a>
+
+<!-- Add the following script to your HTML -->
+<script>
+    // JavaScript function to log the order ID
+    function logOrderId(orderId) {
+        alert('Clicked on Download Invoice. Order ID:', orderId);
+        // Optionally, you can redirect to the download link after logging
+        // window.location.href = '/generate-invoice/' + orderId;
+    }
+</script>
+
+
+
+        </div>
+   
     </div>
-  </body>
+    
+    <script>
+      
+    function downloadInvoice(orderId) {
+      alert("orderId"+orderId)
+        // Construct the URL with the order ID
+        var url = '/generate-invoice/' + orderId;
+
+        // Redirect to the generated URL
+        window.location.href = url;
+    }
+
+    </script>
+</body>
+
 </html>
 

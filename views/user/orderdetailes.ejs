@@ -246,12 +246,24 @@ small{
             </div>
         </div>
         <div class="card-footer bg-white px-sm-3 pt-sm-4 px-0">
-          <div class="row text-center">
-              <div class="col my-auto border-line"><a href="/account"><h5>Profile</h5></a></div>
-              <!-- <div class="col my-auto border-line"><a href="/orderlist"><h5>Orders</h5></a></div> -->
-              <div onclick="cancelOrder('<%= order._id %>', '<%= product.productId._id %>')" class="col my-auto border-line"><h5>cancel Order</h5></div>
-          </div>
-      </div>
+            <div class="row text-center">
+                <div class="col my-auto border-line"><a href="/account"><h5>Profile</h5></a></div>
+                <% order.products.forEach(product => { %>
+                    <div class="col my-auto border-line">
+                        <% if (product.cancelstatus === 'delivered') { %>
+                            <h5>Product Delivered</h5>
+                            <% } else if (product.cancelstatus === 'canceled'){ %>
+                                <h5 style="color: red;">Product cancelled</h5>
+                        <% } else { %>
+                            <div onclick="cancelOrder('<%= order._id %>', '<%= product.productId._id %>')">
+                                <h5>Cancel Order</h5>
+                            </div>
+                        <% } %>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+        
       <% }); %>
       
     </div>
@@ -260,37 +272,36 @@ small{
     <!-- Add your JavaScript scripts and other body elements here -->
   </body>
   
-  <script>
-    async function cancelOrder(orderId, productId) {
-      
-        
-        try {
-            // Make a fetch request to your backend endpoint
-            const response = await fetch('/cancel-order', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ orderId, productId }),
-            });
+ <script>
+    function updateOrderStatus(productId, orderId) {
+        const selectedOrderStatus = document.getElementById('select' + productId).value;
 
-            if (!response.ok) {
-                throw new Error('Error cancelling order');
-            }
-            
-            const data = await response.json();
-            window.location.href="/account"
-           
-            
-            // Handle the response from the backend if needed
-            console.log('Response from backend:', data);
+        console.log(productId, orderId, selectedOrderStatus);
 
-            // Optionally, update the UI or perform additional actions
-        } catch (error) {
-            console.error('Error cancelling order:', error);
+        // If the selected order status is 'Canceled', get the cancellation reason
+        let cancelReason = null;
+        if (selectedOrderStatus === 'Canceled') {
+            const reasonDropdown = document.getElementById('reasonDropdown' + productId);
+            console.log("reasonDropdown", reasonDropdown);
 
-            // Handle errors, show a message, etc.
+            // Add this line to check the value of the dropdown
+            console.log("Dropdown Value:", reasonDropdown.value);
+
+            cancelReason = reasonDropdown ? reasonDropdown.value : null;
         }
+
+        // Rest of your code...
+        alert(cancelReason);
+        // Use Fetch to send data to your server
+        fetch('/admin/update-order-status', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ orderId, productId, selectedOrderStatus, cancelReason }),
+        })
+        // Rest of your code...
     }
 </script>
+
 </html>

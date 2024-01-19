@@ -1,0 +1,114 @@
+<%- include('../adminpartials/header')%>
+
+<%- include('../adminpartials/slidebar')%>
+
+
+
+
+<div class="page-body">
+    <!-- ... (existing code) ... -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card card-table">
+                    <div class="card-body">
+                        <div class="title-header option-title d-sm-flex d-block">
+                            <h5>Daily Sales Reports</h5>
+                            <div class="right-options">
+                                <ul>
+                                    <li>
+                                        <!-- Print button with inline styling and window.print() function -->
+                                        <button class="btn" style="background-color: blue; color: white;" onclick="window.print()">Print</button>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                        </div>
+                        <div>
+                            <div class="table-responsive">
+                              <!-- admin/dailyreport.ejs -->
+
+                              <table class="table all-package theme-table table-product" id="table_id">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Order ID</th>
+                                        <th>Product Name</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% let todayData = false; %>
+                                    <% let totalAmount = 0; %>
+                                    <% if (data.length > 0) { %>
+                                        <% data.forEach(order => { %>
+                                            <% order.products.forEach(product => { %>
+                                                <!-- Check if the order date is today -->
+                                                <% if (order.date.toDateString() === new Date().toDateString()) { %>
+                                                    <% todayData = true; %>
+                                                    <tr>
+                                                        <td><strong><%= formatDate(order.date) %></strong></td>
+                                                        <td><%= order.orderId %></td>
+                                                        <td><%= product.productId.productname %></td>
+                                                        <td><%= product.productId.price %></td>
+                                                        <td><%= product.quantity %></td>
+                                                        <td><%= product.total %></td>
+                                                    </tr>
+                                                    <% totalAmount += product.total; %>
+                                                <% } %>
+                                            <% }) %>
+                                        <% }) %>
+                                    <% } %>
+                            
+                                    <% if (!todayData) { %>
+                                        <!-- Display a message when no sales are available for today -->
+                                        <tr>
+                                            <td colspan="6">No Sales available for today</td>
+                                        </tr>
+                                    <% } else { %>
+                                        <!-- Display total amount at the end of the table -->
+                                        <tr>
+                                            <td colspan="5"><strong>Total Amount:</strong></td>
+                                            <td><strong><%= totalAmount %></strong></td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                                <% function formatDate(date) {
+                                    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+                                    return new Date(date).toLocaleDateString(undefined, options);
+                                } %>
+                            </table>
+                            
+                            
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container-fluid Ends-->
+
+    <div class="container-fluid">
+        <!-- footer start-->
+        <footer class="footer">
+            <div class="row">
+                <div class="col-md-12 footer-copyright text-center">
+                    <p class="mb-0">Copyright 2022 © Fastkart theme by pixelstrap</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+
+
+
+
+
+<%- include('../adminpartials/footer')%>

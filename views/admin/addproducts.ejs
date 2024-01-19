@@ -138,22 +138,30 @@
     function validateForm() {
         return validateProductImage() && validateProductName() && validateDescription() && validateQuantity() && validatePrice();
     }
-
     function validateProductImage() {
         var fileInput = document.getElementsByName("productImage")[0];
         var productImageError = document.getElementById("productImageError");
 
+        // Check if the file input is empty
         if (fileInput.files.length === 0) {
             productImageError.innerText = "Product Image cannot be empty.";
             return false;
         }
 
-        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.WEBP)$/i;
+        // Check if the file name contains spaces
+        if (fileInput.value.trim().indexOf(' ') !== -1) {
+            productImageError.innerText = "File name cannot contain spaces.";
+            return false;
+        }
+
+        // Check if the file type is not allowed
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.webp)$/i;
         if (!allowedExtensions.exec(fileInput.value)) {
             productImageError.innerText = "Invalid file type. Upload an image (jpg, jpeg, or png).";
             return false;
         }
 
+        // Reset error message
         productImageError.innerText = "";
         return true;
     }

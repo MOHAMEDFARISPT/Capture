@@ -5,6 +5,12 @@
   <title>Login Page with Username and Password Example</title>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet"><link rel="stylesheet" href="./style.css">
 <link rel="stylesheet" href="/assets/css/style.css">
+<!-- Include SweetAlert CDN -->
+
+
+<!-- Add this in your HTML head section -->
+
+
 
 
 <meta charset="UTF-8">
@@ -77,8 +83,8 @@ background-size: cover;
    
           
            
-              
-                    <form action="/login" method="post">
+       
+                    <form action="/login" method="post" id="loginForm" >
                         <div class="form-group">
                             <label for="singin-email">Username or email address *</label>
                             <input type="text" class="form-control" id="signin-email" name="email" onkeyup="emailvalidate()">
@@ -131,6 +137,40 @@ background-size: cover;
     </div><!-- End .form-box -->
 
 <script src="/loginvalidate.js"></script>
+
+<!-- Add this script in your HTML file after including SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<!-- Add this script to your HTML -->
+<script>
+    // Function to get query parameters from the URL
+    function getQueryParam(name) {
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        return urlSearchParams.get(name);
+    }
+
+    // Get the message from the URL
+    const message = getQueryParam('message');
+
+    // Check if a message is present and display it
+    if (message) {
+        // Create a div to display the message
+        const messageDiv = document.createElement('div');
+        messageDiv.textContent = message;
+        messageDiv.className = 'message'; // Add a class for styling
+
+        // Append the message div to the body or any specific container
+        document.body.appendChild(messageDiv);
+    }
+</script>
+
+<!-- Your login script -->
+
+  
+
+
+
 </body>
 <!-- partial -->
   

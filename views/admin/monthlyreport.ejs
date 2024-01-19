@@ -1,0 +1,124 @@
+<%- include('../adminpartials/header')%>
+
+<%- include('../adminpartials/slidebar')%>
+
+
+
+
+<div class="page-body">
+    <!-- ... (existing code) ... -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card card-table">
+                    <div class="card-body">
+                        <div class="title-header option-title d-sm-flex d-block">
+                            <h5>Monthly Sales Reports</h5>
+                            <div class="right-options">
+                                <ul>
+                                    <!-- <li>
+                                        <a class="btn btn-solid" href="/admin/add-coupons">Add Coupons</a>
+                                    </li> -->
+                                </ul>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="table-responsive">
+                              <!-- admin/dailyreport.ejs -->
+
+                              <table class="table all-package theme-table table-product" id="table_id">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Order ID</th>
+                                        <th>Product Name</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% let monthlyData = false; %>
+                                    <% let latestDate = null; %>
+                                    <% let totalAmount = 0; %>
+                                    <% if (data.length > 0) { %>
+                                        <% data.forEach(order => { %>
+                                            <% for (let i = order.products.length - 1; i >= 0; i--) { %>
+                                                <!-- Check if the order date is in the current month -->
+                                                <% if (order.date.getMonth() === new Date().getMonth()) { %>
+                                                    <% monthlyData = true; %>
+                                                    <% if (!latestDate || order.date > latestDate) { %>
+                                                        <% latestDate = order.date; %>
+                                                    <% } %>
+                                                    <tr>
+                                                        <td><strong><%= formatDate(order.date) %></strong></td>
+                                                        <td><%= order.orderId %></td>
+                                                        <td><%= order.products[i].productId.productname %></td>
+                                                        <td><%= order.products[i].productId.price %></td>
+                                                        <td><%= order.products[i].quantity %></td>
+                                                        <td><%= order.products[i].total %></td>
+                                                    </tr>
+                                                    <% totalAmount += order.products[i].total; %>
+                                                <% } %>
+                                            <% } %>
+                                        <% }) %>
+                                    <% } %>
+                            
+                                    <% if (latestDate) { %>
+                                        <!-- Display latest date and details above the rows -->
+                                        <tr>
+                                            <td colspan="6"><strong>Latest Date: <%= formatDate(latestDate) %></strong></td>
+                                        </tr>
+                                    <% } %>
+                            
+                                    <% if (!monthlyData) { %>
+                                        <!-- Display a message when no sales are available for this month -->
+                                        <tr>
+                                            <td colspan="6">No Sales available for this month</td>
+                                        </tr>
+                                    <% } else { %>
+                                        <!-- Display total amount at the end of the table -->
+                                        <tr>
+                                            <td colspan="5"><strong>Total Amount:</strong></td>
+                                            <td><strong><%= totalAmount %></strong></td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                                <% function formatDate(date) {
+                                    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+                                    return new Date(date).toLocaleDateString(undefined, options);
+                                } %>
+                            </table>
+                            
+                            
+                            
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container-fluid Ends-->
+
+    <div class="container-fluid">
+        <!-- footer start-->
+        <footer class="footer">
+            <div class="row">
+                <div class="col-md-12 footer-copyright text-center">
+                    <p class="mb-0">Copyright 2022 © Fastkart theme by pixelstrap</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+
+
+
+
+
+<%- include('../adminpartials/footer')%>

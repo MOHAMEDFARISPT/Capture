@@ -23,7 +23,8 @@ size:String,
 islist:{
   type:Boolean,
   default:true
-}
+},
+
 
 })
 // Create a Product model based on the schema

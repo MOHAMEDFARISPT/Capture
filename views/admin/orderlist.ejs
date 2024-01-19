@@ -14,12 +14,12 @@
                 <div class="card card-table">
                     <div class="card-body">
                         <div class="title-header option-title d-sm-flex d-block">
-                            <h5>Products List</h5>
+                            <h5>Order List</h5>
                             <div class="right-options">
                                 <ul>
-                                    <li>
+                                    <!-- <li>
                                         <a class="btn btn-solid" href="/admin/addproducts">Add Product</a>
-                                    </li>
+                                    </li> -->
                                 </ul>
                             </div>
                         </div>
@@ -29,8 +29,8 @@
                                     <thead>
                                         <tr>
                                             <th>Order Id</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
+                                         
+                                          
                                             <th>Total</th>
                                             <th>Payment Method</th>
                                             <th>Date</th>
@@ -39,28 +39,40 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <% orders.forEach(order => { %>
-                                                <tr>
-                                                    <td><%= order.orderId %></td>
-                                                    <td><%= order.userId.firstname%></td>
-                                                    <td><%= order.userId.email%></td>
-                                                    <td><%= order. totalAmount%></td>
-                                                    <td><%= order.paymentMethod%></td>
-                                                    <td><%= order.date.toLocaleDateString()%></td>
-                                                    <td><%= order.orderStatus %></td>
-                                                   
-                                                   <td>
-                                                    <a href="/admin/orderdetailes/<%= order._id %>">view Detailes</a>
-                                                  
-                                                    
-                                                    
-                                                    
-                                                   </td> 
-                                                   
-                                                   
-                                                </tr>
-                                        <% }) %>
+                                        <% if (orders !== null && orders !== undefined && orders.length > 0) { %>
+                                            <% orders.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(orderItem => { %>
+                                                <% orderItem.products.forEach(product => { %>
+                                                    <tr>
+                                                        <td><strong><%= orderItem.orderId %></strong></td>
+                                                        
+                                                        <td><strong><%= orderItem.totalAmount %></strong></td>
+                                                        <td><strong><%= orderItem.paymentMethod %></strong></td>
+                                                        <td><strong><%= orderItem.date.toLocaleDateString() %></strong></td>
+                                                        <td>
+                                                            <% if (product.cancelstatus === 'delivered') { %>
+                                                                <span style="color: green;"><strong>Product Delivered</strong></span>
+                                                            <% } else if (product.cancelstatus === 'canceled') { %>
+                                                                <span style="color: red;"><strong>Product Cancelled</strong></span>
+                                                            <% } else { %>
+                                                                <strong><%= product.cancelstatus %></strong>
+                                                            <% } %>
+                                                        </td>
+                                    
+                                                        <td>
+                                                            <a href="/admin/orderdetailes/<%= orderItem._id %>"><strong>View Details</strong></a>
+                                                        </td>
+                                                    </tr>
+                                                <% }); %>
+                                            <% }); %>
+                                        <% } else { %>
+                                            <!-- Handle the case where no orders are available -->
+                                            <tr>
+                                                <td colspan="8"><strong>No orders available</strong></td>
+                                            </tr>
+                                        <% } %>
                                     </tbody>
+                                    
+                                    
                                     
                                 </table>
                             </div>

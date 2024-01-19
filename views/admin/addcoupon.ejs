@@ -1,0 +1,201 @@
+
+<%- include('../adminpartials/header')%>
+
+<%- include('../adminpartials/slidebar')%>
+
+
+<!-- Include SweetAlert library (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<div class="page-body ">
+
+    <!-- New Product Add Start -->
+   
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-sm-8 m-auto">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-header-2">
+                                <h5>Add Coupon</h5>
+                            </div>
+
+                            <form class="theme-form theme-form-2 mega-form" id="couponForm" action="/admin/coupons/create-coupon" method="post" onsubmit="return validateForm()">
+
+
+                             
+                               
+
+                                <!-- Generate Coupon Code Button -->
+                                
+
+                                <!-- Coupon Name -->
+                                <div class="mb-4 row align-items-center">
+                                    <label class="form-label-title col-sm-3 mb-5">Coupon Code</label>
+                                    <div class="col-sm-9">
+                                        <button type="button" class="btn btn-primary" onclick="generateCouponCode()">Generate Coupon Code</button>
+                                        <input type="text" class="form-control mt-2" id="couponCode" name="couponCode" placeholder="Generated Coupon Code" readonly>
+                                      
+                                    </div>
+                                </div>
+
+                                <!-- Coupon Description -->
+                                <div class="mb-4 row align-items-center">
+                                    <label class="form-label-title col-sm-3 mb-5">Description</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" type="text" name="description" placeholder="Enter Coupon description">
+                                    </div>
+                                </div>
+
+                                <!-- Coupon discount percentage -->
+                                <div class="mb-4 row align-items-center">
+                                    <label class="form-label-title col-sm-3 mb-5">Discount Percentage</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" type="text" name="Discountpercentage" placeholder="Enter Discount Percentage">
+                                    </div>
+                                </div>
+
+                                <!-- Coupon Maximum Discount Amount -->
+                                <div class="mb-4 row align-items-center">
+                                    <label class="form-label-title col-sm-3 mb-0">Maximum Discount Amount</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" type="text" name="maximumdiscountamount" placeholder="Enter Maximum Discount Amount">
+                                    </div>
+                                </div>
+
+                                <!--  minimum Amount   -->
+                                <div class="mb-4 row align-items-center">
+                                    <label class="form-label-title col-sm-3 mb-0">Minimum Amount</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" type="text" name="minimumamount" placeholder="Enter Minimum Amount">
+                                    </div>
+                                </div>
+
+                                <!-- Maximum Amount -->
+                                <div class="mb-4 row align-items-center">
+                                    <label class="form-label-title col-sm-3 mb-0">Maximum Amount</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" type="text" name="maximumamount" placeholder="Enter maximum Amount">
+                                    </div>
+                                </div>
+
+                                <!-- Expiration Date -->
+                                <div class="mb-4 row align-items-center">
+                                    <label class="form-label-title col-sm-3 mb-5">Expiration Date</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" type="date" name="expirationDate" required>
+                                    </div>
+                                </div>
+
+                                <!-- Size Dropdown Field -->
+                                <div class="mb-4 row align-items-center">
+                                    <label class="form-label-title col-sm-3 mb-0">Status</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="status" placeholder="Select Status">
+                                            <option value="Active">Active</option>
+                                            <option value="InActive">InActive</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="mb-4 row align-items-center">
+                                    <div class="col-sm-9 offset-sm-3">
+                                        <button type="submit" class="btn btn-primary" id="submitButton">Save</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+    <!-- New Product Add End -->
+
+    <!-- footer Start -->
+    <div class="container-fluid">
+        <footer class="footer">
+            <div class="row">
+                <div class="col-md-12 footer-copyright text-center">
+                    <p class="mb-0">Copyright 2022 © Fastkart theme by pixelstrap</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- footer En -->
+</div>
+
+
+<!-- Include SweetAlert library (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<!-- Include SweetAlert library (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+    // Function to generate coupon code
+    function generateCouponCode() {
+        const couponCodeInput = document.getElementById('couponCode');
+        // Example: Generate a random code (replace this with your actual logic)
+        const generatedCode = Math.random().toString(36).substring(2).toUpperCase();
+        couponCodeInput.value = generatedCode;
+    }
+
+    function submitForm(e) {
+        e.preventDefault();
+
+       
+        const form = document.getElementById('couponForm');
+        const formData = new FormData(form);
+
+        fetch('/admin/coupons/create-coupon', {
+            method: 'POST',
+            body: JSON.stringify(Object.fromEntries(formData)),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(async response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json(); // Await here inside the .then block
+            return data; // Assuming the backend returns JSON
+        })
+        .then(data => {
+    console.log('Response from server:', data); // Log the entire response
+    // Handle the response from the backend
+    console.log('Success:', data);
+if(data & data.message ==="Coupon created Successfully"){
+    Swal.fire({
+        title: 'Success!',
+        text: data.message,
+        icon: 'success',
+        confirmButtonText: 'OK',
+    });
+}
+   
+})
+        .catch(error => {
+            // Handle errors
+            console.error('Error:', error);
+
+            // Display SweetAlert error notification
+            Swal.fire({
+                title: 'Error!',
+                text: 'There was an error creating the coupon.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+            });
+        });
+    }
+</script>
+
+
+<%- include('../adminpartials/footer')%>

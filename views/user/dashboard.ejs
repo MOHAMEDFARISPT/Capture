@@ -2,13 +2,310 @@
 <html lang="en">
     <%- include('../userpartials/head')%>
     <%- include('../userpartials/naavhead')%>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-SmLEJ0p5FqOARcNo98s5oP2IvlK8TJLlvJYUxpJlJ/kxGlS99Cj3VSw64IUln0qD" crossorigin="anonymous">
-
-  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <!-- Add other head content -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
    
  
 
 <!-- molla/dashboard.html  22 Nov 2019 10:03:13 GMT -->
+
+<!--wallet style start-->
+<style>
+    * {
+  font-family: "Open Sans", sans-serif;
+  letter-spacing: 1px;
+}
+
+/* Add this to your stylesheet or in a style block within the HTML file */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.pagination a.active {
+    background-color: #4caf50;
+    color: white;
+}
+
+
+.mobile {
+  width: 60vw;
+  height: 640px;
+  align-self: center;
+  display: grid;
+  grid-template-rows: 10% auto;
+  color: #fdfdfd;
+  
+}
+
+.mobile > div {
+  padding: 1rem 2rem;
+}
+
+.headers {
+  background: #161626;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter {
+  display: flex;
+  padding: 0.5rem;
+  min-width: 80px;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #828393;
+  border-radius: 10px;
+}
+
+.calendar i,
+.select i,
+.total .label {
+  color: #fdfdfd;
+}
+
+.content {
+  background: #1b1c31;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  display: grid;
+}
+
+.total {
+  align-self: start;
+  justify-self: center;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.total > div:not(:first-child):not(:last-child) {
+  margin: 0.5rem;
+}
+
+.total .label,
+.card .label {
+  text-transform: uppercase;
+  font-weight: 100;
+  font-size: 0.8rem;
+}
+
+.total .value {
+  font-size: 1.8rem;
+}
+
+.total .balance {
+  background: #1f3a4a;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  color: #02ca8c;
+}
+
+.cards {
+  display: grid;
+  overflow-x: auto;
+  overflow-y: hidden;
+  grid-template-columns: repeat(auto-fill, minmax(auto, 0));
+  grid-gap: 10px;
+  align-self: start;
+}
+
+.card {
+  min-width: 130px;
+  height: 90px;
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.green {
+  background: #00cccc;
+}
+
+.magenta {
+  background: #7359ff;
+}
+
+.gray {
+  background: #7a7faf;
+}
+
+.card .balance {
+  display: flex;
+  align-self: start;
+  padding: 0.5rem 0;
+  width: 60px;
+  justify-content: space-around;
+  font-size: 0.8rem;
+}
+
+.card .label {
+  color: #adffff;
+  font-size: 0.7rem;
+}
+
+.card .item {
+  align-self: start;
+  padding: 0.5rem 0;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card .arrow-up {
+  transform: rotateZ(45deg);
+}
+
+.card .item .value {
+  font-size: 1.3rem;
+}
+
+::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px #21233f;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #676767;
+  border-radius: 10px;
+}
+
+.menu {
+    /* align-items: center; */
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  grid-template-columns: repeat(3, 1fr);
+  /* grid-gap: 2px; */
+}
+
+.menu li {
+  height: 40px;
+  position: relative;
+}
+
+.menu label,
+.menu input {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.7;
+}
+
+.menu input[type="radio"] {
+  opacity: 0.011;
+  z-index: 100;
+}
+
+.menu input[type="radio"]:checked + label {
+  border-bottom: 1px solid #2181ff;
+  opacity: 1;
+}
+
+.menu input[type="radio"]:checked + label i {
+  color: #2181ff;
+}
+
+.menu label {
+  cursor: pointer;
+  z-index: 90;
+  font-size: 0.7rem;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.menu label:hover {
+  opacity: 0.7;
+}
+
+.list {
+  background: #211c3a;
+  display: grid;
+  grid-gap: 5px;
+  padding: 5px 0;
+  height: 230px;
+  overflow-y: auto;
+}
+
+.list div[class^="item"] {
+  display: flex;
+  justify-content: space-between;
+  background: #21223f;
+  padding: 10px 0;
+}
+
+.list div[class^="section"] {
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+}
+
+.list .icon {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.list .icon.up {
+  color: #00ff00;
+  transform: rotateZ(30deg);
+}
+
+.list .icon.down {
+  color: #ff0000;
+  transform: rotateZ(-150deg);
+}
+
+.list .description {
+  color: #fffefe;
+}
+
+.list .signal {
+  font-weight: bold;
+}
+
+.list .signal.positive {
+  color: #00ff00;
+}
+
+.list .signal.negative {
+  color: #ff0000;
+}
+</style>
+
+
+
 <style>
     table {
         width: 100%;
@@ -33,6 +330,34 @@
     a {
         text-decoration: none;
         color: #0b1016;
+    }
+
+
+
+
+    
+</style>
+
+<style>
+    input#amountInput {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    button {
+        padding: 10px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
     }
 </style>
 
@@ -70,8 +395,18 @@
 	                		<div class="col-md-8 col-lg-9">
 	                			<div class="tab-content">
 								    <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
-                                        <p>Hello <span class="font-weight-normal text-dark"><%= data.firstname %></span> </p>
+                                        <p>Hello <span class="font-weight-normal " style="color: rgb(218, 93, 3);"> Welcome To Sneak Peak Hub</span> </p>
 								    	<br>
+                                        <div >
+                                            𝙎𝙩𝙚𝙥 𝙞𝙣𝙩𝙤 𝙖 𝙬𝙤𝙧𝙡𝙙 𝙬𝙝𝙚𝙧𝙚 𝙮𝙤𝙪𝙧 𝙛𝙤𝙤𝙩𝙬𝙚𝙖𝙧 𝙞𝙨 𝙣𝙤𝙩 𝙟𝙪𝙨𝙩 𝙖 𝙣𝙚𝙘𝙚𝙨𝙨𝙞𝙩𝙮 𝙗𝙪𝙩 𝙖 𝙨𝙮𝙢𝙗𝙤𝙡 𝙤𝙛 𝙮𝙤𝙪𝙧 𝙞𝙣𝙙𝙞𝙫𝙞𝙙𝙪𝙖𝙡𝙞𝙩𝙮. <span style="color: rgb(218, 93, 3);">𝙎𝙣𝙚𝙖𝙠 𝙋𝙚𝙖𝙠 𝙃𝙪𝙗 </span>𝙞𝙣𝙫𝙞𝙩𝙚𝙨 𝙮𝙤𝙪 𝙩𝙤 𝙙𝙞𝙨𝙘𝙤𝙫𝙚𝙧, 𝙚𝙭𝙥𝙧𝙚𝙨𝙨, 𝙖𝙣𝙙 𝙘𝙚𝙡𝙚𝙗𝙧𝙖𝙩𝙚 𝙮𝙤𝙪𝙧 𝙪𝙣𝙞𝙦𝙪𝙚 𝙨𝙩𝙮𝙡𝙚 𝙬𝙞𝙩𝙝 𝙚𝙫𝙚𝙧𝙮 𝙨𝙩𝙚𝙥 𝙮𝙤𝙪 𝙩𝙖𝙠𝙚. 𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙩𝙝𝙚 𝙛𝙪𝙩𝙪𝙧𝙚 𝙤𝙛 𝙛𝙖𝙨𝙝𝙞𝙤𝙣 𝙛𝙤𝙧 𝙮𝙤𝙪𝙧 𝙛𝙚𝙚𝙩!
+                                      </div>
+
+                                      
+
+
+
+
+                                        
 								    	
 
 
@@ -89,50 +424,74 @@
 <table>
     <thead>
         <tr>
-            <th>Product Image</th>
-            <th>Product Name</th>
-            <th>Order ID</th>
-            <th>Total</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Action</th>
-            <th>Cancel</th> <!-- New column for Cancel button -->
+            <th><strong>Product Image</strong></th>
+            <th><strong>Product Name</strong></th>
+            <th><strong>Order ID</strong></th>
+            <th><strong>Total</strong></th>
+            <th><strong>Date</strong></th>
+            <th><strong>Status</strong></th>
+            <th><strong>Action</strong></th>
+            <th><strong>Cancel</strong></th> <!-- New column for Cancel button -->
         </tr>
     </thead>
     <!-- Assuming you have included the necessary HTML structure -->
     <tbody>
         <% if (orders && orders.length > 0) { %>
-        <% orders.forEach(order => { %>
-          <% order.products.forEach(product => { %>
+            <% orders.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(order => { %>
+                <% order.products.forEach(product => { %>
+                    <tr>
+                        <td><strong><img src="<%= product.productId.productImage[0] %>" alt="Product Image" width="50" height="50"></strong></td>
+                        <td><strong><%= product.productId.productname %></strong></td>
+                        <td><strong><%= order.orderId %></strong></td>
+                        <td><strong>₹<%= product.total.toFixed(2) %></strong></td>
+                        <td><strong><%= formatDate(order.date) %></strong></td>
+                        <td><strong><%= product.cancelstatus %></strong></td>
+    
+                        <td>
+                            <strong><a href="/orderdetails/<%= order._id %>?productid=<%= product.productId._id %>" class="btn btn-link">View Details</a></strong>
+                        </td>
+                        <td>
+                            <% if (product.cancelstatus !== 'canceled') { %>
+                                <% if (product.cancelstatus === 'delivered') { %>
+                                    <!-- Show delivered message in green -->
+                                    <strong><span style="color: green;"> Delivered</span></strong>
+                                <% } else { %>
+                                    <div class="dropdown">
+                                        <button class="btn btn-danger dropdown-toggle" type="button" id="cancelDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Cancel Order
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="cancelDropdown">
+                                            <a class="dropdown-item" href="#" onclick="cancelOrder('<%= order._id %>', '<%= product.productId._id %>', 'Not Needed Now')">Not Needed Now</a>
+                                            <a class="dropdown-item" href="#" onclick="cancelOrder('<%= order._id %>', '<%= product.productId._id %>', 'Changed my mind')">Changed my mind</a>
+                                            <a class="dropdown-item" href="#" onclick="cancelOrder('<%= order._id %>', '<%= product.productId._id %>', 'Delivery Date Too Late')">Delivery Date Too Late</a>
+                                            <a class="dropdown-item" href="#" onclick="cancelOrder('<%= order._id %>', '<%= product.productId._id %>', 'Other')">Other</a>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            <% } else { %>
+                                <!-- Show canceled message in red -->
+                                <strong><span style="color: red;">Product Canceled</span></strong>
+                            <% } %>
+                        </td>
+    
+                    </tr>
+                <% }); %>
+            <% }); %>
+        <% } else { %>
             <tr>
-              <td><img src="<%= product.productId.productImage[0] %>" alt="Product Image" width="50" height="50"></td>
-              <td><%= product.productId.productname %></td>
-              <td><%= order.orderId %></td>
-              <td>$<%= product.total.toFixed(2) %></td>
-              <td><%= formatDate(order.date) %></td>
-              <td><%= product.cancelstatus %></td>
-              <td>
-                <a href="/orderdetails/<%= order._id %>?productid=<%= product.productId._id %>" class="btn btn-link">View Details</a>
-              </td>
-              <td>
-               
-                <!-- Inside your EJS template -->
-     <button class="btn btn-danger" onclick="cancelOrder('<%= order._id %>', '<%= product.productId._id %>')">Cancel Order</button>
-
-              
-                
-              </td>
+                <td colspan="8"><strong>No Orders Available</strong></td>
             </tr>
-          <% }); %>
-        <% }); %>
-        <% } else { %> 
-            <tr>
-                <td colspan="8">No Orders Available </td>
-            </tr>
-            <% } %>
-          
+        <% } %>
     </tbody>
+    
 </table>
+<div class="pagination">
+    <% if (totalPages > 1) { %>
+        <% for (let i = 1; i <= totalPages; i++) { %>
+            <a href="?page=<%= i %>#tab-orders" class="<%= i == page ? 'active' : '' %>"><%= i %></a>
+        <% } %>
+    <% } %>
+</div>
 
 
 
@@ -146,56 +505,368 @@
                                         
 								    	
 								    </div><!-- .End .tab-pane -->
+
+                                 
+
+<!--wallet starting-->
+<div class="tab-pane fade" id="tab-Wallet" role="tabpanel" aria-labelledby="tab-Wallet-link">
+   <div><h3>My Wallet</h3></div>
+
+    <body>
+        <div class="container">
+            <div class="mobile">
+                <div class="headers">
+                    <div class="navigation">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                    <div class="">
+                        <div class="">
+                           <img src="/images/purse.png" alt="" style="width:70px ;height :50px">
+                        </div>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="total">
+                        <div class="label" style="font-size: 20px;">Total balance</div>
+
+                        <div class="value"></div>
+                        <div class="balance">₹<%=wallet.balance%></div>
+                    </div>
+                    
+                      +  Add Amount To Your Wallet
+                     <div>
+    <input type="text" id="amountInput" placeholder="Enter Your Amount">
+    <button onclick="addAmountToWallet()">Add to Wallet</button>
+</div>
+                    
+                    <ul class="menu" style="align-items: center;">
+                        <li >
+                            <input type="radio" id="tab1" name="amount" checked="checked" />
+                            <label for="tab1" style="color: white; font-size: 16px;">
+                                <i class="fas fa-arrow-down"></i>
+                                Transactions
+                            </label>
+                            
+    
+                        </li>
+                       
+                    </ul>
+                    <div class="list">
+                        <% wallet.transactions.reverse().forEach(transaction => { %>
+                            <div class="item1">
+                                <div class="section1">
+                                    <div class="icon <%= transaction.type === 'credit' ? 'up' : 'down' %>">
+                                        <i class="fas <%= transaction.type === 'credit' ? 'fa-arrow-down' : 'fa-arrow-up' %>"></i>
+                                    </div>
+                                    <div class="text">
+                                        <div class="title" style="font-size: 1.5em;"><%= transaction.ddescription %></div>
+                                        <div class="description" style="font-size: 1.5em;">
+                                            <%= transaction.createdAt.toLocaleDateString('en-US', {  month: '2-digit',day: '2-digit', year: '2-digit' }) %> <%= transaction.createdAt.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' }) %>
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                </div>
+                                <div class="section2">
+                                    <div class="signal <%= transaction.type === 'credit' ? 'positive' : 'negative' %>" style="font-size: 1.5em;">
+                                        <%= transaction.type === 'credit' ? '+' : '-' %>
+                                    </div>
+                                    <div class="value" style="font-size: 1.5em;">₹<%= transaction.amount.toFixed(2) %></div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                    
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </body>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
     
 
 								    	
+                                    <div class="tab-pane fade" id="tab-EditAccount" role="tabpanel" aria-labelledby="tab-EditAccount-link">
+                                        <form action="/Edit-accounts/<%= data._id %>" method="post" id="editAccountForm" >
+			                				<div class="row">
+			                					<div class="col-sm-6">
+			                						<label>First Name *</label>
+			                						<input type="text" class="form-control" id="register-fname" name="firstname" placeholder="" value="<%= data.firstname%>" onkeyup="validateFirstname()"  >
+                                                    <span id="firstnameError" class="Error text-danger"></span>
+                                                </div><!-- End .col-sm-6 -->
+
+			                					<div class="col-sm-6">
+                                                    <label>lat Name *</label>
+
+			                						<input type="text" class="form-control"  id="register-lname" name="lastname" placeholder=""  value="<%= data.lastname %>" onkeyup="validateLastname()" >
+                                                <span id="lastnameError" class="Error text-danger"></span>
+			                					</div><!-- End .col-sm-6 -->
+			                				</div><!-- End .row -->
+
+		            						<!-- <label>Display Name *</label>
+		            						<input type="text" class="form-control" required>
+		            						<small class="form-text">This will be how your name will be displayed in the account section and in reviews</small> -->
+                                             <label>Email *</label>
+		                					<input type="email" class="form-control"  style="width: 49%;" id="register-email" name="email" placeholder="" value="<%= data.email %>" onkeyup="validateEmail()">
+                                             <span   text-danger id="emailError"    class="Error  text-danger" ></span>
+                                            
+                                             <label>Contact *</label>
+                                            <input type="text" class="form-control" style="width: 49%;" id="register-contact" name="contact" placeholder="" value="<%= data.contact %>" onkeyup="validateContact()">
+                                            <span id="contactError" class="Error text-danger"></span>
+
+		            						<!-- <label>Current password (leave blank to leave unchanged)</label>
+		            						<input type="password" class="form-control">
+
+		            						<label>New password (leave blank to leave unchanged)</label>
+		            						<input type="password" class="form-control">
+
+		            						<label>Confirm new password</label>
+		            						<input type="password" class="form-control mb-2"> -->
+
+		                					<button type="submit" class="btn btn-outline-primary-2" onclick="return validForm()">
+			                					<span>SAVE CHANGES</span>
+			            						<i class="icon-long-arrow-right"></i>
+			                				</button>
+                                            <span id="submitError" class="Error text-danger"></span>
+			                			</form>
+
+                                    </div>
+
+                                    <!--Add Address starting-->
 
                                        
+      <div class="tab-pane fade" id="tab-AddAddress" role="tabpanel" aria-labelledby="tab-AddAddress-link">
+        <form   action="/adaddress" method="post" id="addAddressForm">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label>Full Name *</label>
+                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Enter Your Full Fullname"  >
+                    <span id="firstnameError" class="Error text-danger"></span>
+                </div><!-- End .col-sm-6 -->
+
+                <div class="col-sm-6">
+                    <label>pincode *</label>
+
+                    <input type="text" class="form-control"  id="pincode" name="pincode" placeholder="Enter Your pincode"  >
+                <span id="pincodeError" class="Error text-danger"></span>
+                </div><!-- End .col-sm-6 -->
+            </div><!-- End .row -->
+
+             
+            
+             
+
+            <label>Contact *</label>
+            <input type="text" class="form-control"  style="width: 70%;" id="contact" name="contact" placeholder="Enter Your Contact" >
+             <span   text-danger id="contactError"    class="Error  text-danger" ></span>
+
+
+
+             <label>State *</label>
+            <input type="text" class="form-control"  style="width: 70%;" id="state" name="state" placeholder="Enter Your State" >
+             <span   text-danger id="stateError"    class="Error  text-danger" ></span>
+
+
+
+             <!-- <label>Address *</label>
+             <textarea id="address" name="address" style="width: 100%; padding: 8px; box-sizing: border-box;" rows="4" placeholder="Enter Your Address"></textarea>
+             <span   text-danger id="addressError"    class="Error  text-danger" ></span> -->
+
+             <label>Address *</label>
+             <input type="text" class="form-control"  style="width: 70%;" id="address" name="address" placeholder="Enter Your Address" >
+              <span   text-danger id="stateError"    class="Error  text-danger" ></span>
+
+             <label>Locality *</label>
+             <input type="text" class="form-control"  style="width: 70%;" id="locality" name="locality" placeholder="Enter Your Locality" >
+              <span   text-danger id="localityError"    class="Error  text-danger" ></span>
+
+
+              <label>District *</label>
+             <input type="text" class="form-control"  style="width: 70%;" id="district" name="district" placeholder="Enter Your District" >
+              <span   text-danger id="districtError"    class="Error  text-danger" ></span>
+
+
+
+
+            <!-- <label>Current password (leave blank to leave unchanged)</label>
+            <input type="password" class="form-control">
+
+            <label>New password (leave blank to leave unchanged)</label>
+            <input type="password" class="form-control">
+
+            <label>Confirm new password</label>
+            <input type="password" class="form-control mb-2"> -->
+
+            <button type="submit" class="btn btn-outline-primary-2" >
+                <span>SAVE</span>
+                <i class="icon-long-arrow-right"></i>
+            </button>
+            <span id="submitError" class="Error text-danger"></span>
+        </form>
+      </div>
+       <!--Add Address Ending-->
+
+       <!--address starting-->
+       <div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
+        <% if(address !== null && address !== undefined && address.addresses.length > 0) { %>
+            <div class="row">
+                <% address.addresses.forEach((item) => { %>
+                    <div class="col-lg-12" style="height: 500px;">
+                        <div class="card card-dashboard" style="height: 400px;">
+                            <div class="card-body">
+                                <p><%= item.fullname %></p>
+                                <p><%= item.contact %></p>
+                                <p><%= item.pincode %></p>
+                                <p><%= item.state %></p>
+                                <p><%= item.address %></p>
+                                <p><%= item.locality %></p>
+                                <p><%= item.city %></p>
+                                <!-- Other content -->
+                                
+                                <!-- Edit button -->
+                                <a href="/edit-address/<%= item._id %>" class="btn btn-primary">
+                                    Edit <i class="icon-edit"></i>
+                                </a>
     
+                                <!-- Delete button -->
+                               <button class="btn btn-danger ml-2" onclick="deleteAddress('<%= item._id %>')"> 
+                                    Delete <i class="fas fa-trash-alt"></i></button>
+                              
+                            </div><!-- End .card-body -->
+                        </div><!-- End .card-dashboard -->
+                    </div><!-- End .col-lg-6 -->
+                <% }); %>
+            </div>
+        <% } else { %>
+            <div class="col-lg-12" style="height: 30%;">
+                <div class="card card-dashboard">
+                    <div class="card-body">
+                        <p>YOU DON'T HAVE ANY ADDRESS</p>
+                        <a href="/add-address" class="btn btn-primary">Add Address</a>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
 
 
-                                    <div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
-                                        <% if(address !== null && address !== undefined && address.addresses.length > 0) { %>
-                                            <div class="row">
-                                                <% address.addresses.forEach((item) => { %>
-                                                    <div class="col-lg-12" style="height: 30%;">
-                                                        <div class="card card-dashboard">
-                                                            <div class="card-body">
-                                                                <p><%= item.fullname %></p>
-                                                                <p><%= item.contact %></p>
-                                                                <p><%= item.pincode %></p>
-                                                                <p><%= item.state %></p>
-                                                                <p><%= item.address %></p>
-                                                                <p><%= item.locality %></p>
-                                                                <p><%= item.city %></p>
-                                                                <!-- Other content -->
-                                                                
-                                                                <!-- Edit button -->
-                                                                <a href="/edit-address/<%= item._id %>" class="btn btn-primary">
-                                                                    Edit <i class="icon-edit"></i>
-                                                                </a>
+
+
+       <!--address ending-->
+
+
+       <!--change password starting-->
+       <div class="tab-pane fade" id="tab-Security" role="tabpanel" aria-labelledby="tab-Security-link">
+
+
+        <form  action="/change-password" method="post" id="change-passwordForm">
+            <div class="row">
+                
+            </div><!-- End .row -->
+
+             <label>Current Password *</label>
+             <input type="text" class="form-control"  style="width: 70%;" id="currentpassword" name="currentpassword" placeholder="Enter Your Current Password" >
+              <span   text-danger id="currentError"    class="Error  text-danger" ></span>
+
+             <label>New Password *</label>
+             <input type="text" class="form-control"  style="width: 70%;" id="newpassword" name="newpassword" placeholder="Enter Your New Password" >
+              <span   text-danger id="newError"    class="Error  text-danger" ></span>
+
+
+              <label>Confirm Password *</label>
+             <input type="text" class="form-control"  style="width: 70%;" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" >
+              <span   text-danger id="confirmError"    class="Error  text-danger" ></span>
+
+
+
+
+         
+
+            <button type="submit" class="btn btn-outline-primary-2" >
+                <span>SAVE</span>
+                <i class="icon-long-arrow-right"></i>
+            </button>
+            <span id="submitError" class="Error text-danger"></span>
+        </form>
+
+       </div>
+
+       <!--------change password ending----->
+
+       <!--profile starting-->
+
+       <div class="tab-pane fade"  class="container profile-page"  style="width: 200vh; height: 200vh;" id="tab-Profile" role="tabpanel" aria-labelledby="tab-Profile-link" >
+        <div class="container profile-page" style="width: auto;">
+            <div class="row">
+                <div class="col-xl-6 col-lg-7 col-md-12">
+                    <div class="card profile-header">
+                        <div class="body">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-12">
+                                    <div class="profile-image float-md-right"> <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt=""> </div>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-12">
+                                    <h4 class="m-t-0 m-b-0"><strong><%= data.firstname%> <%= data.lastname %></h4>
+                                    <span class="job_post"><%= data.email%></span>
+                                    <p> <%= data.contact %></p>
+                                    <% if (address !== null && address !== undefined && address.addresses.length > 0) { %>
+                                        <div>
+                                            <p>address: </p>
+                                            <p>fullname:<%= address.addresses[0].fullname %></p>
+                                            <p>contact:<%= address.addresses[0].contact %></p>
+                                            <p>pincode:<%= address.addresses[0].pincode %></p>
+                                            <p>state:<%= address.addresses[0].state %></p>
+                                            <p>address:<%= address.addresses[0].address %></p>
+                                            <p>locality:<%= address.addresses[0].locality %></p>
+                                            <!-- Add other details you want to display from the first address -->
+                                        </div>
+                                    <% } else { %>
+                                        <p>No addresses available.</p>
+                                    <% } %>
                                     
-                                                                <!-- Delete button -->
-                                                               <button class="btn btn-danger ml-2" onclick="deleteAddress('<%= item._id %>')"> 
-                                                                    Delete <i class="fas fa-trash-alt"></i></button>
-                                                              
-                                                            </div><!-- End .card-body -->
-                                                        </div><!-- End .card-dashboard -->
-                                                    </div><!-- End .col-lg-6 -->
-                                                <% }); %>
-                                            </div>
-                                        <% } else { %>
-                                            <div class="col-lg-12" style="height: 30%;">
-                                                <div class="card card-dashboard">
-                                                    <div class="card-body">
-                                                        <p>YOU DON'T HAVE ANY ADDRESS</p>
-                                                        <a href="/add-address" class="btn btn-primary">Add Address</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <% } %>
-                                    </div>
+                                   <!-- Edit Button Section -->
+                                 
+                                
+    <!-- End Edit Button Section -->
+                                </div>                
+                            </div>
+                        </div>                    
+                    </div>
+                </div>
+        </div>
+
+
+       <!--profile ending-->
+
+
+
+
+
+
+
+                                   
                                     
                                     
                                     
@@ -589,23 +1260,25 @@
     <script src="assets/js/owl.carousel.min.js"></script>
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
+    <script src="/signupvalidate.js"></script>
 
 
 
 
 
     <!-- Inside your script tag or in a separate JavaScript file -->
+  <!-- Include SweetAlert CDN in your HTML -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 <script>
-    async function cancelOrder(orderId, productId) {
-        
+    async function cancelOrder(orderId, productId, reason) {
         try {
-            // Make a fetch request to your backend endpoint
             const response = await fetch('/cancel-order', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ orderId, productId }),
+                body: JSON.stringify({ orderId, productId, reason }),
             });
 
             if (!response.ok) {
@@ -613,8 +1286,22 @@
             }
 
             const data = await response.json();
-            window.location.reload()
-            
+
+            // Display SweetAlert on success
+            if (response.status === 200) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Cancellation Request Accepted!',
+                    showConfirmButton: false, // Show the confirm button
+                    timer: 1500, // Set the timer to auto-close after 1.5 seconds
+                }).then((result) => {
+                    window.location.reload();
+                        // If the user clicks OK, reload the page
+                     
+                   
+                });
+            }
+
             // Handle the response from the backend if needed
             console.log('Response from backend:', data);
 
@@ -629,11 +1316,12 @@
 
 
 
+
 <script>
     function deleteAddress(addressId) {
         // Confirm with the user before proceeding with the deletion
      
-          alert(addressId)
+       
             fetch(`/delete-address/${addressId}`, {
                 method: 'DELETE',
                 headers: {
@@ -663,6 +1351,227 @@
         }
 
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', function (event) {
+            // Reset errors
+            clearErrors();
+
+            // Validate each input field
+            const fullname = form.querySelector('#fullname');
+            const contact = form.querySelector('#contact');
+            const pincode = form.querySelector('#pincode');
+            const state = form.querySelector('#state');
+            const address = form.querySelector('#address');
+            const locality = form.querySelector('#locality');
+            const district = form.querySelector('#district');
+
+            if (!validateInput(fullname, 'Full Name cannot be empty')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validateInput(contact, 'Phone Number cannot be empty')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validateInput(pincode, 'Pincode cannot be empty')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validateInput(locality, 'Locality cannot be empty')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validateInput(district, 'District cannot be empty')) {
+                event.preventDefault();
+                return;
+            }
+
+            // Additional validation logic can be added based on your requirements
+        });
+
+        function validateInput(input, errorMessage) {
+            if (!input.value.trim()) {
+                displayError(input, errorMessage);
+                return false;
+            }
+            return true;
+        }
+
+        function displayError(input, message) {
+            const errorSpan = document.querySelector(`#${input.id}Error`);
+            errorSpan.textContent = message;
+        }
+
+        function clearErrors() {
+            const errorSpans = document.querySelectorAll('[id$="Error"]');
+            errorSpans.forEach(span => span.textContent = '');
+        }
+    });
+</script>
+
+
+<script>
+    document.getElementById("addAddressForm").addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Perform form validation logic here (replace this with your actual validation)
+        var isValid = validateForm();
+
+        if (isValid) {
+            // Simulate form submission success
+            Swal.fire({
+                icon: 'success',
+                title: 'Address Added Successfully!',
+                showConfirmButton: false,
+                timer: 3000  // Set the timer to 3000 milliseconds (3 seconds)
+            }).then(() => {
+                // Submit the form after the success message is displayed
+                event.target.submit();
+            });
+        }
+    });
+
+</script>
+
+<script>
+    function validForm() {
+        // Implement your form validation logic here
+        // Return true if validation passes, false otherwise
+
+        // Example validation (replace this with your actual validation)
+        var isValid = validateForm();
+
+        if (isValid) {
+            // Simulate form submission success
+            Swal.fire({
+                icon: 'success',
+                title: 'Changes Saved Successfully!',
+                showConfirmButton: false,
+                timer: 3000  // Set the timer to 3000 milliseconds (3 seconds)
+            }).then(() => {
+                // Submit the form after the success message is displayed
+                document.getElementById("editAccountForm").submit();
+            });
+        }
+
+        return false; // Prevents the form from submitting if validation fails
+    }
+
+</script>
+
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    function addAmountToWallet() {
+        const amountInput = document.getElementById('amountInput');
+        const amount = parseFloat(amountInput.value);
+
+        if (isNaN(amount) || amount <= 0) {
+            alert('Please enter a valid amount.');
+            return;
+        }
+
+        // Fetch to backend
+        fetch('/addamounttowallet', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ amount: amount }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Handle the response from your backend
+            console.log('Backend response:', data);
+
+            // Assuming data contains the necessary Razorpay details
+            const options = {
+                key: data.key_id,
+                amount: data.order.amount,
+                currency: data.order.currency,
+                order_id: data.order.id,
+                name: 'Your Company Name',
+                description: 'Adding amount to wallet',
+                handler: async function (response) {
+
+
+                    // Handle the success response from Razorpay
+                    console.log('Razorpay success response:', response);
+                    const datas = {
+                        amount:data.order.amount,
+                        orderCreationId: data.order.id,
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpayOrderId: response.razorpay_order_id,
+                razorpaySignature: response.razorpay_signature,
+            };
+
+
+                    const verifyResponse = await fetch(`/rzrpay-verify`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            data:datas
+                        }),
+                    });
+
+                    // Handle verification response
+                    const verificationData = await verifyResponse.json();
+                    console.log('Verification response:', verificationData);
+               
+               if(verifyResponse.ok){
+                Swal.fire({
+                            icon: 'success',
+                            title: 'Payment Successful',
+                            text: 'Amount added to wallet successfully!',
+                        }).then(() => {
+                            window.location.reload();
+                        });
+               }else{
+                  // Handle error case
+                            Swal.fire({
+                            icon: 'error',
+                            title: 'Payment Error',
+                            text: 'Failed to add amount to wallet.',
+                        });
+               }
+               
+                },
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+        })
+        .catch(error => {
+            console.error('Error adding amount to wallet:', error);
+        });
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
 

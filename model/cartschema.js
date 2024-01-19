@@ -6,6 +6,7 @@ const cartSchema = new Schema({
         type: Types.ObjectId,
         ref: 'users'
     },
+   
     products: [{
         product: {
             type: Types.ObjectId,
@@ -17,12 +18,26 @@ const cartSchema = new Schema({
         isSelected: {
             type: Boolean,
             default:false
-        }
+        },
+        
 
     }],
     totalamount: {
         type: Number
     },
+    couponDetails: {
+        appliedCoupon: {
+            type: String,
+            default: null
+        },
+        discountedAmount: Number,
+    },
+    
+   
+    originalAmount:{
+        type:Number,
+        default:0
+    }
     
 }, { timestamps: true });
 
