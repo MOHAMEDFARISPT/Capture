@@ -4,7 +4,43 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 
+<style>
+    /* Your stylesheet or add this to the <style> tag in your HTML */
 
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-boxes {
+    display: flex;
+}
+
+.pagination-box {
+    margin: 0 5px;
+}
+
+.pagination-box a {
+    display: inline-block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.pagination-box a:hover {
+    background-color: #f5f5f5;
+}
+
+.pagination-box.active a {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+</style>
 
 
 
@@ -96,6 +132,17 @@
 
         </table>
     </div>
+    <!-- Pagination -->
+<div class="pagination-container">
+    <div class="pagination-boxes">
+        <% for (let page = 1; page <= totalPages; page++) { %>
+            <div class="pagination-box <%= currentPage === page ? 'active' : '' %>">
+                <a href="?page=<%= page %>"><%= page %></a>
+            </div>
+        <% } %>
+    </div>
+</div>
+    
     
     <!-- Container-fluid Ends-->
 

@@ -103,6 +103,11 @@ const orderSchema = new mongoose.Schema({
         default: 'pending',
         enum:['pending','processing','shipped','delivered','canceled','returned','failed']
     },
+    returnReason:{
+        type:String,
+        default:null
+        
+    },
     deliverdDate: {
         type: Date,
         default: '',

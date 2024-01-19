@@ -295,14 +295,82 @@ const cancelOrder = async (req, res) => {
       await orderProduct.save();
 
       console.log('Product canceled');
-      res.status(200).json({ message: 'Product canceled!!' });
+      res.status(200).json({ message: 'Product canceled!!', orderProduct });
+
   } catch (error) {
       console.error('Error cancelling order:', error);
       res.status(500).json({ message: 'Internal server error' });
   }
 };
 
-module.exports = { cancelOrder };
+
+
+
+
+const returnproduct = async (req, res, next) => {
+  try {
+    console.log("req.body", req.body);
+    const orderId = req.body.orderId;
+    const productId = req.body.productId;
+    const reason = req.body.reason;
+    const userId= req.session.userdata._id;
+    console.log("orderId", orderId, "productId", productId, "reason", reason);
+
+    // Find the order
+    const findorder = await ordermodel.findById(orderId).populate('products.productId');
+    console.log("findorder",findorder)
+
+    if (!findorder) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    // Find the product
+    const productreturned = await productmodel.findById(productId);
+
+    if (!productreturned) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    // Update quantity and reason
+    productreturned.quantity += findorder.products[0].quantity;
+    findorder.returnReason = reason;
+
+    const findwallet = await Wallet.findOne({ user: findorder.userId });
+    console.log("findwallet",findwallet)
+    if (!findwallet) {
+      return res.status(404).json({ message: 'Wallet not found for the user' });
+    }
+    findwallet.transactions.push({
+      type:'credit' ,
+      orderId: findorder._id,
+      amount: findorder.totalAmount,
+      currency: 'INR',// Add the currency as needed
+      description:'Product Returned From sneakPeakhub' 
+    });
+    // Assuming this is within a function or a block where findorder is accessible
+findorder.products[0].cancelstatus = 'returned';
+
+     // Update the balance
+     findwallet.balance += findorder.totalAmount;
+
+     // Save changes to the wallet
+     await findwallet.save();
+
+
+    // Save changes
+    await findorder.save();
+    await productreturned.save();
+    
+    console.log("findorder",findorder)
+    console.log("productreturned",productreturned)
+
+    res.status(200).json({ message: 'Product returned successfully' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 
 
 
@@ -426,7 +494,9 @@ module.exports={
     updateAddress, 
     myorderdetailes,
     cancelOrder,
+    returnproduct,
     logout,
+
 
   
 }

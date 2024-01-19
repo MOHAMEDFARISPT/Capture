@@ -4,7 +4,31 @@
 <%- include('../adminpartials/header')%>
 
 <%- include('../adminpartials/slidebar')%>
+<style>
+    .pagination-container {
+  display: flex;
+  justify-content: center;
+}
 
+.pagination {
+  display: flex;
+}
+
+.pagination a {
+  padding: 8px;
+  margin: 0 5px;
+  text-decoration: none;
+  color: #000;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.pagination a.active {
+  background-color: #046707;
+  color: white;
+}
+
+</style>
 <div class="page-body">
     <!-- ... (existing code) ... -->
 
@@ -75,13 +99,46 @@
                                     
                                     
                                 </table>
+                               
+                                  
                             </div>
+                           
                         </div>
+                        
                     </div>
+                    
                 </div>
+                
             </div>
+           
         </div>
+       
     </div>
+    <div class="pagination-container">
+        <div class="pagination">
+          <% for (let page = 1; page <= totalPages; page++) { %>
+            <a href="?page=<%= page %>" class="<%= currentPage === page ? 'active' : '' %>"><%= page %></a>
+          <% } %>
+        </div>
+      </div>
+      
+      
+    <!-- Add pagination controls above your order list -->
+   
+  
+  <!-- Your order list rendering logic here -->
+  <% if (orders !== null && orders !== undefined && orders.length > 0) { %>
+    <% orders.forEach(orderItem => { %>
+      <% orderItem.products.forEach(product => { %>
+        <!-- Render your order details here -->
+      <% }); %>
+    <% }); %>
+  <% } else { %>
+    <tr>
+      <td colspan="8"><strong>No orders available</strong></td>
+    </tr>
+  <% } %>
+  
 
     <!-- Container-fluid Ends-->
 

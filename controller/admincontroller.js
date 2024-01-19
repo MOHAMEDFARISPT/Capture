@@ -24,8 +24,17 @@ const adminlogin = async function(req,res){
     }
 }
 
-const home=(req,res)=>{
-    res.render("admin/home")
+const home=async(req,res)=>{
+    const order=await ordermodel.find()
+  
+    orderlength=order.length
+  
+    const product=await productmodel.find()
+    productlength=product.length
+    const users=await usermodel.find()
+    userslength=users.length
+    
+    res.render("admin/home",{orderlength,productlength,userslength})
 }
 
 const loginpost = async (req, res) => {
@@ -116,18 +125,34 @@ usermodel.find({})
 
 
 
-const listorders=async(req,res)=>{
+const listorders = async (req, res) => {
+  try {
+    const pageSize = 10; // Set the number of orders to display per page
+    const page = parseInt(req.query.page, 10) || 1;
+
+    const totalOrders = await ordermodel.countDocuments();
+    const totalPages = Math.ceil(totalOrders / pageSize);
 
     const orders = await ordermodel.find({})
-  .populate('products.productId')
-  .populate('userId');
-//   .populate('userId');  // Assuming userId references the 'users' model
+      .populate('products.productId')
+      .populate('userId')
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
 
-    console.log("orderddddddddd"+orders);
-res.render('admin/orderlist',{orders})
+    res.render('admin/orderlist', {
+      orders,
+      totalPages,
+      currentPage: page,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
 
 
-}
+
+
 
 
 const orderdetailes=async(req,res)=>{
@@ -192,15 +217,27 @@ const changeorderstatus = async (req, res,next) => {
 
 
 
+
+const ITEMS_PER_PAGE = 10; // Adjust the number of items per page as needed
+
 const coupons = async (req, res) => {
     try {
-        // Fetch all coupons from the database
-        const coupon = await couponmodel.find({});
+        const page = parseInt(req.query.page) || 1;
 
-        // Render the view and pass the coupon data to it
-        res.render("admin/couponlist", { coupon });
+        const totalItems = await couponmodel.countDocuments({});
+        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
+        const coupon = await couponmodel
+            .find({})
+            .skip((page - 1) * ITEMS_PER_PAGE)
+            .limit(ITEMS_PER_PAGE);
+
+        res.render("admin/couponlist", {
+            coupon,
+            currentPage: page,
+            totalPages,
+        });
     } catch (error) {
-        // Handle errors and respond with an error message
         console.error(error);
         res.status(500).json({
             message: 'Internal server error',

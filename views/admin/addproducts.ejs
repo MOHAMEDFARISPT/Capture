@@ -149,10 +149,7 @@
         }
 
         // Check if the file name contains spaces
-        if (fileInput.value.trim().indexOf(' ') !== -1) {
-            productImageError.innerText = "File name cannot contain spaces.";
-            return false;
-        }
+       
 
         // Check if the file type is not allowed
         var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.webp)$/i;

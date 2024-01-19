@@ -8,16 +8,7 @@
                 <div class="main-tiles border-5 border-0  card-hover card o-hidden">
                     <div class="custome-1-bg b-r-4 card-body">
                         <div class="media align-items-center static-top-widget">
-                            <div class="media-body p-0">
-                                <span class="m-0">Total Revenue</span>
-                                <h4 class="mb-0 counter">$6659
-                                    <span class="badge badge-light-primary grow">
-                                        <i data-feather="trending-up"></i>8.5%</span>
-                                </h4>
-                            </div>
-                            <div class="align-self-center text-center">
-                                <i class="ri-database-2-line"></i>
-                            </div>
+                           <img src="/images/WhatsApp Image 2024-01-19 at 16.56.11.jpeg" alt="" width="200px" height="100px">
                         </div>
                     </div>
                 </div>
@@ -29,7 +20,7 @@
                         <div class="media static-top-widget">
                             <div class="media-body p-0">
                                 <span class="m-0">Total Orders</span>
-                                <h4 class="mb-0 counter">9856
+                                <h4 class="mb-0 counter"><%= orderlength %>
                                     <span class="badge badge-light-danger grow">
                                         <i data-feather="trending-down"></i>8.5%</span>
                                 </h4>
@@ -48,7 +39,7 @@
                         <div class="media static-top-widget">
                             <div class="media-body p-0">
                                 <span class="m-0">Total Products</span>
-                                <h4 class="mb-0 counter">893
+                                <h4 class="mb-0 counter"><%= productlength %>
                                     <a href="add-new-product.html" class="badge badge-light-secondary grow">
                                         ADD NEW</a>
                                 </h4>
@@ -68,7 +59,7 @@
                         <div class="media static-top-widget">
                             <div class="media-body p-0">
                                 <span class="m-0">Total Customers</span>
-                                <h4 class="mb-0 counter">4.6k
+                                <h4 class="mb-0 counter"><%= userslength %>
                                     <span class="badge badge-light-success grow">
                                         <i data-feather="trending-down"></i>8.5%</span>
                                 </h4>
@@ -87,7 +78,7 @@
 
 
             <!-- Earning chart star-->
-            <div class="col-xl-6">
+            <!-- <div class="col-xl-6">
                 <div class="card o-hidden card-hover">
                     <div class="card-header border-0 pb-1">
                         <div class="card-header-title">
@@ -95,15 +86,43 @@
                         </div>
                     </div>
                     <div class="card-body p-0">
-                        <div id="report-chart"></div>
+                        <canvas id="report-chart"></canvas>
                     </div>
                 </div>
-            </div>
-            <!-- Earning chart  end-->
+            </div> -->
+            
+            <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+               
+                const revenueData = {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Revenue',
+                        data: [1000, 1500, 1200, 1800, 2000, 2500],
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                };
+            
+               
+                const ctx = document.getElementById('report-chart').getContext('2d');
+            
+               
+                const myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: revenueData,
+                    options: {
+                        
+                    }
+                });
+            </script> -->
+            
+           
 
 
             <!-- Best Selling Product Start -->
-            <div class="col-xl-6 col-md-12">
+            <!-- <div class="col-xl-6 col-md-12">
                 <div class="card o-hidden card-hover">
                     <div class="card-header card-header-top card-header--2 px-0 pt-0">
                         <div class="card-header-title">
@@ -266,12 +285,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- Best Selling Product End -->
 
 
             <!-- Recent orders start-->
-            <div class="col-xl-6">
+            <!-- <div class="col-xl-6">
                 <div class="card o-hidden card-hover">
                     <div class="card-header card-header-top card-header--2 px-0 pt-0">
                         <div class="card-header-title">
@@ -462,11 +481,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- Recent orders end-->
 
             <!-- Earning chart star-->
-            <div class="col-xl-6">
+            <!-- <div class="col-xl-6">
                 <div class="card o-hidden card-hover">
                     <div class="card-header border-0 mb-0">
                         <div class="card-header-title">
@@ -477,12 +496,12 @@
                         <div id="bar-chart-earning"></div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- Earning chart end-->
 
 
             <!-- Transactions start-->
-            <div class="col-xxl-4 col-md-6">
+            <!-- <div class="col-xxl-4 col-md-6">
                 <div class="card o-hidden card-hover">
                     <div class="card-header border-0">
                         <div class="card-header-title">
@@ -566,11 +585,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- Transactions end-->
 
             <!-- visitors chart start-->
-            <div class="col-xxl-4 col-md-6">
+            <!-- <div class="col-xxl-4 col-md-6">
                 <div class="h-100">
                     <div class="card o-hidden card-hover">
                         <div class="card-header border-0">
@@ -587,12 +606,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- visitors chart end-->
 
 
             <!-- To Do List start-->
-            <div class="col-xxl-4 col-md-6">
+            <!-- <div class="col-xxl-4 col-md-6">
                 <div class="card o-hidden card-hover">
                     <div class="card-header border-0">
                         <div class="card-header-title">
@@ -658,7 +677,7 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- To Do List end-->
 
 

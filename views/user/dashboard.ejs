@@ -455,6 +455,9 @@
                                 <% if (product.cancelstatus === 'delivered') { %>
                                     <!-- Show delivered message in green -->
                                     <strong><span style="color: green;"> Delivered</span></strong>
+                                <% } else if (product.cancelstatus === 'returned') { %>
+                                    <!-- Show returned message in a different color or style -->
+                                    <strong><span style="color: orange;"> Returned</span></strong>
                                 <% } else { %>
                                     <div class="dropdown">
                                         <button class="btn btn-danger dropdown-toggle" type="button" id="cancelDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -473,6 +476,7 @@
                                 <strong><span style="color: red;">Product Canceled</span></strong>
                             <% } %>
                         </td>
+                        
     
                     </tr>
                 <% }); %>
@@ -1286,9 +1290,12 @@
             }
 
             const data = await response.json();
+            console.log("data",data)
+            console.log("response",response.cancelstatus)
 
             // Display SweetAlert on success
             if (response.status === 200) {
+                if(response)
                 Swal.fire({
                     icon: 'success',
                     title: 'Cancellation Request Accepted!',

@@ -30,7 +30,7 @@ const addwalletamount=async(req,res)=>{
     const userId=req.session.userdata._id
 
     const options = {
-        amount: amount *100, 
+        amount: amount , 
         currency: 'INR',
         receipt: 'order_receipt_123',
         payment_capture: 1,

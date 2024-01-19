@@ -6,7 +6,7 @@ const categorymodel=require('../model/categoryschema')
 
 
 
-const ITEMS_PER_PAGE = 10; // Number of items to display per page
+const ITEMS_PER_PAGE = 5; // Number of items to display per page
 
 const productlist = async (req, res) => {
   const page = +req.query.page || 1; // Get the requested page from query parameters

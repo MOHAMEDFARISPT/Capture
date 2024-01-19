@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Add this to your HTML file to include SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     
 
 
@@ -251,9 +254,14 @@ small{
                 <% order.products.forEach(product => { %>
                     <div class="col my-auto border-line">
                         <% if (product.cancelstatus === 'delivered') { %>
-                            <h5>Product Delivered</h5>
-                            <% } else if (product.cancelstatus === 'canceled'){ %>
-                                <h5 style="color: red;">Product cancelled</h5>
+                            <% if (order.returnReason) { %>
+                                <h5>Return Accepted due to : <%= order.returnReason %></h5>
+                            <% } else { %>
+                                <h5>Product Delivered</h5>
+                                <button onclick="showReturnReasonDropdown('<%= order._id %>', '<%= product.productId._id %>')" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Return Product</button>
+                            <% } %>
+                        <% } else if (product.cancelstatus === 'canceled'){ %>
+                            <h5 style="color: red;">Product Cancelled</h5>
                         <% } else { %>
                             <div onclick="cancelOrder('<%= order._id %>', '<%= product.productId._id %>')">
                                 <h5>Cancel Order</h5>
@@ -261,6 +269,8 @@ small{
                         <% } %>
                     </div>
                 <% }) %>
+                
+                
             </div>
         </div>
         
@@ -268,6 +278,75 @@ small{
       
     </div>
 </div>
+<script>
+    async function showReturnReasonDropdown(orderId, productId) {
+        // Create a dropdown with some example reasons
+        var reasons = ["Damaged", "Wrong Item", "Changed Mind", "Other"];
+    
+        // Build HTML for SweetAlert input
+        var dropdownHtml = '<select id="returnReasonDropdown" class="swal2-select">';
+        reasons.forEach(function (reason) {
+            dropdownHtml += '<option value="' + reason + '">' + reason + '</option>';
+        });
+        dropdownHtml += '</select>';
+    
+        // Use SweetAlert to prompt the user
+        const { value: selectedReason } = await Swal.fire({
+            title: 'Select a reason for returning the product',
+            html: dropdownHtml,
+            showCancelButton: true,
+            confirmButtonText: 'Return',
+            cancelButtonText: 'Cancel',
+            preConfirm: () => {
+                // Get the selected value
+                return document.getElementById('returnReasonDropdown').value;
+            },
+        });
+    
+        if (selectedReason) {
+            // Send the data to the backend using Fetch API
+            const response = await fetch('/returnProduct', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    orderId: orderId,
+                    productId: productId,
+                    reason: selectedReason,
+                }),
+            });
+    
+            if (response.ok) {
+               // Show a SweetAlert success message to the user
+               Swal.fire({
+    icon: 'success',
+    title: 'Success',
+    text: 'Product returned successfully. Your amount will be credited shortly to your wallet.',
+}).then((result) => {
+    if (result.isConfirmed || result.isDismissed) {
+        // Reload the page
+        location.reload();
+    }
+});
+
+            } else {
+                 // Handle error response from the backend
+    console.error('Error returning product:', response.statusText);
+    // Show a SweetAlert error message to the user
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Error returning product. Please try again later.',
+    });
+            }
+        } else {
+            // The user canceled the SweetAlert prompt
+            console.log('Return canceled');
+        }
+    }
+    </script>
+    
   
     <!-- Add your JavaScript scripts and other body elements here -->
   </body>

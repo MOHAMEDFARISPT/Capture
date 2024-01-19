@@ -123,6 +123,9 @@ router.post("/change-password",checkingsession,isblocked,userprofilecontroller.c
  //cancel order
  router.post('/cancel-order',checkingsession,isblocked,userprofilecontroller.cancelOrder);
 
+ //return order
+ router.post('/returnProduct',checkingsession,isblocked,userprofilecontroller.returnproduct)
+
  //wishlist
  router.get('/wishlist',checkingsession,isblocked,wishlist.wishlist)
  router.post('/wishlist',checkingsession,isblocked,wishlist.addtowishlist)
