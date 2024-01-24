@@ -55,7 +55,7 @@ const checkoutget=async(req,res)=>{
             return res.redirect('/cart');
         }
 
-   console.log("userCartyyyy",userCart)
+
     const address=await addressModel.findOne({user:req.session.userdata});
     const coupon=await couponmodel.find({})
   
@@ -70,8 +70,9 @@ const checkoutget=async(req,res)=>{
 
 
 const addaddress=async(req,res)=>{
+   
     const { fullname, contact, pincode, state, address, locality, district } = req.body;
-
+console.log("bodyyyy", req.body)
     const newaddress = {
         fullname,
         contact,
@@ -106,7 +107,7 @@ const addaddress=async(req,res)=>{
         } else {
           console.log("id"+req.session.userdata._id);
           const newentry = new addressModel({ user: req.session.userdata._id, addresses: [newaddress] });
-          console.log("new wntryyy"+newentry);
+        
           await newentry.save();
           res.status(200).json({message:"new address successfully addedd"})
       // Redirect after sending JSON response
@@ -172,7 +173,7 @@ const addaddress=async(req,res)=>{
 
   const selectionbox = async (req, res) => {
     try {
-        console.log("req.body.productId//////////" + req.params.productId);
+        
 
         const productId = req.params.productId;
         console.log("product");
@@ -238,7 +239,7 @@ const addresspaymentmethod = async (req, res) => {
 
 
         if(selectedPaymentMethod==='Wallet'){
-            console.log("/////????????????????/?<<<<<<<>>>>>>>.")
+           
             try {
                 // 1. Load Wallet Information
                 const wallet = await walletmodel.findOne({ user: userId });

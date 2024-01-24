@@ -389,19 +389,23 @@
                                         <!-- Add more content as needed -->
 
                                         <% coupon.forEach(function(coupon) { %>
-                                            <div class="card mb-3">
-                                                <div class="card-body" style="display: flex; justify-content: space-around;  padding: 20px 0px 20px 20px;">
-                                                    <div>
-                                                    <h5 class="card-title"><%= coupon.couponcode %></h5>
-                                                    <p class="card-text"><%= coupon.description %></p>
-                                                    <p class="card-text"><strong>Discount Percentage:</strong> <%= coupon.discount_percentage %>%</p>
-                                                    <p class="card-text"><strong>Minimum Amount:</strong> ₹<%= coupon.min_amount %> </p>
+                                            <% if (coupon.islisted) { %>
+                                                <div class="card mb-3">
+                                                    <div class="card-body" style="display: flex; justify-content: space-around;  padding: 20px 0px 20px 20px;">
+                                                        <div>
+                                                            <h5 class="card-title"><%= coupon.couponcode %></h5>
+                                                            <p class="card-text"><%= coupon.description %></p>
+                                                            <p class="card-text"><strong>Discount Percentage:</strong> <%= coupon.discount_percentage %>%</p>
+                                                            <p class="card-text"><strong>Minimum Amount:</strong> ₹<%= coupon.min_amount %> </p>
+                                                        </div>
+                                                        <div>
+                                                            <button onclick="applyCoupon('<%= coupon.id %>')" class="btn btn-success">Apply</button>
+                                                        </div>
                                                     </div>
-                                                    <div> <button onclick="applyCoupon('<%= coupon.id %>')" class="btn btn-success">Apply</button> </div>
-                                                   
                                                 </div>
-                                            </div>
+                                            <% } %>
                                         <% }); %>
+                                        
                                     </div>
                                     <div class="modal-footer">
                                         <div>
@@ -1079,15 +1083,17 @@ function razorpayFunction(res) {
                 });
 
                 const result = await verifyResponse.json();
+                console.lg("result",result)
 
                 if (result.msg === 'success') {
+
                    
                     Swal.fire({
                         title: "Order placed !!",
                         text: "Your Order has been confirmed.",
                         icon: "success",
                     }).then(() => {
-                        window.location.href = `/success/${result.foundorder.orderId}`;
+                        window.location.href = `/success/${foundorder._id}`;
                     });
                 } else {
                     alert("Some verification issue caused. Please try again after some time.");
@@ -1123,7 +1129,8 @@ function razorpayFunction(res) {
         addAddressForm.style.display = addAddressForm.style.display === 'none' ? 'block' : 'none';
     }
 
-    function submitForm() {
+   async function submitForm() {
+        alert("//////")
     // Access form fields
     var fullname = document.getElementById('fullname').value;
     var contact = document.getElementById('contact').value;
@@ -1142,22 +1149,15 @@ function razorpayFunction(res) {
     formData.append('district', district);
     formData.append('state', state);
     formData.append('pincode', pincode);
-
+console.log("formData",formData)
     // Make a POST request to your backend endpoint
     fetch('/add-address-chkout', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-        fullname,
-        contact,
-        pincode,
-        state,
-        address,
-        locality,
-        district
-    }),
+    
+    body: formData
 })
 .then(response => response.json())
 .then(data => {

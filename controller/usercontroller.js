@@ -12,7 +12,10 @@ const { query } = require('express');
 const addressModel = require('../model/addressschema');
 const ordermodel=require('../model/orderschema')
 const easyinvoice = require('easyinvoice');
-const Wallet=require("../model/walletschema")
+const Wallet=require("../model/walletschema");
+const shortid = require('shortid');
+const mongoose = require('mongoose');
+
 
 const login=(req,res)=>{
  
@@ -80,7 +83,7 @@ const category = async (req, res) => {
   const searchQuery = req.query.search;
 
   const page = parseInt(req.query.page, 10) || 1;
-  const limit = parseInt(req.query.limit, 10) || 10;
+  const limit = parseInt(req.query.limit, 9) || 9;
 
   let product;
   let totalProducts;
@@ -246,7 +249,9 @@ function sendresetlink(email, token) {
 
 const signuppost = async (req, res) => {
   try {
-      const { firstname, lastname, email, contact, password } = req.body;
+      const { firstname, lastname, email, contact, password,referalcode } = req.body;
+      console.log("referalcode",referalcode)
+
 
       const checkEmail = await usermodel.findOne({ email: email });
 
@@ -275,7 +280,17 @@ const signuppost = async (req, res) => {
           contact: contact,
           email: email,
           password: hashedPassword,
+
       };
+      if(referalcode){
+        console.log("/")
+        referrer=await usermodel.findOne({refferalCode:referalcode})
+        console.log("referrer",referrer)
+        req.session.referral=referrer._id
+        
+      }else{
+        referrer=""
+      }
 
       const otp = generateOtp();
       const expirationTime = new Date(Date.now() + 30 * 1000);
@@ -287,6 +302,7 @@ const signuppost = async (req, res) => {
       };
 
       sendOtp(email, otp);
+      console.log("otp",otp)
 
       res.redirect('/otp');
       return;
@@ -297,51 +313,70 @@ const signuppost = async (req, res) => {
 };
 
 // otp verification and database inserting data
-
 const otpverification = async (req, res) => {
   try {
-      const enteredOtp = req.body.otp;
+    const enteredOtp = req.body.otp;
 
-      if (req.session.otp && req.session.otp.code === enteredOtp && req.session.otp.expirationTime > Date.now()) {
+    if (req.session.otp && req.session.otp.code === enteredOtp && req.session.otp.expirationTime > Date.now()) {
+      
+      const referrer = req.session.referral || null;
+      req.session.referral = "";
 
-          const datas = await usermodel.create({
-              firstname: req.session.userData.firstname,
-              lastname: req.session.userData.lastname,
-              contact: req.session.userData.contact,
-              email: req.session.userData.email,
-              password: req.session.userData.password
-          });
+      const datas = await usermodel.create({
+        firstname: req.session.userData.firstname,
+        lastname: req.session.userData.lastname,
+        contact: req.session.userData.contact,
+        email: req.session.userData.email,
+        password: req.session.userData.password,
+        referrer: referrer,
+        refferalCode: generateReferralcode(),
+      });
 
-          await Wallet.create({
-            user: newUser._id,
-            balance: 0, // You can set an initial balance if needed
-            transactions: [],
-            pendingOrder: {
-                orderId: null,
-                amount: 0,
-                currency: null
-            }
-        });
+      await Wallet.create({
+        user: datas._id,
+        balance: 0,
+        transactions: [],
+        pendingOrder: {
+          orderId: null,
+          amount: 0,
+          currency: null,
+        },
+      });
 
-          console.log(datas);
-
-        // Clear user data from session
-
-          // Redirect after successful verification
-          return res.status(200).redirect('/login');
-      } else {
-          return res.send('<script>alert("Invalid OTP or your time has expired"); window.location.href = "/otp";</script>')
-          
-          
-          
-          
+      if (mongoose.Types.ObjectId.isValid(referrer)) {
+        const data = await Wallet.findOne({user:referrer});
+        
+        if (data) {
+          data.balance = (data.balance|| 0) + 250;
+          data.transactions.push({
+            amount:data.balance,
+            type:'credit',
+            description:'referal earning'
+          })
+          await data.save();
+        }
       }
+
+      console.log(datas);
+
+      // Clear user data from session
+
+      // Redirect after successful verification
+      return res.status(200).redirect('/login');
+    } else {
+      return res.send('<script>alert("Invalid OTP or your time has expired"); window.location.href = "/otp";</script>');
+    }
   } catch (error) {
-      console.error("Error in OTP verification:", error);
-      res.status(500).send("Internal Server Error");
+    console.error("Error in OTP verification:", error);
+    res.status(500).send("Internal Server Error");
   }
 };
 
+
+function generateReferralcode(){
+  const referralcode=shortid.generate()
+  return referralcode;
+}
 
 
 const resendotp = (req, res) => {
@@ -486,7 +521,7 @@ const success = async (req, res) => {
     const orderId = req.params.orderId;
     console.log("orderIdparaaaaaaaaaaaaams"+orderId)
 
-    const order = await ordermodel.find({orderId} );
+    const order = await ordermodel.find({orderId} )
     console.log("orderrrrr",order)
 
     if (order.length > 0) {

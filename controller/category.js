@@ -20,7 +20,7 @@ const adcategory=(req,res)=>{
 const addcategory = async (req, res) => {
   try {
     console.log(req.body);
-    console.log("file path", req.file);
+    
 
     const categoryName = req.body.categoryname;
 
@@ -109,7 +109,7 @@ const Editcategory=async (req,res)=>{
 }
 const Editcategorypost = async (req, res) => {
   try {
-    console.log('///////////////////////////////////////////////////////');
+   
     const category = await Categorymodel.findOne({ _id: req.params.Id });
     console.log(category);
 

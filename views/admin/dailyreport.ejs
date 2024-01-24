@@ -88,6 +88,7 @@
                                     <% if (data.length > 0) { %>
                                         <% data.forEach(order => { %>
                                             <% order.products.forEach(product => { %>
+                                                
                                                 <!-- Check if the order date is today -->
                                                 <% if (order.date.toDateString() === new Date().toDateString()) { %>
                                                     <% todayData = true; %>

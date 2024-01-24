@@ -1,7 +1,8 @@
 const mongoose=require('mongoose')
 const Schema=mongoose.Schema;
 const bcrypt=require('bcrypt');
-const crypto = require('crypto')
+const crypto = require('crypto');
+const { stringify } = require('querystring');
 const userSchema=new Schema({
     firstname:String,
     lastname:String,
@@ -25,9 +26,21 @@ const userSchema=new Schema({
     resetpasswordExpire: {
         type: Date,
     },
-},{
+    refferalCode:{
+        type:String
+    },
+    referrer:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'users'
+    }
+
+},
+
+{
     timestamps:true
-})
+},
+
+)
 
 
 

@@ -95,11 +95,11 @@ const Editproduct=async(req,res)=>{
 }
 const Editproductpost=async(req,res)=>{
  
- console.log("///////////////////////////////////////")
+ 
   const products=await productmodel.findOne({_id:req.params.Id})
   console.log(products)
   if(products){
- console.log('///////////////////////////////////////////////////////////////////////////////////////////////');
+ 
  console.log(req.body);
     products.productImage=products.productImage.concat(req.files.map((img)=>img.path.replace(/\\/g, '/').replace('public/', '/'))) ||products.productImage
   products.productname=req.body.productname ||  products.productname

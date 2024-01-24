@@ -25,8 +25,7 @@ const account = async (req, res,next) => {
     if (!address) {
       // Handle the case where no address is found
       console.log("No address found for the user.");
-      // You might want to redirect to an error page or handle this differently
-      return res.render('user/dashboard', { data, address: null ,userloggedin});
+     
     }
 
 

@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <!-- Add other head content -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <!-- Include SweetAlert library -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@2"></script>
+
     </head>
    
  
@@ -436,7 +442,8 @@
     </thead>
     <!-- Assuming you have included the necessary HTML structure -->
     <tbody>
-        <% if (orders && orders.length > 0) { %>
+        <% if (orders.length > 0) { %>
+
             <% orders.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(order => { %>
                 <% order.products.forEach(product => { %>
                     <tr>
@@ -567,7 +574,7 @@
                                         <div class="description" style="font-size: 1.5em;">
                                             <%= transaction.createdAt.toLocaleDateString('en-US', {  month: '2-digit',day: '2-digit', year: '2-digit' }) %> <%= transaction.createdAt.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' }) %>
                                         </div>
-                                        
+                                        <div><p><%= transaction.description%></p></div>
                                         
                                     </div>
                                 </div>
@@ -849,9 +856,66 @@
                                     <% } else { %>
                                         <p>No addresses available.</p>
                                     <% } %>
+                                    <style>
+                                        .my-custom-popup-class {
+    width: 200px; /* Set the width as needed */
+    height: 200px; /* Adjust the height as needed */
+}
+
+                                    </style>
+                                    <h5 style="padding-left:200px ; padding-top: 100px;">
+                                        Refer & Earn
+                                    </h5>
+                                   
+                                          <p style="color: black;">
+                                        "Unlock Rewards, Share Joy! 🎉 Refer a friend, and both of you score exclusive perks. It's a win-win! 💸✨ #ReferAndEarn #ShareTheJoy"
+                                    </p>
+                                    
+                                  
+                                   
+                                    <input type="text" id="referral" readonly style="width: 200px; padding: 5px; font-size: 14px; border: 1px solid #ccc;" value="<%= data.refferalCode %>">
+                                    <button onclick="copyToClipboard()" style="width: fit-content; height: fit-content; padding: 5px;">Copy Link</button>
+                                    
+                                   <!-- Include SweetAlert and Popper.js libraries -->
+
+
+<!-- Include SweetAlert library -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+function copyToClipboard() {
+    // Get the input field
+    var referralInput = document.getElementById('referral');
+
+    // Select the text in the input field
+    referralInput.select();
+    referralInput.setSelectionRange(0, 99999); // For mobile devices
+
+    // Copy the text to the clipboard
+    document.execCommand('copy');
+
+    // Show a SweetAlert message
+    Swal.fire({
+        icon: 'success',
+        title: 'Copied to Clipboard!',
+        text: 'Referral code has been copied.',
+        timer: 2000, // Display for 2 seconds
+        showConfirmButton: false,
+        onAfterRender: function () {
+            // Use Popper.js to show a popper
+            new Popper(referralInput, {
+                content: 'Referral code copied!',
+                placement: 'top',
+            });
+        },
+    });
+}
+</script>
+
+
                                     
                                    <!-- Edit Button Section -->
-                                 
+                               
                                 
     <!-- End Edit Button Section -->
                                 </div>                

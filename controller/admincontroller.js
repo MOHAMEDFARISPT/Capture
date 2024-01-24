@@ -184,12 +184,11 @@ const changeorderstatus = async (req, res,next) => {
 
     try {
         const orderproduct = await ordermodel.findById(orderId).populate('products.productId');
-        console.log("////./././././" + orderproduct);
+       
         if (orderproduct) {
             // Update cancelstatus for the target product in the order
             const targetProduct = orderproduct.products.find(product => product.productId._id.toString() === productId);
-            console.log("targetProduct", targetProduct);
-
+           
             if (targetProduct) {
                 // Check if the targetProduct is found
                 targetProduct.cancelstatus = orderStatus;
@@ -199,7 +198,7 @@ const changeorderstatus = async (req, res,next) => {
 
             // Save the main orderproduct
             await orderproduct.save();
-            console.log("targetProduct"+targetProduct)
+            
 
             console.log('Order status and product cancel status updated successfully');
 
