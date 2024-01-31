@@ -360,6 +360,7 @@ const editcoupon=async(req,res)=>{
 
 
 const editcouponpost=async(req,res)=>{
+    console.log("///")
 
 
 
@@ -394,9 +395,10 @@ const editcouponpost=async(req,res)=>{
 
         // Save the updated coupon details
         await existingCoupon.save();
+        console.log("existingCoupon",existingCoupon)
 
         // Redirect to a page or send a response
-        res.redirect('/admin/dashboard');
+        res.redirect('/admin/coupons');
     } catch (error) {
         console.error('Error updating coupon details:', error);
         // Handle the error appropriately (send response, log, etc.)

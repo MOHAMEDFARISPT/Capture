@@ -21,14 +21,15 @@
                               
                             <!-- admin/editcoupon.ejs -->
 
-<form class="theme-form theme-form-2 mega-form" action="/admin/editcouponpost/<%=coupondetailes._id %>" method="post">
+<form class="theme-form theme-form-2 mega-form" action="/admin/editcouponpost/<%=coupondetailes._id %>" method="post" onsubmit="return validateForm()">
 
    
     <!-- Coupon Name -->
     <div class="mb-4 row align-items-center">
         <label class="form-label-title col-sm-3 mb-5">Coupon Name</label>
         <div class="col-sm-9">
-            <input class="form-control" type="text" name="couponcode" value="<%= coupondetailes.couponcode %>" required>
+            <input class="form-control" type="text" id="couponcode" name="couponcode" value="<%= coupondetailes.couponcode %>" >
+            <span id="couponCodeError" class="text-danger"></span>
         </div>
     </div>
 
@@ -36,7 +37,8 @@
     <div class="mb-4 row align-items-center">
         <label class="form-label-title col-sm-3 mb-5">Description</label>
         <div class="col-sm-9">
-            <input class="form-control" type="text" name="description" value="<%= coupondetailes.description %>" required>
+            <input class="form-control" type="text" id="description" name="description" value="<%= coupondetailes.description %>" >
+            <span id="descriptionError" class="text-danger"></span>
         </div>
     </div>
 
@@ -44,7 +46,8 @@
     <div class="mb-4 row align-items-center">
         <label class="form-label-title col-sm-3 mb-5">Discount Percentage</label>
         <div class="col-sm-9">
-            <input class="form-control" type="text" name="Discountpercentage" value="<%= coupondetailes.discount_percentage %>" required>
+            <input class="form-control" type="text" id="Discountpercentage" name="Discountpercentage" value="<%= coupondetailes.discount_percentage %>" >
+            <span id="DiscountpercentageError" class="text-danger"></span>
         </div>
     </div>
 
@@ -52,7 +55,8 @@
     <div class="mb-4 row align-items-center">
         <label class="form-label-title col-sm-3 mb-0">Maximum Discount Amount</label>
         <div class="col-sm-9">
-            <input class="form-control" type="text" name="maximumdiscountamount" value="<%= coupondetailes.max_discount_amount %>" required>
+            <input class="form-control" type="text" id="maximumdiscountamount" name="maximumdiscountamount" value="<%= coupondetailes.max_discount_amount %>">
+            <span id="maximumdiscountamountError" class="text-danger"></span>
         </div>
     </div>
 
@@ -60,7 +64,8 @@
     <div class="mb-4 row align-items-center">
         <label class="form-label-title col-sm-3 mb-0">Minimum Amount</label>
         <div class="col-sm-9">
-            <input class="form-control" type="text" name="minimumamount" value="<%= coupondetailes.min_amount %>" required>
+            <input class="form-control"  type="text" id="minimumamount" name="minimumamount" value="<%= coupondetailes.min_amount %>">
+            <span id="minimumamountError" class="text-danger"></span>
         </div>
     </div>
 
@@ -68,14 +73,16 @@
     <div class="mb-4 row align-items-center">
         <label class="form-label-title col-sm-3 mb-0">Maximum Amount</label>
         <div class="col-sm-9">
-            <input class="form-control" type="text" name="maximumamount" value="<%= coupondetailes.max_amount %>" required>
+            <input class="form-control" type="text" id="maximumamount" name="maximumamount" value="<%= coupondetailes.max_amount %>">
+            <span id="maximumamountError" class="text-danger"></span>
         </div>
     </div>
 
     <div class="mb-4 row align-items-center">
         <label class="form-label-title col-sm-3 mb-5">Expiration Date</label>
         <div class="col-sm-9">
-            <input class="form-control" type="date" name="expirationDate" value="<%= coupondetailes.expiry_date %>" required>
+            <input class="form-control" type="date" id="expirationDate" name="expirationDate" value="<%= coupondetailes.expiry_date %>" >
+            <span id="expirationDateError" class="text-danger"></span>
         </div>
     </div>
 
@@ -121,5 +128,83 @@
     </div>
     <!-- footer En -->
 </div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', function (event) {
+            // Reset errors
+            clearErrors();
+
+            // Validate each input field
+            const couponcode = form.querySelector('#couponcode');
+            const description = form.querySelector('#description');
+            const Discountpercentage = form.querySelector('#Discountpercentage');
+            const maximumdiscountamount = form.querySelector('#maximumdiscountamount');
+            const minimumamount = form.querySelector('#minimumamount');
+            const maximumamount = form.querySelector('#maximumamount');
+            const expirationDate = form.querySelector('#expirationDate');
+
+            if (!validateInput(couponcode, 'Coupon code cannot be empty')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validateInput(description, 'Description cannot be empty')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validateInput(Discountpercentage, 'Discount percentage cannot be empty')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validateInput(maximumdiscountamount, 'Maximum discount amount cannot be empty')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validateInput(minimumamount, 'Minimum amount cannot be empty')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validateInput(maximumamount, 'Maximum amount cannot be empty')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validateInput(expirationDate, 'Expiration date cannot be empty')) {
+                event.preventDefault();
+                return;
+            }
+
+            // Additional validation logic can be added based on your requirements
+        });
+
+        function validateInput(input, errorMessage) {
+            if (!input.value.trim()) {
+                displayError(input, errorMessage);
+                return false;
+            }
+            return true;
+        }
+
+        function displayError(input, message) {
+            const errorSpan = document.querySelector(`#${input.id}Error`);
+            errorSpan.textContent = message;
+        }
+
+        function clearErrors() {
+            const errorSpans = document.querySelectorAll('[id$="Error"]');
+            errorSpans.forEach(span => span.textContent = '');
+        }
+    });
+</script>
+
 
 <%- include('../adminpartials/footer')%>

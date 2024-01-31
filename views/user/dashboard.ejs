@@ -828,7 +828,7 @@
 
        <!--profile starting-->
 
-       <div class="tab-pane fade"  class="container profile-page"  style="width: 200vh; height: 200vh;" id="tab-Profile" role="tabpanel" aria-labelledby="tab-Profile-link" >
+       <div class="tab-pane fade"   class="container profile-page"  style="width: 200vh; height: 200vh;" id="tab-Profile" role="tabpanel" aria-labelledby="tab-Profile-link" >
         <div class="container profile-page" style="width: auto;">
             <div class="row">
                 <div class="col-xl-6 col-lg-7 col-md-12">
@@ -863,6 +863,7 @@
 }
 
                                     </style>
+                                       <% if(data.refferalCode) { %>
                                     <h5 style="padding-left:200px ; padding-top: 100px;">
                                         Refer & Earn
                                     </h5>
@@ -871,11 +872,12 @@
                                         "Unlock Rewards, Share Joy! 🎉 Refer a friend, and both of you score exclusive perks. It's a win-win! 💸✨ #ReferAndEarn #ShareTheJoy"
                                     </p>
                                     
-                                  
-                                   
+                               
                                     <input type="text" id="referral" readonly style="width: 200px; padding: 5px; font-size: 14px; border: 1px solid #ccc;" value="<%= data.refferalCode %>">
                                     <button onclick="copyToClipboard()" style="width: fit-content; height: fit-content; padding: 5px;">Copy Link</button>
-                                    
+                                    <%} else{ %>
+                                    <p></p>
+                                    <% } %>
                                    <!-- Include SweetAlert and Popper.js libraries -->
 
 

@@ -990,7 +990,7 @@ async function placeOrder() {
                         showCancelButton: true,
                         confirmButtonText: 'OK',
                     }).then((result) => {
-                        window.location.href = `/success/${responseData.order._id}`;
+                        window.location.href = `/success`;
                     });
                 } else if (selectedPaymentMethod === 'razorpay') {
                     razorpayFunction(responseData);
@@ -1002,7 +1002,7 @@ async function placeOrder() {
                         showCancelButton: true,
                         confirmButtonText: 'OK',
                     }).then((result) => {
-                        window.location.href = `/success/${responseData.order._id}`;
+                        window.location.href = `/success`;
                     });
 
 
@@ -1083,7 +1083,7 @@ function razorpayFunction(res) {
                 });
 
                 const result = await verifyResponse.json();
-                console.lg("result",result)
+                console.log("resultttt",result)
 
                 if (result.msg === 'success') {
 
@@ -1093,7 +1093,7 @@ function razorpayFunction(res) {
                         text: "Your Order has been confirmed.",
                         icon: "success",
                     }).then(() => {
-                        window.location.href = `/success/${foundorder._id}`;
+                        window.location.href = `/success`;
                     });
                 } else {
                     alert("Some verification issue caused. Please try again after some time.");

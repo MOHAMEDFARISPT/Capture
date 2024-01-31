@@ -37,7 +37,7 @@
                                     <div class="col-sm-9">
                                         <button type="button" class="btn btn-primary" onclick="generateCouponCode()">Generate Coupon Code</button>
                                         <input type="text" class="form-control mt-2" id="couponCode" name="couponCode" placeholder="Generated Coupon Code" readonly>
-                                      
+                                        <span id="couponCodeError" class="text-danger"></span>
                                     </div>
                                 </div>
 
@@ -45,7 +45,8 @@
                                 <div class="mb-4 row align-items-center">
                                     <label class="form-label-title col-sm-3 mb-5">Description</label>
                                     <div class="col-sm-9">
-                                        <input class="form-control" type="text" name="description" placeholder="Enter Coupon description">
+                                        <input class="form-control" type="text" id="description" name="description" placeholder="Enter Coupon description">
+                                        <span id="descriptionError" class="text-danger"></span>
                                     </div>
                                 </div>
 
@@ -53,7 +54,8 @@
                                 <div class="mb-4 row align-items-center">
                                     <label class="form-label-title col-sm-3 mb-5">Discount Percentage</label>
                                     <div class="col-sm-9">
-                                        <input class="form-control" type="text" name="Discountpercentage" placeholder="Enter Discount Percentage">
+                                        <input class="form-control" type="text" id="Discountpercentage" name="Discountpercentage" placeholder="Enter Discount Percentage">
+                                        <span id="DiscountpercentageError" class="text-danger"></span>
                                     </div>
                                 </div>
 
@@ -61,23 +63,26 @@
                                 <div class="mb-4 row align-items-center">
                                     <label class="form-label-title col-sm-3 mb-0">Maximum Discount Amount</label>
                                     <div class="col-sm-9">
-                                        <input class="form-control" type="text" name="maximumdiscountamount" placeholder="Enter Maximum Discount Amount">
+                                        <input class="form-control" type="text" id="maximumdiscountamount" name="maximumdiscountamount" placeholder="Enter Maximum Discount Amount">
+                                        <span id="maximumdiscountamountError" class="text-danger"></span>
                                     </div>
                                 </div>
 
                                 <!--  minimum Amount   -->
                                 <div class="mb-4 row align-items-center">
                                     <label class="form-label-title col-sm-3 mb-0">Minimum Amount</label>
-                                    <div class="col-sm-9">
-                                        <input class="form-control" type="text" name="minimumamount" placeholder="Enter Minimum Amount">
-                                    </div>
+                                    <div class="col-sm-9">  
+                                    <input class="form-control" type="text" id="minimumamount" name="minimumamount" placeholder="Enter Minimum Amount">
+                                    <span id="minimumamountError" class="text-danger"></span>
+                                </div>
                                 </div>
 
                                 <!-- Maximum Amount -->
                                 <div class="mb-4 row align-items-center">
                                     <label class="form-label-title col-sm-3 mb-0">Maximum Amount</label>
                                     <div class="col-sm-9">
-                                        <input class="form-control" type="text" name="maximumamount" placeholder="Enter maximum Amount">
+                                        <input class="form-control" type="text" id="maximumamount" name="maximumamount" placeholder="Enter maximum Amount">
+                                        <span id="maximumamountError" class="text-danger"></span>
                                     </div>
                                 </div>
 
@@ -85,7 +90,8 @@
                                 <div class="mb-4 row align-items-center">
                                     <label class="form-label-title col-sm-3 mb-5">Expiration Date</label>
                                     <div class="col-sm-9">
-                                        <input class="form-control" type="date" name="expirationDate" required>
+                                        <input class="form-control" type="date" id="expirationDate" name="expirationDate" >
+                                        <span id="expirationDateError" class="text-danger"></span>
                                     </div>
                                 </div>
 
@@ -104,6 +110,7 @@
                                 <div class="mb-4 row align-items-center">
                                     <div class="col-sm-9 offset-sm-3">
                                         <button type="submit" class="btn btn-primary" id="submitButton">Save</button>
+
                                     </div>
                                 </div>
                             </form>
@@ -196,6 +203,107 @@ if(data & data.message ==="Coupon created Successfully"){
         });
     }
 </script>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', function (event) {
+            // Reset errors
+            clearErrors();
+
+            // Validate each input field
+            const couponcode = form.querySelector('#couponCode');
+            const description = form.querySelector('#description');
+            const Discountpercentage = form.querySelector('#Discountpercentage');
+            const maximumdiscountamount = form.querySelector('#maximumdiscountamount');
+            const minimumamount = form.querySelector('#minimumamount');
+            const maximumamount = form.querySelector('#maximumamount');
+            const expirationDate = form.querySelector('#expirationDate');
+            const minimumAmountError = document.querySelector('#minimumamountError');
+            const maximumAmountError = document.querySelector('#maximumamountError');
+            const expirationDateError = document.querySelector('#expirationDateError');
+
+            if (!validateInput(couponcode, 'couponcode cannot be empty')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validateInput(description, 'description cannot be empty')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validateInput(Discountpercentage, 'Discountpercentage cannot be empty')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validateInput(maximumdiscountamount, 'maximumdiscountamount cannot be empty')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validateInput(minimumamount, 'minimumamount cannot be empty')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validateInput(maximumamount, 'maximumamount cannot be empty')) {
+                event.preventDefault();
+                return;
+            }
+
+            // Validate minimum and maximum amounts
+            const minimumAmount = parseFloat(minimumamount.value);
+            const maximumAmount = parseFloat(maximumamount.value);
+
+            if (isNaN(minimumAmount) || isNaN(maximumAmount) || maximumAmount <= minimumAmount) {
+                minimumAmountError.textContent = 'Minimum amount should be less than the maximum amount.';
+                maximumAmountError.textContent = 'Maximum amount should be greater than the minimum amount.';
+                event.preventDefault();
+                return;
+            }
+
+            // Validate Expiration Date
+            const currentDate = new Date();
+            const selectedDate = new Date(expirationDate.value);
+
+            if (selectedDate.setHours(0, 0, 0, 0) < currentDate.setHours(0, 0, 0, 0)) {
+                expirationDateError.textContent = 'Expiration date cannot be in the past.';
+                event.preventDefault();
+                return;
+            }
+
+            // Additional validation logic can be added based on your requirements
+        });
+
+        function validateInput(input, errorMessage) {
+            if (!input.value.trim()) {
+                displayError(input, errorMessage);
+                return false;
+            }
+            return true;
+        }
+
+        function displayError(input, message) {
+            const errorSpan = document.querySelector(`#${input.id}Error`);
+            errorSpan.textContent = message;
+        }
+
+        function clearErrors() {
+            const errorSpans = document.querySelectorAll('[id$="Error"]');
+            errorSpans.forEach(span => span.textContent = '');
+        }
+    });
+</script>
+
+
+
+
+
 
 
 <%- include('../adminpartials/footer')%>

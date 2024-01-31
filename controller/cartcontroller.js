@@ -71,7 +71,7 @@ const cart=async(req,res)=>{
     try {
         let userloggedin = false;
         if(req.session && req.session.userdata){
-          userloggedin=true;
+          userloggedin=true;    ``
         }
         const userId=req.session.userdata._id;
       

@@ -112,10 +112,11 @@ router.post("/change-password",checkingsession,isblocked,userprofilecontroller.c
  router.post('/rzrpay-verify:razorpayOrderId',checkingsession,isblocked,checkout.verifyrazerpay)
 
 //success page
- router.get('/success/:orderId',checkingsession,isblocked,user.success)
+ router.get('/success',checkingsession,isblocked,user.success)
 
  //generate invoice
  router.get('/generate-invoice/:orderId', checkingsession, isblocked, user.invoice);
+ 
 
 //order detailes
  router.get('/orderdetails/:orderId',checkingsession,isblocked,userprofilecontroller.myorderdetailes)

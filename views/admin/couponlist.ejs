@@ -100,7 +100,12 @@
                 <td><%= item.max_discount_amount %></td>
                 <td><%= item.min_amount %></td>
                 <td><%= item.max_amount %></td>
-                <td><%= item.expiry_date.toLocaleDateString() %></td>
+                <td><%= formatDate(item.expiry_date) %></td>
+                <% function formatDate(date) {
+                    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+                    return new Date(date).toLocaleDateString(undefined, options);
+                } %>
+                     
                 <td>
                     <%= item.status === 'Delivered' ? '<span style="color: green;">Delivered</span>' : (item.status === 'Canceled' ? '<span style="color: red;">Canceled</span>' : 'Active') %>
                 </td>

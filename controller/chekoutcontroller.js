@@ -127,25 +127,19 @@ console.log("bodyyyy", req.body)
         try {
             const addressId = req.params.addressId;
     
-           
             const userId = req.session.userdata; 
-            const user = await addressModel.findOne({ user: userId });
-
+            const user = await addressModel.findOneAndUpdate(
+                { user: userId },
+                { $pull: { addresses: { _id: addressId } } },
+                { new: true } // To get the updated document after the update
+            );
+    
             if (user) {
-                // Filter out the address with the given addressId
-                user.addresses = user.addresses.filter(addr => addr._id.toString() !== addressId);
-                
-                // Save the updated user object back to the database
-                await user.save();
-            
                 console.log("Updated user:", user);
                 res.status(200).json({ message: 'Address deleted successfully' });
             } else {
                 res.status(404).json({ error: 'User not found' });
             }
-            
-    
-           
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Internal Server Error' });
@@ -266,7 +260,7 @@ const addresspaymentmethod = async (req, res) => {
         
                 // 3. Create Transaction
                 const transaction = {
-                    amount: orderTotalAmount,
+                    amount: orderTotalAmount ,
                     type: 'debit',
                     description: 'Order payment',
                 };
@@ -299,6 +293,7 @@ const addresspaymentmethod = async (req, res) => {
                     totalAmount: orderTotalAmount,
                 });
         
+                
                 // Save changes to the database
                 await wallet.save();
                 await order.save();

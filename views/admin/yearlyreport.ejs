@@ -48,7 +48,7 @@
                                     
                                         <li>
                                             <!-- Print button with inline styling and window.print() function -->
-                                            <button class="btn" style="background-color: blue; color: white;" onclick="window.print()">Print</button>
+                                            <button class="btn" style="background-color: blue; color: white;" onclick="printSalesReport()">Print</button>
                                         </li>
                                     
                                 </ul>
@@ -152,6 +152,31 @@
 </div>
 
 
+
+<script>
+    function printSalesReport() {
+        fetch('/admin/printReport', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sales_report.xlsx'; // Name of the downloaded file
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    
+    
+    </script>
 
 
 

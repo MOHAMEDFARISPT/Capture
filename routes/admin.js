@@ -64,7 +64,7 @@ router.post('/coupons/create-coupon',admin.postcoupon)
  // Example route definition
 router.delete('/coupons/:couponId', admin.coupondelete);
 router.get('/editcoupon',admin.editcoupon)
-router.post('/admin/editcouponpost/:couponId',admin.editcouponpost)
+router.post('/editcouponpost/:couponId',admin.editcouponpost)
 
 //list/inlistcoupon
 router.post("/listuser/:couponid",admin.listCoupon)
@@ -84,7 +84,8 @@ router.get("/adminlogout",admin.logout)
 
  router.get('/yearlyreports',salesreport.yearlysalesreport)
 
- //coupon
+ //salesrepport print
+ router.post('/printReport',salesreport.printReport)
 
 
 

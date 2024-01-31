@@ -210,39 +210,7 @@ const updateAddress = async (req, res) => {
 
 
 
-// const cancelOrder=async(req,res)=>{
-  
-//   const orderId=req.body.orderId;
-//   const productId=req.body.productId
-//   const reason=req.body.reason
-//   console.log("reason"+reason)
-//   console.log(orderId);
-//   console.log(productId);
-  
-//   const orderproduct=await ordermodel.findById(orderId).populate('products.productId')
-// if(!orderproduct){
-//   return res.status(404).json({message:'order not found'})
 
-// }
-//     const matchedproduct = orderproduct.products.find(prdct => prdct.productId._id.toString() === productId);
-//    if(!matchedproduct){
-//     return res.status(404).json({message:'Product is not found'})
-//    }
-//    const product=await productmodel.findById(productId);
-// if(!product){
-//   return res.status(404).json({ message: 'Product not found in the database' });
-// }
-// product.quantity +=matchedproduct.quantity
-// await product.save()
-// matchedproduct.reason='reason';
-  
-// matchedproduct.cancelstatus = 'canceled';
-
-//     await orderproduct.save()
-//     console.log("product cancelled")
-//     res.status(200).json({message:'product cancelled!!'})
-//   }
- 
 const cancelOrder = async (req, res) => {
   try {
       const { orderId, productId, reason } = req.body;

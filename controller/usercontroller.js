@@ -72,7 +72,7 @@ const product=async(req,res)=>{
 
 
 
-const category = async (req, res) => {
+const category = async (req, res,next) => {
   let userloggedin = false;
 
   if (req.session && req.session.userdata) {
@@ -518,21 +518,21 @@ const resetPasswordPost =async(req,res)=>{
 
 const success = async (req, res) => {
   try {
-    const orderId = req.params.orderId;
-    console.log("orderIdparaaaaaaaaaaaaams"+orderId)
+    // const orderId = req.params.orderId;
+    // console.log("orderIdparaaaaaaaaaaaaams"+orderId)
 
-    const order = await ordermodel.find({orderId} )
-    console.log("orderrrrr",order)
+    // const order = await ordermodel.find({orderId} )
+    // console.log("orderrrrr",order)
 
-    if (order.length > 0) {
-        // Orders found, you can now use the 'orders' array
-        console.log('Found orders:', order);
-    } else {
-        // No orders found
-        console.log('No orders found');
-    }
+    // if (order.length > 0) {
+    //     // Orders found, you can now use the 'orders' array
+    //     console.log('Found orders:', order);
+    // } else {
+    //     // No orders found
+    //     console.log('No orders found');
+    // }
     
-    res.render("user/sucessconfirm",{order})
+    res.render("user/sucessconfirm")
     
 
 
