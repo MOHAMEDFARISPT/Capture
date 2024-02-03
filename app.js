@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose=require('mongoose')
 const session=require("express-session")
-
+const nocache=require('nocache')
 const adminRouter = require('./routes/admin');
 const usersRouter = require('./routes/users');
 const {error}=require("console")
@@ -32,7 +32,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(nocache())
 
 
 
@@ -74,9 +74,12 @@ app.use(errorHandler)
 
 // mongoose.connect(process.env.DB_MONGO,{
 
-const connect=mongoose.connect("mongodb://127.0.0.1:27017/Capture")
-  // useNewUrlparser:true,
-  // useUnifiedTopology:true, 
+const connect=mongoose.connect(process.env.DB_MONGO,{
+    useNewUrlparser:true,
+  useUnifiedTopology:true, 
+  serverSelectionTimeoutMS: 20000 
+})
+  
 
 connect.then(()=>{
   console.log("Mongo db connected successfully");

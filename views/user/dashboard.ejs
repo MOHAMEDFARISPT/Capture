@@ -536,57 +536,62 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="content">
                     <div class="total">
                         <div class="label" style="font-size: 20px;">Total balance</div>
-
+                      
                         <div class="value"></div>
                         <div class="balance">₹<%=wallet.balance%></div>
                     </div>
+                   
+
                     
                       +  Add Amount To Your Wallet
                      <div>
+                      
     <input type="text" id="amountInput" placeholder="Enter Your Amount">
     <button onclick="addAmountToWallet()">Add to Wallet</button>
 </div>
-                    
-                    <ul class="menu" style="align-items: center;">
-                        <li >
-                            <input type="radio" id="tab1" name="amount" checked="checked" />
-                            <label for="tab1" style="color: white; font-size: 16px;">
-                                <i class="fas fa-arrow-down"></i>
-                                Transactions
-                            </label>
-                            
-    
-                        </li>
-                       
-                    </ul>
-                    <div class="list">
-                        <% wallet.transactions.reverse().forEach(transaction => { %>
-                            <div class="item1">
-                                <div class="section1">
-                                    <div class="icon <%= transaction.type === 'credit' ? 'up' : 'down' %>">
-                                        <i class="fas <%= transaction.type === 'credit' ? 'fa-arrow-down' : 'fa-arrow-up' %>"></i>
-                                    </div>
-                                    <div class="text">
-                                        <div class="title" style="font-size: 1.5em;"><%= transaction.ddescription %></div>
-                                        <div class="description" style="font-size: 1.5em;">
-                                            <%= transaction.createdAt.toLocaleDateString('en-US', {  month: '2-digit',day: '2-digit', year: '2-digit' }) %> <%= transaction.createdAt.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' }) %>
-                                        </div>
-                                        <div><p><%= transaction.description%></p></div>
-                                        
-                                    </div>
-                                </div>
-                                <div class="section2">
-                                    <div class="signal <%= transaction.type === 'credit' ? 'positive' : 'negative' %>" style="font-size: 1.5em;">
-                                        <%= transaction.type === 'credit' ? '+' : '-' %>
-                                    </div>
-                                    <div class="value" style="font-size: 1.5em;">₹<%= transaction.amount.toFixed(2) %></div>
-                                </div>
-                            </div>
-                        <% }); %>
+<% if (wallet && wallet.transactions && wallet.transactions.length > 0) { %>
+    <ul class="menu" style="align-items: center;">
+        <li>
+            <input type="radio" id="tab1" name="amount" checked="checked" />
+            <label for="tab1" style="color: white; font-size: 16px;">
+                <i class="fas fa-arrow-down"></i>
+                Transactions
+            </label>
+        </li>
+    </ul>
+    <div class="list">
+        <% wallet.transactions.reverse().forEach(transaction => { %>
+            <div class="item1">
+                <div class="section1">
+                    <div class="icon <%= transaction.type === 'credit' ? 'up' : 'down' %>">
+                        <i class="fas <%= transaction.type === 'credit' ? 'fa-arrow-up' : 'fa-arrow-down' %>"></i>
                     </div>
+                    <div class="text">
+                        <div class="description" style="font-size: 1.5em;">
+                            <%= transaction.createdAt.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit' }) %> <%= transaction.createdAt.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' }) %>
+                        </div>
+                        <div><p><%= transaction.description %></p></div>
+                    </div>
+                </div>
+                <div class="section2">
+                    <div class="signal <%= transaction.type === 'credit' ? 'positive' : 'negative' %>" style="font-size: 1.5em;">
+                        <%= transaction.type === 'credit' ? '+' : '-' %>
+                    </div>
+                    <div class="value" style="font-size: 1.5em;">₹<%= transaction.amount.toFixed(2) %></div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+<% } else { %>
+    <div><strong>No transactions found.</strong></div>
+<% } %>
+
+                    
+                    
                     
                     
                     

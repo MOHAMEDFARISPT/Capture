@@ -33,7 +33,6 @@ const home=async(req,res)=>{
     productlength=product.length
     const users=await usermodel.find()
     userslength=users.length
-    
     res.render("admin/home",{orderlength,productlength,userslength})
 }
 
@@ -51,6 +50,9 @@ const loginpost = async (req, res) => {
             res.send("user not found")
         }
         if(data.password===password){
+
+
+            req.session.isloggedadmin=true
             res.redirect("/admin")
         }else{
            res.send(
@@ -113,14 +115,14 @@ usermodel.find({})
 
 
   const logout = (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error('Error destroying session:', err);
-        } else {
-            // Redirect to the login page or any other desired page after logout
+    console.log("/////////")
+    req.session.isloggedadmin=null
+    req.session.isloggedadmin=false;
+
             res.redirect('/admin/adminlogin');
-        }
-    }); // <-- Add this closing parenthesis
+
+            
+  
 };
 
 

@@ -90,10 +90,11 @@ const category = async (req, res,next) => {
 
   try {
     let query = { islist: true };
-
     if (categoryId) {
+      console.log(`Applying category filter for category ID: ${categoryId}`);
       query.category = categoryId;
-    }
+   }
+   
 
     if (searchQuery && searchQuery.length > 0) {
       console.log(`Searching products with query: ${searchQuery}`);
@@ -105,6 +106,7 @@ const category = async (req, res,next) => {
       console.log('Regex pattern for name:', regexPattern);
     }
     product = await productmodel.find(query).populate('category').skip((page - 1) * limit).limit(limit);
+    
     console.log('Products found:', product.map(p => ({ name: p.productname, description: p.description })));
     
     totalProducts = await productmodel.countDocuments(query); // Count total products
@@ -114,6 +116,7 @@ const category = async (req, res,next) => {
     const category = await categorymodel.find();
     
     console.log("Products passed to EJS:", product);
+    console.log("categoryyyyyyy",category)
     res.render('user/category', {
       category,
       product,
@@ -415,6 +418,17 @@ const loginpost = async(req, res) => {
          
           
           req.session.userdata=loguser
+          await Wallet.create({
+            user: datas._id,
+            balance: 0,
+            transactions: [],
+            pendingOrder: {
+              orderId: null,
+              amount: 0,
+              currency: null,
+            },
+          });
+          
           res.status(200)
           console.log("userdatasessiooon"+req.session.userdata);
           res.redirect('/');
@@ -425,10 +439,13 @@ const loginpost = async(req, res) => {
 
           
         }
-      } else {
-        req.session.errorMessage = 'Invalid Password';
-        res.redirect('/login');
-        console.log("invalid password")
+        else {
+       
+          res.send(
+            '<script>alert("Invalid Password"); window.location.href = "/login";</script>'
+        );
+      } 
+        
       }
     } catch (error) {
       console.log(error);
@@ -518,21 +535,16 @@ const resetPasswordPost =async(req,res)=>{
 
 const success = async (req, res) => {
   try {
-    // const orderId = req.params.orderId;
-    // console.log("orderIdparaaaaaaaaaaaaams"+orderId)
+    const orderId = req.params.orderId;
+    console.log("orderIdparaaaaaaaaaaaaams"+orderId)
 
-    // const order = await ordermodel.find({orderId} )
-    // console.log("orderrrrr",order)
+    const order = await ordermodel.findById(orderId)
+    console.log("orderrrrr",order)
 
-    // if (order.length > 0) {
-    //     // Orders found, you can now use the 'orders' array
-    //     console.log('Found orders:', order);
-    // } else {
-    //     // No orders found
-    //     console.log('No orders found');
-    // }
     
-    res.render("user/sucessconfirm")
+    
+    res.render('user/sucessconfirm', { order: order });
+
     
 
 

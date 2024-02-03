@@ -144,29 +144,32 @@
                             </div>
 
                             <!-- Display pagination links -->
-<div class="pagination-container">
-    <div class="pagination-boxes">
-        <% if (totalPages > 1) { %>
-            <% if (currentPage > 1) { %>
-                <div class="pagination-box">
-                    <a href="?page=<%= currentPage - 1 %>">&laquo;</a>
-                </div>
-            <% } %>
-
-            <% for (let page = Math.max(1, currentPage - 2); page <= Math.min(totalPages, currentPage + 2); page++) { %>
-                <div class="pagination-box <%= currentPage === page ? 'active' : '' %>">
-                    <a href="?page=<%= page %>"><%= page %></a>
-                </div>
-            <% } %>
-
-            <% if (currentPage < totalPages) { %>
-                <div class="pagination-box">
-                    <a href="?page=<%= currentPage + 1 %>">&raquo;</a>
-                </div>
-            <% } %>
-        <% } %>
-    </div>
-</div>
+                            <div class="pagination-container">
+                                <div class="pagination-boxes">
+                                    <% if (totalPages > 1) { %>
+                            
+                                        <% if (currentPage > 1) { %>
+                                            <div class="pagination-box">
+                                                <a href="?page=<%= currentPage - 1 %>">&laquo; Previous</a>
+                                            </div>
+                                        <% } %>
+                            
+                                        <% for (let page = Math.max(1, currentPage - 2); page <= Math.min(totalPages, currentPage + 2); page++) { %>
+                                            <div class="pagination-box <%= currentPage === page ? 'active' : '' %>">
+                                                <a href="?page=<%= page %>"><%= page %></a>
+                                            </div>
+                                        <% } %>
+                            
+                                        <% if (currentPage < totalPages) { %>
+                                            <div class="pagination-box">
+                                                <a href="?page=<%= currentPage + 1 %>">Next &raquo;</a>
+                                            </div>
+                                        <% } %>
+                            
+                                    <% } %>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>

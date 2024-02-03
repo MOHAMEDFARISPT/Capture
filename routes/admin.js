@@ -6,6 +6,7 @@ var productcontroller=require('../controller/productcontroller')
 const salesreport=require('../controller/salesreportcontroller')
 const multer = require('multer');
 const path = require('path');
+const isloggedinadmin=require('../middlewares/adminauth')
 
 // Multer configuration for handling file uploads
 const storage = multer.diskStorage({
@@ -25,7 +26,7 @@ const upload = multer({
   } 
   });
 
-router.get("/adminlogin", admin.adminlogin);
+router.get("/adminlogin",isloggedinadmin, admin.adminlogin);
 router.get("/", admin.home);
 router.post("/loginpost", admin.loginpost);
 router.get("/alluser", admin.listusers);

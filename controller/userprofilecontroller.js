@@ -19,6 +19,7 @@ const account = async (req, res,next) => {
     userloggedin=true;
   }
     const data = req.session.userdata;
+    console.log("userrrrrrrrrr",data._id)
     const address = await addressmodel.findOne({ user: req.session.userdata });
     console.log("//////Address"+address);
     // Check if 'address' is null or undefined
@@ -37,6 +38,7 @@ const account = async (req, res,next) => {
 
     // Find total count of orders (without retrieving documents)
     const totalCount = await ordermodel.countDocuments({ userId: data._id });
+    console.log(totalCount,'this is user total amount');
 
     // Calculate total pages
     const totalPages = Math.ceil(totalCount / limit);
@@ -44,10 +46,12 @@ const account = async (req, res,next) => {
       .limit(limit)
       .skip(skip);
     console.log("//////////orders//////////////"+orders);
+  const dataid= data._id
+console.log("this is dataid",data._id)
+    const wallet=await Wallet.findOne({ user:dataid})
 
 
-    const wallet=await Wallet.findOne({user:data._id})
-    console.log("wallet",wallet)
+    console.log("walletttttssss????",wallet)
 
     
     res.render('user/dashboard',{wallet,orders,data, address,userloggedin ,totalPages,page});
@@ -431,17 +435,11 @@ const changepassword = async (req, res) => {
 
 
 const logout = (req, res) => {
-  // Assuming you are using express-session middleware
-  req.session.destroy((err) => {
-      if (err) {
-          console.error('Error destroying session:', err);
-          // Handle the error, e.g., by sending an error response
-          res.status(500).send('Internal Server Error');
-      } else {
-          // Redirect to the login page or any other desired page after logout
-          res.redirect('/');
-      }
-  });
+  req.session.userdata=null
+  req.session.userdata=false
+  
+    res.redirect('/');
+   
 };
 
 

@@ -980,7 +980,7 @@ async function placeOrder() {
             } catch (jsonError) {
                 console.error('Error parsing JSON:', jsonError);
             }
-
+console.log("responseDatassssssss",responseData)
             if (response.ok) {
                 if (selectedPaymentMethod === 'cod') {
                     Swal.fire({
@@ -990,10 +990,11 @@ async function placeOrder() {
                         showCancelButton: true,
                         confirmButtonText: 'OK',
                     }).then((result) => {
-                        window.location.href = `/success`;
+                        window.location.href = `/success/${responseData.order._id}`;
                     });
                 } else if (selectedPaymentMethod === 'razorpay') {
                     razorpayFunction(responseData);
+
                 }else if(selectedPaymentMethod === 'Wallet'){
                     Swal.fire({
                         icon: 'success',
@@ -1002,7 +1003,7 @@ async function placeOrder() {
                         showCancelButton: true,
                         confirmButtonText: 'OK',
                     }).then((result) => {
-                        window.location.href = `/success`;
+                        window.location.href = `/success/${responseData.order._id}`;
                     });
 
 
@@ -1093,7 +1094,7 @@ function razorpayFunction(res) {
                         text: "Your Order has been confirmed.",
                         icon: "success",
                     }).then(() => {
-                        window.location.href = `/success`;
+                        window.location.href = `/success/${responseData.order._id}`;
                     });
                 } else {
                     alert("Some verification issue caused. Please try again after some time.");

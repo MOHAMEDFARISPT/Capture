@@ -65,16 +65,9 @@
           <!-- Add the download button with a link to the invoice -->
        <!-- Add an onclick event to the Download Invoice link -->
 
-<a href="#" class="button" onclick="logOrderId()">Download Invoice</a>
+<button class="button" onclick="downloadInvoice(`<%= order._id %>`)">Download Invoice</button>
 <!-- Add the following script to your HTML -->
-<script>
-    // JavaScript function to log the order ID
-    function logOrderId(orderId) {
-        alert('Clicked on Download Invoice. Order ID:', orderId);
-        // Optionally, you can redirect to the download link after logging
-        // window.location.href = '/generate-invoice/' + orderId;
-    }
-</script>
+
 
 
 
@@ -85,6 +78,7 @@
     <script>
       
     function downloadInvoice(orderId) {
+   
       alert("orderId"+orderId)
         // Construct the URL with the order ID
         var url = '/generate-invoice/' + orderId;

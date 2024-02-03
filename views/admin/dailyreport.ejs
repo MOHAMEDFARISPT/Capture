@@ -3,48 +3,51 @@
 <%- include('../adminpartials/slidebar')%>
 
 <style>
+
     .pagination-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-}
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+    
+    .pagination-boxes {
+        display: flex;
+    }
+    
+    .pagination-box {
+        margin: 0 5px;
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: center;
+        height: 10px;
+    }
+    
+    .pagination-box.active {
+        background-color: #007bff;
+        color: #fff;
+        border-color: #007bff;
+    }
+    
+    .pagination-box a {
+        text-decoration: none;
+        color: #333;
+        
+    }
+    
+    .pagination-box:hover {
+        background-color: #f5f5f5;
+    }
+    
+    .pagination-box.active:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+    
+    </style>
 
-.pagination-boxes {
-    display: flex;
-}
-
-.pagination-box {
-    margin: 0 5px;
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    cursor: pointer;
-    text-align: center;
-    height: 10px;
-}
-
-.pagination-box.active {
-    background-color: #007bff;
-    color: #fff;
-    border-color: #007bff;
-}
-
-.pagination-box a {
-    text-decoration: none;
-    color: #333;
-}
-
-.pagination-box:hover {
-    background-color: #f5f5f5;
-}
-
-.pagination-box.active:hover {
-    background-color: #007bff;
-    color: #fff;
-}
-
-</style>
 
 
 <div class="page-body">
@@ -129,30 +132,40 @@
                             
 
                             </div>
+                           <!-- Add pagination links -->
+<!-- Add pagination boxes -->
+<!-- Add pagination boxes with reduced gap -->
 
-                            <div class="pagination-container">
-                                <div class="pagination-boxes">
-                                    <% if (totalPages > 1) { %>
-                                        <% if (currentPage > 1) { %>
-                                            <div class="pagination-box">
-                                                <a href="?page=<%= currentPage - 1 %>">&laquo;</a>
-                                            </div>
-                                        <% } %>
-                            
-                                        <% for (let page = Math.max(1, currentPage - 2); page <= Math.min(totalPages, currentPage + 2); page++) { %>
-                                            <div class="pagination-box <%= currentPage === page ? 'active' : '' %>">
-                                                <a href="?page=<%= page %>"><%= page %></a>
-                                            </div>
-                                        <% } %>
-                            
-                                        <% if (currentPage < totalPages) { %>
-                                            <div class="pagination-box">
-                                                <a href="?page=<%= currentPage + 1 %>">&raquo;</a>
-                                            </div>
-                                        <% } %>
-                                    <% } %>
-                                </div>
-                            </div>
+  
+  
+<div class="pagination-container">
+    <div class="pagination-boxes">
+        <% if (totalPages > 1) { %>
+
+            <% if (currentPage > 1) { %>
+                <div class="pagination-box">
+                    <a href="?page=<%= currentPage - 1 %>">&laquo; Previous</a>
+                </div>
+            <% } %>
+
+            <% for (let i = 1; i <= totalPages; i++) { %>
+                <div class="pagination-box <%= i === currentPage ? 'active' : '' %>">
+                    <a href="?page=<%= i %>"><%= i %></a>
+                </div>
+            <% } %>
+
+            <% if (currentPage < totalPages) { %>
+                <div class="pagination-box">
+                    <a href="?page=<%= currentPage + 1 %>">Next &raquo;</a>
+                </div>
+            <% } %>
+
+        <% } %>
+    </div>
+</div>
+
+  
+                           
                         </div>
                     </div>
                 </div>
