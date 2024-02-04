@@ -3,103 +3,64 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const mongoose=require('mongoose')
-const session=require("express-session")
-const nocache=require('nocache')
+const mongoose = require('mongoose');
+const session = require("express-session");
+const nocache = require('nocache');
 const adminRouter = require('./routes/admin');
 const usersRouter = require('./routes/users');
-const {error}=require("console")
-const errorHandler=require('./middlewares/errorhandler')
+const errorHandler = require('./middlewares/errorhandler');
 require("dotenv").config();
-                    
+
 const app = express();
 
 // view engine setup
-
-
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
-
-
-
-
-
-
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(nocache())
-
-
-
-
-
+app.use(nocache());
 
 app.use(session({
-  secret: 'your-secret-key', // Change this to a random and secure secret key
+  secret: 'your-secret-key',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false } // Set to true if your application is served over HTTPS
+  cookie: { secure: false }
 }));
-
-
-
-
-
-
-
-
-// Example middleware to handle CORS (if applicable)
-
 
 app.use('/admin', adminRouter);
 app.use('/', usersRouter);
 
 app.get('*',(req,res,next)=>{
- 
-  res.render('user/404')
-  })
-app.use(errorHandler)
+  res.render('user/404');
+});
 
+app.use(errorHandler);
 
-// // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   // next(createError(404));
-//   // next()
-// });
+const connect = mongoose.connect(process.env.DB_MONGO);
 
-// mongoose.connect(process.env.DB_MONGO,{
+connect.then(() => {
+  console.log("MongoDB connected successfully");
+}).catch((error) => {
+  console.log(error);
+});
 
-const connect=mongoose.connect(process.env.DB_MONGO,{
-    useNewUrlparser:true,
-  useUnifiedTopology:true, 
-  serverSelectionTimeoutMS: 20000 
-})
-  
-
-connect.then(()=>{
-  console.log("Mongo db connected successfully");
-})
-.catch((error)=>{
-  console.log(error)
-})
-
-
-// error handler
+// Error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  console.log(err)
-  // res.status(err.status || 500);
-  // res.render('error');
-  res.send(err)
+  console.log(err);
+  res.send(err);
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
 module.exports = app;
