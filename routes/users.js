@@ -43,7 +43,7 @@ router.post('/reset-password',user.resetPasswordPost)
 router.get('/products',checkingsession,isblocked,user.product)
 
 //products page
-router.get('/category',checkingsession,isblocked,user.category)
+router.get('/category',user.category)
 
 //userprofile
 router.get("/account",checkingsession,isblocked,userprofilecontroller.account)

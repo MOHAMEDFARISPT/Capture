@@ -25,7 +25,7 @@
                                     <div class="mb-4 row align-items-center mt-5 mb-5">
                                         <label class="col-sm-3 col-form-label form-label-title">Product Image</label>
                                         <div class="col-sm-9">
-                                            <input class="form-control form-choose" type="file" name="productImage"  multiple onchange="validateProductImage()">
+                                            <input class="form-control form-choose" type="file" name="productImage"  multiple accept=".jpg, .jpeg, .png, .webp" onchange="validateProductImage()" >
                                             <span id="productImageError" class="error-message text-danger"></span>
                                         </div>
                                     </div>

@@ -88,8 +88,10 @@ router.get("/adminlogout",admin.logout)
  //salesrepport print
  router.post('/printReport',salesreport.printReport)
 
+ router.get('/change-password',admin.changepassword)
+ router.post('/change-password-post',admin.changepasspost)
 
-
+ 
 
 
 

@@ -1,6 +1,7 @@
 const express=require("express")
 const usermodel=require("../model/userschema")
 
+const saltRounds = 10; // for bcrypt password hashing
 const bcrypt=require('bcrypt')
 const  {AdminModel}=require("../model/adminschema")
 const addressModel = require('../model/addressschema');
@@ -36,37 +37,38 @@ const home=async(req,res)=>{
     res.render("admin/home",{orderlength,productlength,userslength})
 }
 
+
+
 const loginpost = async (req, res) => {
-   
-    const {email,password}=req.body;
+    const { email, password } = req.body;
     
-    try{
-         
-        const data = await AdminModel.findOne({email:email})
+    try {
+        const user = await AdminModel.findOne({ email: email });
 
-
-        
-        if(!data){
-            res.send("user not found")
+        if (!user) {
+            // If the user is not found
+            return res.send("User not found");
         }
-        if(data.password===password){
 
+        // Compare the provided password with the hashed password in the database
+        const isMatch = await bcrypt.compare(password, user.password);
 
-            req.session.isloggedadmin=true
-            res.redirect("/admin")
-        }else{
-           res.send(
+        if (isMatch) {
+            // If the passwords match
+            req.session.isloggedadmin = true;
+            res.redirect("/admin");
+        } else {
+            // If the passwords do not match
+            res.send(
                 '<script>alert("Invalid Password"); window.location.href = "/admin/adminlogin";</script>'
             );
-  
         }
-
-    }catch(error){
+    } catch (error) {
         console.error(error);
-        res.status(500).send('internal server error ')
+        res.status(500).send('Internal server error');
     }
-    
 };
+
 
 
 
@@ -435,6 +437,52 @@ const editcouponpost=async(req,res)=>{
 
 
 
+  const changepassword=(req,res)=>{
+    res.render("admin/changepassword")
+  }
+
+  const changepasspost = async (req, res) => {
+    console.log("body", req.body);
+    const { CurrentPass, newPass, confirmpass } = req.body;
+
+    try {
+        // Assuming you have a way to identify the current user, e.g., their email or id
+        const currentUserEmail = "farismohammed097@gmail.com"; // This should ideally come from session or JWT token
+
+        const user = await AdminModel.findOne({ email: currentUserEmail });
+        console.log("ffffffff", user);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+       
+        // Comparing the current password with the hashed password stored in the database
+        const isMatch = await bcrypt.compare(CurrentPass, user.password);
+        console.log("ismatch",isMatch)
+        if (!isMatch) {
+            return res.status(400).send('Current password is incorrect');
+        }
+        if (!isMatch) {
+            return res.status(400).send('Current password is incorrect');
+        }
+
+        if (newPass !== confirmpass) {
+            return res.status(400).send('New password and confirm password do not match');
+        }
+
+        // Hashing the new password before saving it to the database
+        const hashedNewPassword = await bcrypt.hash(newPass, saltRounds);
+        user.password = hashedNewPassword;
+
+        await user.save();
+        console.log("Password changed", user);
+        res.redirect("/admin")
+    } catch (error) {
+        console.error("Error changing password:", error);
+        res.status(500).send('An error occurred while changing the password');
+    }
+};
+
 
 
 
@@ -474,7 +522,9 @@ module.exports={
     coupondelete,
     editcoupon,
     editcouponpost,
-    listCoupon
+    listCoupon,
+    changepassword,
+    changepasspost
    
 
 }

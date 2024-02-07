@@ -35,11 +35,11 @@
                                     <div class="mb-4 row align-items-center mt-5 mb-5">
                                         <label class="col-sm-3 col-form-label form-label-title">Product Image</label>
                                         <div class="col-sm-9">
-                                            <input class="form-control form-choose" type="file" name="productImage" placeholder="" multiple>
-                                            <span id="productImageError" class="error-text text-danger"></span>
+                                            <input class="form-control form-choose" type="file" name="productImage" multiple accept=".jpg, .jpeg, .png, .webp">
+                                            <span id="productImageError" class="error-message text-danger"></span>
                                         </div>
                                     </div>
-                                    <div>
+                                    
 
                                   
                                 
@@ -173,14 +173,25 @@
         priceError.innerText = '';
 
         // Validate Product Image
-        // if (productImage.length > 0) {
-        //     for (var i = 0; i < productImage.length; i++) {
-        //         if (/^image\/(jpeg|jpg|png|WEBP)$/.test(productImage[i].type)) {
-        //             productImageError.innerText = 'Invalid image file format. Only JPEG, JPG, PNG, or GIF allowed.';
-        //             return false;
-        //         }
-        //     }
-        // }
+        if (productImage.length === 0) {
+            productImageError.innerText = 'Please select at least one image.';
+            return false;
+        }
+
+        // Validate each selected image's extension
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.webp)$/i;
+
+// Validate each selected image's extension
+for (var i = 0; i < productImage.length; i++) {
+    var fileName = productImage[i].name;
+    var fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
+    if (!allowedExtensions.test(fileExtension)) {
+        productImageError.innerText = 'Invalid file type. Upload images with extensions (jpg, jpeg, png, or webp).';
+        return false;
+    }
+}
+
+
 
         // Validate Product Name
         if (productName === '') {
@@ -219,6 +230,7 @@
         return true;
     }
 </script>
+
 <script>
 
 
