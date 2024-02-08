@@ -45,13 +45,13 @@ const account = async (req, res,next) => {
     const orders=await  ordermodel.find({userId:data._id}).populate("products.productId").sort({ createdAt: -1 })
       .limit(limit)
       .skip(skip);
-    console.log("//////////orders//////////////"+orders);
+   
   const dataid= data._id
 console.log("this is dataid",data._id)
     const wallet=await Wallet.findOne({ user:dataid})
 
 
-    console.log("walletttttssss????",wallet)
+   
 
     
     res.render('user/dashboard',{wallet,orders,data, address,userloggedin ,totalPages,page});
@@ -64,7 +64,7 @@ console.log("this is dataid",data._id)
 };
 
 const editaccountpost=async(req,res)=>{
-  console.log("////////////////////")
+
     console.log("params",req.params.id)
 
     const user=await usermodel.findOne({_id:req.params.id})
@@ -181,6 +181,68 @@ const EditAddress = async (req, res) => {
       console.log(error);
   }
 };
+
+
+
+const editaddresschekout=async(req,res)=>{
+  try {
+    const addressId = req.params.addressId;
+    const userId = req.session.userdata._id;
+    
+    const user = await usermodel.findOne({ _id: userId });
+    console.log("userrrrrrrr", user);
+
+    if (user) {
+        const Address = await addressmodel.findOne({ user: userId });
+        
+        if (Address) {
+            const matchingAddress = Address.addresses.find(addr => addr._id.toString() === addressId);
+            console.log(matchingAddress);
+            res.render("user/chekoutadressedit", { Address: matchingAddress });
+        } else {
+            console.log("Address not found");
+        }
+    } else {
+        console.log("User not found");
+    }
+} catch (error) {
+    console.log(error);
+}
+};
+
+
+
+
+
+const chekouteditaddresspost=async(req,res)=>{
+  try {
+    const addressId = req.params.addressId;
+
+    const formdatas = {
+      fullname: req.body.fullname,
+      contact: req.body.contact,
+      pincode: req.body.pincode,
+      state: req.body.state,
+      address: req.body.address,
+      locality: req.body.locality,
+      district: req.body.district,
+    };
+
+    const updatedAddress = await addressmodel.findOneAndUpdate(
+      { 'addresses._id': addressId },
+      { $set: { 'addresses.$': formdatas } },
+      { new: true }
+    );
+
+    res.redirect("/checkout");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+
+
 
 
 const updateAddress = async (req, res) => {
@@ -461,6 +523,8 @@ module.exports={
     cancelOrder,
     returnproduct,
     logout,
+    editaddresschekout,
+    chekouteditaddresspost
 
 
   

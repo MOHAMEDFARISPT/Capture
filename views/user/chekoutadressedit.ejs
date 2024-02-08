@@ -1,0 +1,153 @@
+
+<style>
+    * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+     font-family: "Open Sans", sans-serif;
+   }
+       #tab-account-link {
+          background: url("https://i.pinimg.com/564x/30/ac/69/30ac69851b027bdfd6961b51daf9a1fd.jpg");
+           background-size: cover;
+           background-position: center;
+           background-repeat: no-repeat;
+           padding: 20px;
+           width: 100%;
+           height: 100%;
+       }
+     
+   
+   
+   </style>
+   <div class="tab-pane fade" id="tab-account-link" role="tabpanel" aria-labelledby="tab-account-link">
+       <div style="max-width: 800px; margin: auto;">
+           <div class="card" style="max-width: 600px; margin: auto; padding: 20px;">
+               <form action="/editaddresspost-chekout/<%= Address._id %>" method="post" onsubmit="return validateForm()">
+                   <div style="margin-bottom: 15px;">
+                       <label for="fullname" style="display: block; margin-bottom: 5px;">Full Name</label>
+                       <input type="text" id="fullname" name="fullname" style="width: 100%; padding: 8px; box-sizing: border-box;" placeholder="Enter Full Name" value="<%= Address.fullname%>">
+                       <span id="fullnameError" style="color: red;"></span>
+                   </div>
+               
+                   <div style="margin-bottom: 15px;">
+                       <label for="contact" style="display: block; margin-bottom: 5px;">Phone Number:</label>
+                       <input type="tel" id="contact" name="contact" style="width: 100%; padding: 8px; box-sizing: border-box;" placeholder="Enter Phone Number"  value="<%= Address.contact%>">
+                       <span id="contactError" style="color: red;"></span>
+                   </div>
+               
+                   <div style="margin-bottom: 15px;">
+                       <label for="pincode" style="display: block; margin-bottom: 5px;">Pincode:</label>
+                       <input type="text" id="pincode" name="pincode" style="width: 100%; padding: 8px; box-sizing: border-box;" placeholder="Enter Pincode" value="<%= Address.pincode%>">
+                       <span id="pincodeError" style="color: red;"></span>
+                   </div>
+               
+                   <div style="margin-bottom: 15px;">
+                       <label for="state" style="display: block; margin-bottom: 5px;">State:</label>
+                       <input type="text" id="state" name="state" style="width: 100%; padding: 8px; box-sizing: border-box;" placeholder="Enter State"  value="<%= Address.state%>">
+                       <span id="stateError" style="color: red;"></span>
+                   </div>
+               
+                   <div style="margin-bottom: 15px;">
+                       <label for="address" style="display: block; margin-bottom: 5px;">Address:</label>
+                       <textarea id="address" name="address" style="width: 100%; padding: 8px; box-sizing: border-box;" rows="4" placeholder="Enter Address"><%=Address.address %></textarea>
+                       <span id="addressError" style="color: red;"></span>
+                   </div>
+               
+                   <div style="margin-bottom: 15px;">
+                       <label for="locality" style="display: block; margin-bottom: 5px;">Locality:</label>
+                       <input type="text" id="locality" name="locality" style="width: 100%; padding: 8px; box-sizing: border-box;" placeholder="Enter Locality"  value="<%=Address.locality %>">
+                       <span id="localityError" style="color: red;"></span>
+                   </div>
+               
+                   <div style="margin-bottom: 15px;">
+                       <label for="district" style="display: block; margin-bottom: 5px;">District:</label>
+                       <input type="text" id="district" name="district" style="width: 100%; padding: 8px; box-sizing: border-box;" placeholder="Enter District"  value="<%=Address.district %>">
+                       <span id="districtError" style="color: red;"></span>
+                   </div>
+               
+                   <button type="submit" style="background-color: #4caf50; color: white; padding: 10px 15px; border: none; cursor: pointer;">Update Address</button>
+               </form>
+               
+               <script>
+                   function validateForm() {
+                       // Reset error messages
+                       resetErrors();
+               
+                       // Get form inputs
+                       var fullname = document.getElementById('fullname').value.trim();
+                       var contact = document.getElementById('contact').value.trim();
+                       var pincode = document.getElementById('pincode').value.trim();
+                       var state = document.getElementById('state').value.trim();
+                       var address = document.getElementById('address').value.trim();
+                       var locality = document.getElementById('locality').value.trim();
+                       var district = document.getElementById('district').value.trim();
+               
+                       // Validation for Full Name
+                       if (fullname === '' || /^\s*$/.test(fullname)) {
+                           displayError('fullnameError', 'Full Name cannot be empty.');
+                           return false;
+                       }
+               
+                       // Validation for Contact
+                       if (contact === '' || !/^\d{10}$/.test(contact)) {
+                           displayError('contactError', 'Enter a valid 10-digit phone number.');
+                           return false;
+                       }
+               
+                       // Validation for Pincode
+                       if (pincode === '' || !/^\d{6}$/.test(pincode)) {
+                           displayError('pincodeError', 'Enter a valid 6-digit pincode.');
+                           return false;
+                       }
+               
+                       // Validation for State
+                       if (state === '' || /^\s*$/.test(state)) {
+                           displayError('stateError', 'State cannot be empty.');
+                           return false;
+                       }
+               
+                       // Validation for Address
+                       if (address === '' || /^\s*$/.test(address)) {
+                           displayError('addressError', 'Address cannot be empty.');
+                           return false;
+                       }
+               
+                       // Validation for Locality
+                       if (locality === '' || /^\s*$/.test(locality)) {
+                           displayError('localityError', 'Locality cannot be empty.');
+                           return false;
+                       }
+               
+                       // Validation for District
+                       if (district === '' || /^\s*$/.test(district)) {
+                           displayError('districtError', 'District cannot be empty.');
+                           return false;
+                       }
+               
+                       // Form is valid
+                       return true;
+                   }
+               
+                   function resetErrors() {
+                       // Reset all error messages
+                       var errorFields = ['fullnameError', 'contactError', 'pincodeError', 'stateError', 'addressError', 'localityError', 'districtError'];
+                       for (var i = 0; i < errorFields.length; i++) {
+                           document.getElementById(errorFields[i]).textContent = '';
+                       }
+                   }
+               
+                   function displayError(field, message) {
+                       // Display error message for the specified field
+                       document.getElementById(field).textContent = message;
+                   }
+               </script>
+               
+              
+           </div>
+           
+       </div>
+   
+   
+   </div>
+   
+   

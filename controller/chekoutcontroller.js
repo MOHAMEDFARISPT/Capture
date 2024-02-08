@@ -70,6 +70,7 @@ const checkoutget=async(req,res)=>{
 
 
 const addaddress=async(req,res)=>{
+    
    
     const { fullname, contact, pincode, state, address, locality, district } = req.body;
 console.log("bodyyyy", req.body)
@@ -109,7 +110,7 @@ console.log("bodyyyy", req.body)
           const newentry = new addressModel({ user: req.session.userdata._id, addresses: [newaddress] });
         
           await newentry.save();
-          res.status(200).json({message:"new address successfully addedd"})
+          res.redirect("/checkout")
       // Redirect after sending JSON response
         }
         

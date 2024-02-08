@@ -266,7 +266,7 @@ const postcoupon = async (req, res) => {
         const discountPercentage = req.body.Discountpercentage;
         const maximumDiscountAmount = req.body.maximumdiscountamount;
         const minimumAmount = req.body.minimumamount;
-        const maximumAmount = req.body.maximumamount;
+       
         const status = req.body.status;
         const expirationDate = req.body.expirationDate;
 
@@ -293,7 +293,6 @@ const postcoupon = async (req, res) => {
             discount_percentage: discountPercentage,
             max_discount_amount: maximumDiscountAmount,
             min_amount: minimumAmount,
-            max_amount: maximumAmount,
             status: status,
             expiry_date: new Date(expirationDate),
         });
@@ -377,7 +376,6 @@ const editcouponpost=async(req,res)=>{
         Discountpercentage,
         maximumdiscountamount,
         minimumamount,
-        maximumamount,
         expirationDate,
         status
     } = req.body;
@@ -393,7 +391,6 @@ const editcouponpost=async(req,res)=>{
         existingCoupon.discount_percentage = Discountpercentage;
         existingCoupon.max_discount_amount = maximumdiscountamount;
         existingCoupon.min_amount = minimumamount;
-        existingCoupon.max_amount = maximumamount;
         existingCoupon.expiry_date = expirationDate;
         existingCoupon.status = status;
 

@@ -90,6 +90,12 @@ router.post('/cart/remove-coupon/:userId',checkingsession,isblocked,cartcontroll
 
  //add-address in checkout
  router.post("/add-address-chkout",checkingsession,isblocked,checkout.addaddress)
+
+ //edit address in chekout
+ router.get('/edit-address-chekout/:addressId',checkingsession,isblocked,userprofilecontroller.editaddresschekout)
+ //edit address in chekout post
+ router.post('/editaddresspost-chekout/:addressId',checkingsession,isblocked,userprofilecontroller.chekouteditaddresspost)
+
  
  //delete address
  router.delete('/delete-address/:addressId',checkingsession,isblocked,checkout.deleteaddress)
@@ -102,6 +108,7 @@ router.post("/change-password",checkingsession,isblocked,userprofilecontroller.c
  //selection
 
  router.post("/productselection/:productId",checkout.selectionbox)
+
 
 
  //payment method

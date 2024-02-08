@@ -5,7 +5,7 @@ var firstnameError = document.getElementById('firstnameError');
 var lastnameError = document.getElementById('lastnameError');
 var contactError = document.getElementById('contactError');
 var emailError = document.getElementById('emailError');
-
+var passwordError=document.getElementById('passworderror')
 var submitError = document.getElementById('submitError');
 
 function validateFirstname() {
@@ -76,6 +76,30 @@ function validateEmail() {
   emailError.innerHTML = '';
   return true;
 }
+function validatePassword() {
+  var passwordInput = document.getElementById("register-password").value;
+  var passwordError = document.getElementById("passwordError");
+
+  // Define the validation criteria
+  var minLength = 8;
+  var containsUpperCase = /[A-Z]/.test(passwordInput);
+  var containsLowerCase = /[a-z]/.test(passwordInput);
+  var containsNumber = /\d/.test(passwordInput);
+  var containsSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(passwordInput);
+
+  // Check if the password meets all criteria
+  if (passwordInput.length < minLength ||
+      !containsUpperCase ||
+      !containsLowerCase ||
+      !containsNumber ||
+      !containsSpecialChar) {
+      passwordError.textContent = "Password must contain at least " + minLength + " characters, including at least one uppercase letter, one lowercase letter, one number, and one special character.";
+      // Optionally, you can add more specific error messages for each condition that fails
+  } else {
+      passwordError.textContent = ""; // Clear the error message if the password is valid
+  }
+}
+
 
 
 
@@ -84,7 +108,9 @@ function validateForm() {
     validateFirstname() &&
     validateLastname() &&
     validateContact() &&
-    validateEmail()
+    validateEmail()&&
+    validatePassword
+    
   );
 }
 

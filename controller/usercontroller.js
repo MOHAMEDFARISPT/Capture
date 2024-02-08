@@ -72,29 +72,22 @@ const product=async(req,res)=>{
 
 
 
-const category = async (req, res,next) => {
+const category = async (req, res, next) => {
   let userloggedin = false;
 
   if (req.session && req.session.userdata) {
     userloggedin = true;
   }
 
-  const categoryId = req.query.categoryId;
   const searchQuery = req.query.search;
-
   const page = parseInt(req.query.page, 10) || 1;
-  const limit = parseInt(req.query.limit, 9) || 9;
+  const limit = parseInt(req.query.limit, 10) || 9;
 
   let product;
   let totalProducts;
 
   try {
     let query = { islist: true };
-    if (categoryId) {
-      console.log(`Applying category filter for category ID: ${categoryId}`);
-      query.category = categoryId;
-   }
-   
 
     if (searchQuery && searchQuery.length > 0) {
       console.log(`Searching products with query: ${searchQuery}`);
@@ -105,30 +98,35 @@ const category = async (req, res,next) => {
       ];
       console.log('Regex pattern for name:', regexPattern);
     }
-    product = await productmodel.find(query).populate('category').skip((page - 1) * limit).limit(limit);
-    
+
+    product = await productmodel.find(query)
+      .populate('category')
+      .skip((page - 1) * limit)
+      .limit(limit);
+
     console.log('Products found:', product.map(p => ({ name: p.productname, description: p.description })));
-    
+
     totalProducts = await productmodel.countDocuments(query); // Count total products
-    
+
     const totalPages = Math.ceil(totalProducts / limit);
-    
+
     const category = await categorymodel.find();
-    
+
     console.log("Products passed to EJS:", product);
-    console.log("categoryyyyyyy",category)
+    console.log("Categories:", category);
+
     res.render('user/category', {
       category,
       product,
       userloggedin,
       totalPages,
       currentPage: page,
-      searchQuery 
+      searchQuery
     });
-    
+
   } catch (error) {
     console.error(error);
-   next(error)
+    next(error);
   }
 };
 
@@ -296,7 +294,8 @@ const signuppost = async (req, res) => {
       }
 
       const otp = generateOtp();
-      const expirationTime = new Date(Date.now() + 30 * 1000);
+      const expirationTime = new Date(Date.now() + 59 * 1000); // 59 seconds
+
 
       req.session.otp = {
           code: otp,
@@ -305,7 +304,7 @@ const signuppost = async (req, res) => {
       };
 
       sendOtp(email, otp);
-      console.log("otp",otp)
+      console.log("otpppppp",otp)
 
       res.redirect('/otp');
       return;
@@ -402,57 +401,52 @@ const resendotp = (req, res) => {
 
 
 // login user post
-const loginpost = async(req, res) => {
-    try {
-      console.log("bodujhj",req.body)
+const loginpost = async (req, res) => {
+  try {
+      console.log("body", req.body);
       const loguser = await usermodel.findOne({ email: req.body.email });
       console.log(loguser);
-      if (loguser) {
-       
-        if(loguser.isblocked){
-          res.redirect("/login")
-          return;
-        }
-        const passwordMatch =await bcrypt.compare(req.body.password, loguser.password);
-        if (passwordMatch) {
-         
-          
-          req.session.userdata=loguser
-          await Wallet.create({
-            user: datas._id,
-            balance: 0,
-            transactions: [],
-            pendingOrder: {
-              orderId: null,
-              amount: 0,
-              currency: null,
-            },
-          });
-          
-          res.status(200)
-          console.log("userdatasessiooon"+req.session.userdata);
-          res.redirect('/');
-        
-        
-
-         
-
-          
-        }
-        else {
-       
-          res.send(
-            '<script>alert("Invalid Password"); window.location.href = "/login";</script>'
-        );
-      } 
-        
+      
+      if (!loguser) {
+          return res.send('<script>alert("Usernot found Please Signup"); window.location.href = "/login";</script>');
       }
-    } catch (error) {
-      console.log(error);
+      
+      if (loguser.isblocked) {
+          return res.send('<script>alert("Your account is blocked. Please contact support."); window.location.href = "/login";</script>');
+      }
+
+      const passwordMatch = await bcrypt.compare(req.body.password, loguser.password);
+      
+      if (passwordMatch) {
+          req.session.userdata = loguser;
+
+          // Create a Wallet for the user if it doesn't exist
+          const existingWallet = await Wallet.findOne({ user: loguser._id });
+          if (!existingWallet) {
+              await Wallet.create({
+                  user: loguser._id,
+                  balance: 0,
+                  transactions: [],
+                  pendingOrder: {
+                      orderId: null,
+                      amount: 0,
+                      currency: null,
+                  },
+              });
+          }
+
+          console.log("User session data: ", req.session.userdata);
+          res.redirect('/');
+      } else {
+          return res.send('<script>alert("Invalid Password"); window.location.href = "/login";</script>');
+      }
+  } catch (error) {
+      console.error(error);
       req.session.error = error;
       res.redirect('/login');
-    }
-  };
+  }
+};
+
 
 
   const forgotpass = async (req, res) => {

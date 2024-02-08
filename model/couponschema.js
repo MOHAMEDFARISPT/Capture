@@ -25,10 +25,6 @@ const couponSchema = new mongoose.Schema({
         type: Number,   
         min: 0
     },
-    max_amount: {
-        type: Number,
-        min: 0
-    },
     status: {
         type: String,
         default: 'Active'
