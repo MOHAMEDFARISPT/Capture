@@ -6,8 +6,7 @@ var productcontroller=require('../controller/productcontroller')
 const salesreport=require('../controller/salesreportcontroller')
 const multer = require('multer');
 const path = require('path');
-const isAdmin = require('../middlewares/adminauth');
-const backtologin=require('../middlewares/adminauth')
+const {isAdmin ,backtologin}=require('../middlewares/adminauth')
 
 // Multer configuration for handling file uploads
 const storage = multer.diskStorage({
@@ -27,8 +26,8 @@ const upload = multer({
   } 
   });
 
-router.get("/adminlogin", admin.adminlogin);
-router.get("/", admin.home);
+router.get("/adminlogin",backtologin, admin.adminlogin);
+router.get("/",isAdmin, admin.home);
 router.post("/loginpost", admin.loginpost);
 router.get("/alluser", admin.listusers);
 
@@ -76,7 +75,7 @@ router.post("/listuser/:couponid",admin.listCoupon)
 router.post("/removeImage",productcontroller.removeImage)
 
 //logout
-router.get("/adminlogout",admin.logout)
+router.get("/adminlogout",isAdmin,admin.logout)
 
 
  //daily sales reports

@@ -6,9 +6,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sneakpeakhub |adminpanel</title>
   <link rel="stylesheet" href="/stylesheet/adminlogin.css">
+  <!-- Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
+
+
 <body>
+<div>
+  
+
+</div>
+
   <div class="wrapper">
+    <% if(locals.alert){ %>
+      <div>
+        <span id="emailerror"  class="text-center text-danger" >
+          <%= alert%>
+        </span>
+      </div>
+
+    <% } %>
+   
+    
     <form action="/admin/loginpost" method="post">
       <h2> Admin Panel</h2>
         <div class="input-field">
@@ -29,6 +49,21 @@
       </div>
     </form>
   </div>
+  <script>
+    // Get the reference to the emailerror element
+    var emailErrorElement = document.getElementById('emailerror');
+    
+    // Using setTimeout to hide the emailerror div after 3 seconds
+    setTimeout(function() {
+      // Check if the element exists before manipulating it
+      if (emailErrorElement) {
+        // Hide the element by setting its display property to 'none'
+        emailErrorElement.style.display = 'none';
+      }
+    }, 3000); // 3000 milliseconds = 3 seconds
+  </script>
+
+
 
 
   <script src="/loginvalidate.js"></script>

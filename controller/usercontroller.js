@@ -408,16 +408,26 @@ const loginpost = async (req, res) => {
       console.log(loguser);
       
       if (!loguser) {
-          return res.send('<script>alert("Usernot found Please Signup"); window.location.href = "/login";</script>');
+        console.log("loguser")
+        res.render("user/signup")
+          
       }
       
-      if (loguser.isblocked) {
-          return res.send('<script>alert("Your account is blocked. Please contact support."); window.location.href = "/login";</script>');
-      }
+      
+      if (loguser && loguser.isblocked) {
+        console.log("loguser.isblocked");
+        res.render("user/login", { alert: "Your account is blocked. Please contact support" });
+    }
+    
 
-      const passwordMatch = await bcrypt.compare(req.body.password, loguser.password);
+    const passwordMatch = loguser && loguser.password ? await bcrypt.compare(req.body.password, loguser.password) : false;
+    if (passwordMatch) {
+        // Your code here
+    }
+    
       
-      if (passwordMatch) {
+      if (loguser&& passwordMatch) {
+        console.log("passwordMatch")
           req.session.userdata = loguser;
 
           // Create a Wallet for the user if it doesn't exist
@@ -438,7 +448,8 @@ const loginpost = async (req, res) => {
           console.log("User session data: ", req.session.userdata);
           res.redirect('/');
       } else {
-          return res.send('<script>alert("Invalid Password"); window.location.href = "/login";</script>');
+        res.render("user/login",{alert:"Invalid Password"})
+
       }
   } catch (error) {
       console.error(error);

@@ -17,9 +17,10 @@ const couponmodel=require('../model/couponschema')
 //     res.render("admin/login")
 // }
 
-const adminlogin = async function(req,res){
+const adminlogin = function(req,res){
+    console.log("hyhello poooii")
     try {
-         res.render('admin/login')
+     return res.render('admin/login')
     } catch (error) {
         console.log(error)
     }
@@ -46,8 +47,8 @@ const loginpost = async (req, res) => {
         const user = await AdminModel.findOne({ email: email });
 
         if (!user) {
-            // If the user is not found
-            return res.send("User not found");
+            console.log("////shibili")
+            return res.render('admin/login',{alert:"User Not Found Please Check Your Email"})
         }
 
         // Compare the provided password with the hashed password in the database
@@ -55,13 +56,12 @@ const loginpost = async (req, res) => {
 
         if (isMatch) {
             // If the passwords match
+            req.session.admin=email
             req.session.isloggedadmin = true;
             res.redirect("/admin");
         } else {
             // If the passwords do not match
-            res.send(
-                '<script>alert("Invalid Password"); window.location.href = "/admin/adminlogin";</script>'
-            );
+            return res.render('admin/login',{alert:"Password is incorrect Please check "})
         }
     } catch (error) {
         console.error(error);
@@ -118,7 +118,8 @@ usermodel.find({})
 
   const logout = (req, res) => {
     console.log("/////////")
-    req.session.isloggedadmin=null
+ 
+    req.session.admin=null
     req.session.isloggedadmin=false;
 
             res.redirect('/admin/adminlogin');

@@ -81,8 +81,13 @@ background-size: cover;
 
     <div class="form-box">
    
-          
-           
+          <% if (locals.alert){%>
+           <div>
+            <span id="diverror"  class="text-center text-danger" >
+                <%= alert%>
+            </span>
+           </div>
+           <% } %>
        
                     <form action="/login" method="post" id="loginForm" >
                         <div class="form-group">
@@ -153,7 +158,20 @@ background-size: cover;
 </script>
 
 <!-- Your login script -->
-
+<script>
+    // Wait for the DOM to be fully loaded
+    document.addEventListener("DOMContentLoaded", function() {
+        // Set a timeout to run after 3000 milliseconds (3 seconds)
+        setTimeout(function() {
+            // Select the span by its id
+            var emailErrorSpan = document.getElementById('diverror');
+            // Assuming the span's parent is the div you want to hide
+            var errorDiv = emailErrorSpan.parentNode;
+            // Set the display style to 'none' to hide it
+            errorDiv.style.display = 'none';
+        }, 3000); // 3000 milliseconds = 3 seconds
+    });
+    </script>
   
 
 
