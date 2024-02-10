@@ -60,7 +60,7 @@ console.log("category",formdatas.category)
 const createdata=await productmodel.create(formdatas)
 console.log("created data",createdata)
 console.log("data inserted successfully")
-res.redirect('/Products')
+res.redirect('/Products-admin')
 }
 
 

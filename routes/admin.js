@@ -30,68 +30,68 @@ router.get("/adminlogin",backtologin, admin.adminlogin);
 
 router.post("/loginpost", admin.loginpost);
 router.get("/adminpanel",isAdmin, admin.home);
-router.get("/alluser", admin.listusers);
+router.get("/alluser",isAdmin, admin.listusers);
 
 
-router.get("/Products", productcontroller.productlist);
-router.get("/addproducts",productcontroller.addproduct);
-router.post("/addproduct",upload.array('productImage',5),productcontroller.formad)
-router.post('/unlistproducts/:productid',productcontroller.unlistproducts)
-router.get('/Editproducts',productcontroller.Editproduct)
-router.post('/editpost/:Id',upload.array('productImage'),productcontroller.Editproductpost)
+router.get("/Products-admin",isAdmin, productcontroller.productlist);
+router.get("/addproducts",isAdmin,productcontroller.addproduct);
+router.post("/addproduct",isAdmin,upload.array('productImage',5),productcontroller.formad)
+router.post('/unlistproducts/:productid',isAdmin,productcontroller.unlistproducts)
+router.get('/Editproducts',isAdmin,productcontroller.Editproduct)
+router.post('/editpost/:Id',isAdmin,upload.array('productImage'),productcontroller.Editproductpost)
 
-router.get("/addcategory", categorycontroller.adcategory);
-router.post('/blockUser/:userId', admin.blockUser);
-router.post('/categoryad', upload.single('categoryImage'), categorycontroller.addcategory);
-router.get('/category',categorycontroller.listcategery)
-router.post('/unlistcategory/:categoryid',categorycontroller.unlistcategory)
-router.get('/Editcategory',categorycontroller.Editcategory)
-router.post('/Editcategory/:Id',upload.single('categoryImage'),categorycontroller.Editcategorypost)
+router.get("/addcategory",isAdmin, categorycontroller.adcategory);
+router.post('/blockUser/:userId',isAdmin, admin.blockUser);
+router.post('/categoryad',isAdmin, upload.single('categoryImage'), categorycontroller.addcategory);
+router.get('/category',isAdmin,categorycontroller.listcategery)
+router.post('/unlistcategory/:categoryid',isAdmin,categorycontroller.unlistcategory)
+router.get('/Editcategory',isAdmin,categorycontroller.Editcategory)
+router.post('/Editcategory/:Id',isAdmin,upload.single('categoryImage'),categorycontroller.Editcategorypost)
 
-router.get("/orderlist",admin.listorders)
-router.get("/orderdetailes/:orderId",admin.orderdetailes)
+router.get("/orderlist",isAdmin,admin.listorders)
+router.get("/orderdetailes/:orderId",isAdmin,admin.orderdetailes)
 
 
 
  //CHANGE ORDER STATUS
 
- router.post('/update-order-status',admin.changeorderstatus)
+ router.post('/update-order-status',isAdmin,admin.changeorderstatus)
 
  //coupons
 
- router.get("/coupons",admin.coupons)
- router.get('/add-coupons',admin.addcoupons)
+ router.get("/coupons",isAdmin,admin.coupons)
+ router.get('/add-coupons',isAdmin,admin.addcoupons)
  
 //coupon form post
-router.post('/coupons/create-coupon',admin.postcoupon)
+router.post('/coupons/create-coupon',isAdmin,admin.postcoupon)
  // Example route definition
-router.delete('/coupons/:couponId', admin.coupondelete);
-router.get('/editcoupon',admin.editcoupon)
-router.post('/editcouponpost/:couponId',admin.editcouponpost)
+router.delete('/coupons/:couponId',isAdmin, admin.coupondelete);
+router.get('/editcoupon',isAdmin,admin.editcoupon)
+router.post('/editcouponpost/:couponId',isAdmin,admin.editcouponpost)
 
 //list/inlistcoupon
-router.post("/listuser/:couponid",admin.listCoupon)
+router.post("/listuser/:couponid",isAdmin,admin.listCoupon)
 
 //remove image
 
-router.post("/removeImage",productcontroller.removeImage)
+router.post("/removeImage",isAdmin,productcontroller.removeImage)
 
 //logout
-router.get("/adminlogout",isAdmin,admin.logout)
+router.get("/adminlogout",isAdmin,isAdmin,admin.logout)
 
 
  //daily sales reports
- router.get("/dailyreports",salesreport.dailysalesreports)
+ router.get("/dailyreports",isAdmin,salesreport.dailysalesreports)
 
- router.get('/monthlyreport',salesreport.monthlyreport)
+ router.get('/monthlyreport',isAdmin,salesreport.monthlyreport)
 
- router.get('/yearlyreports',salesreport.yearlysalesreport)
+ router.get('/yearlyreports',isAdmin,salesreport.yearlysalesreport)
 
  //salesrepport print
- router.post('/printReport',salesreport.printReport)
+ router.post('/printReport',isAdmin,salesreport.printReport)
 
- router.get('/change-password',admin.changepassword)
- router.post('/change-password-post',admin.changepasspost)
+ router.get('/change-password',isAdmin,admin.changepassword)
+ router.post('/change-password-post',isAdmin,admin.changepasspost)
 
  
 
