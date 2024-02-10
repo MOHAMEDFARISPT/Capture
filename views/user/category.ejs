@@ -68,7 +68,7 @@
                 <div class="container ">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item"><a href="/category">Shop</a></li>
+                        <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
                         
                     </ol>
                 </div><!-- End .container -->
@@ -473,7 +473,7 @@
                 const categoryId = this.getAttribute('data-category-id');
 
                 // Build the URL with the category ID as a query parameter
-                const newUrl = '/category?categoryId=' + encodeURIComponent(categoryId);
+                const newUrl = '/shop?categoryId=' + encodeURIComponent(categoryId);
                 
                 // Redirect to the new URL
                 window.location.href = newUrl;

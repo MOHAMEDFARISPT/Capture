@@ -47,7 +47,7 @@ const addcategory = async (req, res) => {
 
       console.log(createdData);
       console.log("Category inserted successfully");
-      res.redirect('/category');
+      res.redirect('/shop');
     }
   } catch (error) {
     console.error('Error adding category:', error);
@@ -123,7 +123,7 @@ const Editcategorypost = async (req, res) => {
       if (existingCategory) {
         // Handle the case where the updated category name conflicts with an existing category
         console.log('Category name already exists');
-        res.redirect('/category'); // Redirect to an appropriate page or show an error
+        res.redirect('/shop'); // Redirect to an appropriate page or show an error
         return;
       }
 
@@ -134,7 +134,7 @@ const Editcategorypost = async (req, res) => {
 
       await category.save();
       console.log('Category saved successfully');
-      res.redirect('/category'); // Redirect to a success page
+      res.redirect('/shop'); // Redirect to a success page
     }
   } catch (error) {
     console.log(error);
