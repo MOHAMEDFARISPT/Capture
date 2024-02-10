@@ -622,6 +622,27 @@ res.send(Buffer.from(result.pdf, 'base64'));
   
 
 
+const validaterefferalcode = async (req, res) => {
+  try {
+    // Extract referral code from request body
+    const referralCode = req.body.referralCode;
+
+    // Find user by referral code
+    const matchedReferral = await usermodel.findOne({ refferalCode: referralCode });
+
+    if (matchedReferral) {
+        // Referral code found
+        res.status(200).json({ message: 'Referral code is valid', matchedReferral });
+    } else {
+        // Referral code not found
+        res.status(404).json({ error: 'Referral code not found' });
+    }
+} catch (error) {
+    // Error occurred
+    console.error("Error validating referral code:", error);
+    res.status(500).json({ error: 'Internal server error' });
+}
+};
 
 
 
@@ -652,7 +673,8 @@ module.exports = {
     product,
     category,
     success,
-    invoice
+    invoice,
+    validaterefferalcode
     
    
   

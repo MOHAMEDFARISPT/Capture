@@ -27,8 +27,9 @@ const upload = multer({
   });
 
 router.get("/adminlogin",backtologin, admin.adminlogin);
-router.get("/",isAdmin, admin.home);
+
 router.post("/loginpost", admin.loginpost);
+router.get("/",isAdmin, admin.home);
 router.get("/alluser", admin.listusers);
 
 
@@ -49,6 +50,7 @@ router.post('/Editcategory/:Id',upload.single('categoryImage'),categorycontrolle
 
 router.get("/orderlist",admin.listorders)
 router.get("/orderdetailes/:orderId",admin.orderdetailes)
+
 
 
  //CHANGE ORDER STATUS

@@ -5,30 +5,50 @@
 
 <%- include('../adminpartials/slidebar')%>
 <style>
-    .pagination-container {
-  display: flex;
-  justify-content: center;
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 }
 
-.pagination {
-  display: flex;
+.pagination-boxes {
+    display: flex;
 }
 
-.pagination a {
-  padding: 8px;
-  margin: 0 5px;
-  text-decoration: none;
-  color: #000;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+.pagination-box {
+    margin: 0 5px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    /* height: 10px; */ /* Removed height as it's unnecessary */
 }
 
-.pagination a.active {
-  background-color: #046707;
-  color: white;
+.pagination-box.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
 }
 
-</style>
+.pagination-box a {
+    text-decoration: none;
+    color: #333;
+}
+
+.pagination-box:hover {
+    background-color: #f5f5f5;
+}
+
+.pagination-box.active:hover {
+    background-color: #007bff;
+}
+
+
+    </style>
+    
 <div class="page-body">
     <!-- ... (existing code) ... -->
 
@@ -71,7 +91,8 @@
                                                         
                                                         <td><strong><%= orderItem.totalAmount %></strong></td>
                                                         <td><strong><%= orderItem.paymentMethod %></strong></td>
-                                                        <td><strong><%= orderItem.date.toLocaleDateString() %></strong></td>
+                                                        <td><strong><%= orderItem.date.toLocaleDateString("en-GB") %></strong></td>
+
                                                         <td>
                                                             <% if (product.cancelstatus === 'delivered') { %>
                                                                 <span style="color: green;"><strong>Product Delivered</strong></span>
@@ -115,30 +136,32 @@
        
     </div>
     <div class="pagination-container">
-        <div class="pagination">
-          <% for (let page = 1; page <= totalPages; page++) { %>
-            <a href="?page=<%= page %>" class="<%= currentPage === page ? 'active' : '' %>"><%= page %></a>
-          <% } %>
+        <div class="pagination-boxes">
+            <% if (totalPages > 1) { %>
+    
+                <% if (currentPage > 1) { %>
+                    <div class="pagination-box">
+                        <a href="?page=<%= currentPage - 1 %>">&laquo; Previous</a>
+                    </div>
+                <% } %>
+    
+                <% for (let page = Math.max(1, currentPage - 2); page <= Math.min(totalPages, currentPage + 2); page++) { %>
+                    <div class="pagination-box <%= currentPage === page ? 'active' : '' %>">
+                        <a href="?page=<%= page %>"><%= page %></a>
+                    </div>
+                <% } %>
+    
+                <% if (currentPage < totalPages) { %>
+                    <div class="pagination-box">
+                        <a href="?page=<%= currentPage + 1 %>">Next &raquo;</a>
+                    </div>
+                <% } %>
+    
+            <% } %>
         </div>
-      </div>
-      
-      
-    <!-- Add pagination controls above your order list -->
-   
-  
-  <!-- Your order list rendering logic here -->
-  <% if (orders !== null && orders !== undefined && orders.length > 0) { %>
-    <% orders.forEach(orderItem => { %>
-      <% orderItem.products.forEach(product => { %>
-        <!-- Render your order details here -->
-      <% }); %>
-    <% }); %>
-  <% } else { %>
-    <tr>
-      <td colspan="8"><strong>No orders available</strong></td>
-    </tr>
-  <% } %>
-  
+    </div>
+    
+ 
 
     <!-- Container-fluid Ends-->
 

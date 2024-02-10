@@ -40,6 +40,8 @@ const home=async(req,res)=>{
 
 
 
+
+
 const loginpost = async (req, res) => {
     const { email, password } = req.body;
     
@@ -58,7 +60,7 @@ const loginpost = async (req, res) => {
             // If the passwords match
             req.session.admin=email
             req.session.isloggedadmin = true;
-            res.redirect("/admin");
+            res.redirect("/");
         } else {
             // If the passwords do not match
             return res.render('admin/login',{alert:"Password is incorrect Please check "})
@@ -122,7 +124,7 @@ usermodel.find({})
     req.session.admin=null
     req.session.isloggedadmin=false;
 
-            res.redirect('/admin/adminlogin');
+            res.render('admin/login');
 
             
   
@@ -131,30 +133,30 @@ usermodel.find({})
 
 
 const listorders = async (req, res) => {
-  try {
-    const pageSize = 10; // Set the number of orders to display per page
-    const page = parseInt(req.query.page, 10) || 1;
+    try {
+        const pageSize = 10; // Set the number of orders to display per page
+        const page = parseInt(req.query.page, 10) || 1;
 
-    const totalOrders = await ordermodel.countDocuments();
-    const totalPages = Math.ceil(totalOrders / pageSize);
+        const totalOrders = await ordermodel.countDocuments();
+        const totalPages = Math.ceil(totalOrders / pageSize);
 
-    const orders = await ordermodel.find({})
-      .populate('products.productId')
-      .populate('userId')
-      .skip((page - 1) * pageSize)
-      .limit(pageSize);
+        const orders = await ordermodel.find({})
+            .populate('products.productId')
+            .populate('userId')
+            .sort({ date: -1 }) // Sort orders by date in descending order (latest orders first)
+            .skip((page - 1) * pageSize)
+            .limit(pageSize);
 
-    res.render('admin/orderlist', {
-      orders,
-      totalPages,
-      currentPage: page,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
-  }
+        res.render('admin/orderlist', {
+            orders,
+            totalPages,
+            currentPage: page,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
 };
-
 
 
 

@@ -56,15 +56,14 @@ console.log("this is dataid",data._id)
     
     res.render('user/dashboard',{wallet,orders,data, address,userloggedin ,totalPages,page});
   } catch (error) {
-    // Handle any errors that occurred during the process
-    console.error("Error in the 'account' controller:", error);
+   
     next(error)
-    // res.status(500).send("Internal Server Error");
+  
   }
 };
 
-const editaccountpost=async(req,res)=>{
-
+const editaccountpost=async(req,res,next)=>{
+  try {
     console.log("params",req.params.id)
 
     const user=await usermodel.findOne({_id:req.params.id})
@@ -89,6 +88,12 @@ const editaccountpost=async(req,res)=>{
     }else{
       console.error(err)
     }
+  } catch (error) {
+    next(error)
+    
+  }
+
+  
 
 
 }
@@ -101,6 +106,7 @@ const addaddress=(req,res)=>{
 
 
 const addresspost = async (req, res,next) => {
+  console.log("address ethi")
   console.log("session data"+req.session.userdata);
   const { fullname, contact, pincode, state, address, locality, district } = req.body;
 
@@ -149,14 +155,13 @@ const addresspost = async (req, res,next) => {
     res.redirect("/account"); 
     
   } catch (error) {
-    console.error(error);
     next(error)
   }
 };
 
 
 
-const EditAddress = async (req, res) => {
+const EditAddress = async (req, res,next) => {
   try {
       const addressId = req.params.addressId;
       const userId = req.session.userdata._id;
@@ -179,12 +184,13 @@ const EditAddress = async (req, res) => {
       }
   } catch (error) {
       console.log(error);
+      next(error)
   }
 };
 
 
 
-const editaddresschekout=async(req,res)=>{
+const editaddresschekout=async(req,res,next)=>{
   try {
     const addressId = req.params.addressId;
     const userId = req.session.userdata._id;
@@ -207,6 +213,7 @@ const editaddresschekout=async(req,res)=>{
     }
 } catch (error) {
     console.log(error);
+    next(error)
 }
 };
 
@@ -214,7 +221,7 @@ const editaddresschekout=async(req,res)=>{
 
 
 
-const chekouteditaddresspost=async(req,res)=>{
+const chekouteditaddresspost=async(req,res,next)=>{
   try {
     const addressId = req.params.addressId;
 
@@ -237,6 +244,7 @@ const chekouteditaddresspost=async(req,res)=>{
     res.redirect("/checkout");
   } catch (error) {
     console.error(error);
+    next(error)
   }
 };
 
@@ -245,7 +253,7 @@ const chekouteditaddresspost=async(req,res)=>{
 
 
 
-const updateAddress = async (req, res) => {
+const updateAddress = async (req, res,next) => {
   try {
     const addressId = req.params.addressId;
 
@@ -268,6 +276,7 @@ const updateAddress = async (req, res) => {
     res.redirect("/account");
   } catch (error) {
     console.error(error);
+    next(error)
   }
 };
 
@@ -277,7 +286,7 @@ const updateAddress = async (req, res) => {
 
 
 
-const cancelOrder = async (req, res) => {
+const cancelOrder = async (req, res,next) => {
   try {
       const { orderId, productId, reason } = req.body;
 
@@ -331,8 +340,7 @@ const cancelOrder = async (req, res) => {
       res.status(200).json({ message: 'Product canceled!!', orderProduct });
 
   } catch (error) {
-      console.error('Error cancelling order:', error);
-      res.status(500).json({ message: 'Internal server error' });
+      next(error)
   }
 };
 
@@ -423,7 +431,7 @@ findorder.products[0].cancelstatus = 'returned';
 
 
 
-const myorderdetailes = async (req, res) => {
+const myorderdetailes = async (req, res,next) => {
   let userloggedin = false;
   if (req.session && req.session.userdata) {
     userloggedin = true;
@@ -449,13 +457,11 @@ const myorderdetailes = async (req, res) => {
       res.render('user/orderdetailes', { userloggedin, error: 'Order not found' });
     }
   } catch (error) {
-    // Handle any errors that occur during the database query
-    console.error(error);
-    res.render('user/orderdetailes', { userloggedin, error: 'Error fetching order details' });
+   next(error)
   }
 };
 
-const changepassword = async (req, res) => {
+const changepassword = async (req, res,next) => {
   try {
     const currentpass = req.body.currentpassword;
     const newpassword = req.body.newpassword;
@@ -484,8 +490,8 @@ const changepassword = async (req, res) => {
     await user.save();
     return res.status(200).json({ success: 'Password updated successfully' });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    next(error)
+  
   }
 };
 

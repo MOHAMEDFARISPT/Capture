@@ -148,8 +148,11 @@ background-size: cover;
         </div><!-- End .form-group -->
         <div class="form-group">
           <label for="referalcode">Referal Code(optional) </label>
-          <input type="referalcode" class="form-control" id="register-referalcode" name="referalcode" placeholder="Enter referalcode" onkeyup="validatePassword()">
+          <input type="referalcode" class="form-control" id="register-referalcode" name="referalcode" placeholder="Enter referalcode" >
+          <button type="button" style="padding: 6px 12px; font-size: 12px; background-color: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#0056b3'" onmouseout="this.style.backgroundColor='#007bff'" onclick="validateReferralCode()">Verify Code</button>
+
           <span id="referalcodeError" class="Error  text-danger"></span>
+          <p id="validationMessage"></p>
       </div>
 
         <div class="form-footer">
@@ -186,7 +189,41 @@ background-size: cover;
 <script src="/signupvalidate.js"></script>
 
 
-
+<script>
+  function validateReferralCode() {
+      const referralCode = document.getElementById('register-referalcode').value;
+  
+      // Make a POST request to backend route to validate the referral code
+      fetch('/validate-referral-code', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ referralCode: referralCode })
+      })
+      .then(response => {
+        
+          if (response.ok) {
+            
+              // If response is successful, extract JSON data
+              return response.json();
+          } else {
+              // If response is not successful, throw an error
+              throw new Error('Invalid referral code');
+          }
+      })
+      .then(data => {
+          // Update the DOM to display the validation message
+          document.getElementById('validationMessage').textContent = data.message;
+      })
+      .catch(error => {
+          // Handle any errors
+          console.error('Error:', error.message);
+          document.getElementById('validationMessage').textContent = 'Error validating referral code';
+      });
+  }
+  </script>
+  
 
 
 </body>

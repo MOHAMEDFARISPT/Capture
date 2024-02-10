@@ -13,7 +13,6 @@ const session=require('express-session')
 
 
 
-
 //api
 router.get("/",user.home)
 
@@ -66,6 +65,7 @@ router.post('/update-address/:addressId',checkingsession,isblocked,userprofileco
 router.get("/cart",checkingsession,isblocked,cartcontroller.cart)
 
 
+
 //coupon apply
 
 router.post("/couponapply/:couponId",checkingsession,isblocked,cartcontroller.couponapply)
@@ -109,8 +109,9 @@ router.post("/change-password",checkingsession,isblocked,userprofilecontroller.c
 
  router.post("/productselection/:productId",checkout.selectionbox)
 
+//refereal code confirm in sugnup form
 
-
+router.post('/validate-referral-code',user.validaterefferalcode)
  //payment method
 
  router.post("/place-order",checkingsession,isblocked,checkout.addresspaymentmethod)
