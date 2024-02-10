@@ -17,14 +17,17 @@ const couponmodel=require('../model/couponschema')
 //     res.render("admin/login")
 // }
 
-const adminlogin = function(req,res){
-    console.log("hyhello poooii")
+const adminlogin = (req, res) => {
+    console.log("hyhello poooii");
     try {
-     return res.render('admin/login')
+        // Set cache-control headers
+        res.set('Cache-Control', 'no-store');
+        res.render('admin/login');
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
+};
+
 
 const home=async(req,res)=>{
     const order=await ordermodel.find()
@@ -60,7 +63,7 @@ const loginpost = async (req, res) => {
             // If the passwords match
             req.session.admin=email
             req.session.isloggedadmin = true;
-            res.redirect("/");
+            res.redirect("/adminpanel");
         } else {
             // If the passwords do not match
             return res.render('admin/login',{alert:"Password is incorrect Please check "})
@@ -129,6 +132,7 @@ usermodel.find({})
             
   
 };
+
 
 
 
@@ -303,7 +307,7 @@ const postcoupon = async (req, res) => {
         console.log("newcoupon", newCoupon);
 
         await newCoupon.save();
-res.redirect('/admin/coupons')
+res.redirect('/coupons')
      
 
            
@@ -402,7 +406,7 @@ const editcouponpost=async(req,res)=>{
         console.log("existingCoupon",existingCoupon)
 
         // Redirect to a page or send a response
-        res.redirect('/admin/coupons');
+        res.redirect('/coupons');
     } catch (error) {
         console.error('Error updating coupon details:', error);
         // Handle the error appropriately (send response, log, etc.)
@@ -476,7 +480,7 @@ const editcouponpost=async(req,res)=>{
 
         await user.save();
         console.log("Password changed", user);
-        res.redirect("/admin")
+        res.redirect("/")
     } catch (error) {
         console.error("Error changing password:", error);
         res.status(500).send('An error occurred while changing the password');

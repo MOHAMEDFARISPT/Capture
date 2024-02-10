@@ -30,7 +30,7 @@
                                        
                                
                                 
-                                <form class="theme-form theme-form-2 mega-form" action="/admin/editpost/<%= product._id %>" method="post" enctype="multipart/form-data" onsubmit="return validateProductForm()">
+                                <form class="theme-form theme-form-2 mega-form" action="/editpost/<%= product._id %>" method="post" enctype="multipart/form-data" onsubmit="return validateProductForm()">
                                     <!-- Product Image -->
                                     <div class="mb-4 row align-items-center mt-5 mb-5">
                                         <label class="col-sm-3 col-form-label form-label-title">Product Image</label>
@@ -235,7 +235,7 @@ for (var i = 0; i < productImage.length; i++) {
 
 
 function removeImage(imageindex, productId) {
-    fetch('/admin/removeImage', {
+    fetch('/removeImage', {
         method: 'POST',
         headers: { // Fix the typo here from 'Headers' to 'headers'
             'Content-Type': 'application/json' // Fix the typo here from 'content-type' to 'Content-Type'

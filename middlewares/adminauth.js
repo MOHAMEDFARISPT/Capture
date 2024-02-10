@@ -2,9 +2,10 @@
 const isAdmin = (req, res, next) => {
     // Check if the user is authenticated as an admin
     if ( req.session.admin) {
-        console.log("hy")
+        console.log("okkkkkk")
        next()
     } else {
+        console.log("not iokkkuyy")
         
          res.redirect('/adminlogin')
     }
@@ -13,8 +14,10 @@ const isAdmin = (req, res, next) => {
 const backtologin=(req,res,next)=>{
     console.log("hyy")
     if(req.session.isloggedadmin){
-        res.redirect("/admin")
+        console.log("isloggedadmin")
+        res.redirect("/adminpanel")
     }else{
+        console.log("not sillogged admin")
         
        next()
     }

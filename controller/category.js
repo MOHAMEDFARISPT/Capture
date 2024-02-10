@@ -32,7 +32,7 @@ const addcategory = async (req, res) => {
     if (existingCategory) {
       // Display a simple alert if the category already exists
       return res.send(
-        '<script>alert("This category already exists"); window.location.href = "/admin/addcategory";</script>'
+        '<script>alert("This category already exists"); window.location.href = "/addcategory";</script>'
       );
     } else {
       const data = {
@@ -47,7 +47,7 @@ const addcategory = async (req, res) => {
 
       console.log(createdData);
       console.log("Category inserted successfully");
-      res.redirect('/admin/category');
+      res.redirect('/category');
     }
   } catch (error) {
     console.error('Error adding category:', error);
@@ -99,7 +99,7 @@ const Editcategory=async (req,res)=>{
       
       res.render('admin/categeryedit',{Category})
     }else{
-      res.redirect('/admin/categorylist')
+      res.redirect('/categorylist')
     }
     
   } catch (error) {
@@ -123,7 +123,7 @@ const Editcategorypost = async (req, res) => {
       if (existingCategory) {
         // Handle the case where the updated category name conflicts with an existing category
         console.log('Category name already exists');
-        res.redirect('/admin/category'); // Redirect to an appropriate page or show an error
+        res.redirect('/category'); // Redirect to an appropriate page or show an error
         return;
       }
 
@@ -134,12 +134,12 @@ const Editcategorypost = async (req, res) => {
 
       await category.save();
       console.log('Category saved successfully');
-      res.redirect('/admin/category'); // Redirect to a success page
+      res.redirect('/category'); // Redirect to a success page
     }
   } catch (error) {
     console.log(error);
     // Handle any errors that occur during the update process
-    res.redirect('admin/categeryedit'); // Redirect to an edit page or show an error
+    res.redirect('/categeryedit'); // Redirect to an edit page or show an error
   }
 };
 

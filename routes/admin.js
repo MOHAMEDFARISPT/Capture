@@ -29,7 +29,7 @@ const upload = multer({
 router.get("/adminlogin",backtologin, admin.adminlogin);
 
 router.post("/loginpost", admin.loginpost);
-router.get("/",isAdmin, admin.home);
+router.get("/adminpanel",isAdmin, admin.home);
 router.get("/alluser", admin.listusers);
 
 

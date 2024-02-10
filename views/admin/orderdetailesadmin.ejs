@@ -344,8 +344,8 @@
            <div class="card-footer  bg-white px-sm-3 pt-sm-4 px-0">
             
                 <div class="row text-center">
-                    <div class="col my-auto border-line"><a href="/admin/orderlist"><h5>Orders</h5></a></div>
-                    <div class="col my-auto border-line"><a href="/admin"><h5>Dashboard</h5></a></div>
+                    <div class="col my-auto border-line"><a href="/orderlist"><h5>Orders</h5></a></div>
+                    <div class="col my-auto border-line"><a href="/"><h5>Dashboard</h5></a></div>
                     <!-- <div class="col my-auto border-line"><a href=""><h5>Home</h5></a></div> -->
                 </div>
             
@@ -377,7 +377,7 @@
             console.log('cancelReason:', cancelReason);
     
             // Use Fetch to send data to your server
-            fetch('/admin/update-order-status', {
+            fetch('/update-order-status', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

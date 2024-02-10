@@ -31,7 +31,7 @@ app.use(session({
   cookie: { secure: false }
 }));
 
-app.use('/admin', adminRouter);
+app.use('/', adminRouter);
 app.use('/', usersRouter);
 
 app.get('*',(req,res,next)=>{

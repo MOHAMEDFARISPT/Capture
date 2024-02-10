@@ -61,7 +61,7 @@
                                         <a href="javascript:void(0)">Export</a>
                                     </li> -->
                                     <li>
-                                        <a class="btn btn-solid" href="/admin/add-coupons">Add Coupon</a>
+                                        <a class="btn btn-solid" href="/add-coupons">Add Coupon</a>
                                     </li>
                                 </ul>
                             </div>
@@ -115,7 +115,7 @@
                     <% } %>
                 </td>
                 <td>
-                    <a href="/admin/editcoupon?itemId=<%= item._id %>">
+                    <a href="/editcoupon?itemId=<%= item._id %>">
                         <button class="btn btn-primary" style="width: 100px; height: 50px;">Edit</button>
                     </a>
                 </td>
@@ -182,7 +182,7 @@
         }
 
         try {
-            const response = await fetch(`/admin/coupons/${couponId}`, {
+            const response = await fetch(`/coupons/${couponId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -223,7 +223,7 @@
             
                         if (confirmation.isConfirmed) {
                             // If the user confirms, make the fetch request
-                            const response = await fetch(`/admin/listuser/${couponid}`, {
+                            const response = await fetch(`/listuser/${couponid}`, {
                                 method: 'post',
                             });
             

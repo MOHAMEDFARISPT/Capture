@@ -60,7 +60,7 @@ console.log("category",formdatas.category)
 const createdata=await productmodel.create(formdatas)
 console.log("created data",createdata)
 console.log("data inserted successfully")
-res.redirect('/admin/Products')
+res.redirect('/Products')
 }
 
 
@@ -89,7 +89,7 @@ const Editproduct=async(req,res)=>{
    if(product){
     res.render("admin/editproducts",{product,category})
    }else{
-    res.redirect("/admin/products")
+    res.redirect("/products")
    }
 
 }
@@ -112,7 +112,7 @@ const Editproductpost=async(req,res)=>{
 
    await products.save()
    console.log("product detailes changed");
-   res.redirect("/admin/products")
+   res.redirect("/products")
   
 
 
