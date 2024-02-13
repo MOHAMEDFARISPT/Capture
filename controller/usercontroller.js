@@ -72,22 +72,78 @@ const product=async(req,res)=>{
 
 
 
-const category = async (req, res, next) => {
+// const category = async (req, res, next) => {
+//   try {
+//     let userloggedin = false;
+
+//     if (req.session && req.session.userdata) {
+//       userloggedin = true;
+//     }
+  
+//     const page = parseInt(req.query.page, 10) || 1;
+//     const limit = parseInt(req.query.limit, 10) || 9;
+//     const selectedCategories = req.query.categories ? req.query.categories.split(',') : []; // Get selected categories from query parameters and split into array
+
+//     console.log('Selected categories:', selectedCategories); // Log selected categories
+
+//     let query = { islist: true };
+
+//     // Add selected categories to the query
+//     if (selectedCategories.length > 0) {
+//       query.category = { $in: selectedCategories };
+//     }
+
+//     const product = await productmodel.find(query)
+//                                       .populate('category')
+//                                       .skip((page - 1) * limit)
+//                                       .limit(limit);
+
+//     const totalProducts = await productmodel.countDocuments(query); // Count total products
+//     const totalPages = Math.ceil(totalProducts / limit);
+
+//     const category = await categorymodel.find();
+
+//     res.render('user/category', {
+//       category,
+//       product,
+//       userloggedin,
+//       totalPages,
+//       currentPage: page,
+//       searchQuery: ''
+//     });
+
+//   } catch (error) {
+//     console.error(error);
+//     next(error);
+//   }
+// };
+
+
+
+
+const category = async (req, res,next) => {
   let userloggedin = false;
 
   if (req.session && req.session.userdata) {
     userloggedin = true;
   }
 
+  const categoryId = req.query.categoryId;
+  console.log("categoryId",categoryId)
   const searchQuery = req.query.search;
+
   const page = parseInt(req.query.page, 10) || 1;
-  const limit = parseInt(req.query.limit, 10) || 9;
+  const limit = parseInt(req.query.limit, 9) || 9;
 
   let product;
   let totalProducts;
 
   try {
     let query = { islist: true };
+
+    if (categoryId) {
+      query.category = categoryId;
+    }
 
     if (searchQuery && searchQuery.length > 0) {
       console.log(`Searching products with query: ${searchQuery}`);
@@ -98,37 +154,31 @@ const category = async (req, res, next) => {
       ];
       console.log('Regex pattern for name:', regexPattern);
     }
-
-    product = await productmodel.find(query)
-      .populate('category')
-      .skip((page - 1) * limit)
-      .limit(limit);
-
+    product = await productmodel.find(query).populate('category').skip((page - 1) * limit).limit(limit);
     console.log('Products found:', product.map(p => ({ name: p.productname, description: p.description })));
-
+    
     totalProducts = await productmodel.countDocuments(query); // Count total products
-
+    
     const totalPages = Math.ceil(totalProducts / limit);
-
+    
     const category = await categorymodel.find();
-
+    
     console.log("Products passed to EJS:", product);
-    console.log("Categories:", category);
-
     res.render('user/category', {
       category,
       product,
       userloggedin,
       totalPages,
       currentPage: page,
-      searchQuery
+      searchQuery 
     });
-
+    
   } catch (error) {
     console.error(error);
-    next(error);
+   next(error)
   }
 };
+
 
 
 
@@ -183,7 +233,7 @@ function generateOtp() {
 
 function sendOtp(email, otp) {
 
-    console.log(email, otp)
+    console.log("email&otp",email, otp)
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {

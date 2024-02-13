@@ -794,7 +794,7 @@ function razorpayFunction(res) {
                         text: "Your Order has been confirmed.",
                         icon: "success",
                     }).then(() => {
-                        window.location.href = `/success/${responseData.order._id}`;
+                        window.location.href = `/success/${result.order._id}`;
                     });
                 } else {
                     alert("Some verification issue caused. Please try again after some time.");
