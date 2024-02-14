@@ -320,13 +320,7 @@
                         
                                         <h5 style="color: blue;">Select A Payment Method</h5>
 
-                                        <!-- 
-                                                                                <div class="payment-option">
-                                                                                    <input type="radio" id="payment-direct" name="payment-method" value="direct">
-                                                                                    <label for="payment-direct">Direct bank transfer</label>
-                                                                                   
-                                                                                </div> -->
-                                                                                
+                                      
                                                                                 
                                                                                 <div class="payment-option">
                                                                                     <input type="radio" id="payment-cod" name="payment-method" value="cod" onclick="selectPayment('cod')">
@@ -345,24 +339,13 @@
                                                                                     <label for="payment-check">Wallet</label>
                                                                                     
                                                                                 </div>
-                                                                                <!-- <div class="payment-option">
-                                                                                    <input type="radio" id="payment-direct" name="payment-method" value="direct">
-                                                                                    <label for="payment-direct">Direct bank transfer</label>
-                                                                                    
-                                                                                </div> -->
-                                                                                
-                                                                                <!-- <div class="payment-option">
-                                                                                    <input type="radio" id="payment-paypal" name="payment-method" value="paypal">
-                                                                                    <label for="payment-paypal">PayPal</label>
-                                                                                    
-                                                                                </div>
-                                                                                
+                                                                               
                                                                                 <div class="payment-option">
                                                                                     <input type="radio" id="payment-credit-card" name="payment-method" value="credit-card">
                                                                                     <label for="payment-credit-card">Credit Card (Stripe)</label>
                                                                                     
                                                                                 </div>
-                                                                                 -->
+                                                                               
                                                                                 
                         
                                         <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block" onclick="placeOrder()">
@@ -419,8 +402,7 @@
                                         <div>
                                         <p id="appliedNotification"> </p>
                                     </div>
-                                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-                                        <!-- <button type="button" class="btn btn-primary" onclick="applyCoupon()">Apply Coupon</button> -->
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -430,86 +412,8 @@
                           
 
 
-            			<!-- <div class="checkout-discount">
-            				<form action="#">
-        						<input type="text" class="form-control" required id="checkout-discount-input">
-            					<label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label>
-            				</form>
-            			</div> -->
-
-
-            			<!-- <form action="#">
-		                	<div class="row">
-		                		<div class="col-lg-9">
-		                			<h2 class="checkout-title">Billing Details</h2>
-		                				<div class="row">
-		                					<div class="col-sm-6">
-		                						<label>First Name *</label>
-		                						<input type="text" class="form-control" required>
-		                					</div>
-
-		                					<div class="col-sm-6">
-		                						<label>Last Name *</label>
-		                						<input type="text" class="form-control" required>
-		                					</div>
-		                				</div>
-
-	            						<label>Company Name (Optional)</label>
-	            						<input type="text" class="form-control">
-
-	            						<label>Country *</label>
-	            						<input type="text" class="form-control" required>
-
-	            						<label>Street address *</label>
-	            						<input type="text" class="form-control" placeholder="House number and Street name" required>
-	            						<input type="text" class="form-control" placeholder="Appartments, suite, unit etc ..." required>
-
-	            						<div class="row">
-		                					<div class="col-sm-6">
-		                						<label>Town / City *</label>
-		                						<input type="text" class="form-control" required>
-		                					</div>
-		                					<div class="col-sm-6">
-		                						<label>State / County *</label>
-		                						<input type="text" class="form-control" required>
-		                					</div>
-		                				</div>
-
-		                				<div class="row">
-		                					<div class="col-sm-6">
-		                						<label>Postcode / ZIP *</label>
-		                						<input type="text" class="form-control" required>
-		                					</div>
-
-		                					<div class="col-sm-6">
-		                						<label>Phone *</label>
-		                						<input type="tel" class="form-control" required>
-		                					</div>
-		                				</div>
-
-	                					<label>Email address *</label>
-	        							<input type="email" class="form-control" required>
-
-	        							<div class="custom-control custom-checkbox">
-											<input type="checkbox" class="custom-control-input" id="checkout-create-acc">
-											<label class="custom-control-label" for="checkout-create-acc">Create an account?</label>
-										</div>
-
-										<div class="custom-control custom-checkbox">
-											<input type="checkbox" class="custom-control-input" id="checkout-diff-address">
-											<label class="custom-control-label" for="checkout-diff-address">Ship to a different address?</label>
-										</div>
-
-	                					<label>Order notes (optional)</label>
-	        							<textarea class="form-control" cols="30" rows="4" placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
-		                		</div>
-		                		
-		                	</div>
-            			</form> -->
-	                <!-- </div>
-                </div>
-            </div>
-        </main> -->
+            		
+        </main> 
 
         <aside class="col-lg-3"> 
            
@@ -539,41 +443,35 @@
     </div><!-- End .page-wrapper -->
     <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 
-    <!-- Mobile Menu -->
-    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+   <!-- Mobile Menu -->
+   <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
 
-    <div class="mobile-menu-container">
-        <div class="mobile-menu-wrapper">
-            <span class="mobile-menu-close"><i class="icon-close"></i></span>
+   <div class="mobile-menu-container">
+       <div class="mobile-menu-wrapper">
+           <span class="mobile-menu-close"><i class="icon-close"></i></span>
 
-            <form action="#" method="get" class="mobile-search">
-                <label for="mobile-search" class="sr-only">Search</label>
-                <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..." required>
-                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-            </form>
-            
-            <nav class="mobile-nav">
-                <ul class="mobile-menu">
-                    <li class="active">
-                        <a href="index.html">Home</a>
-
-                       
-                    </li>
-                    <li>
-                        <a href="category.html">Shop</a>
-                      
-                    </li>
-                    
-                    
-                  
-                    
-                </ul>
-            </nav><!-- End .mobile-nav -->
-
+         
            
-        </div><!-- End .mobile-menu-wrapper -->
-    </div><!-- End .mobile-menu-container -->
+           <nav class="mobile-nav">
+               <ul class="mobile-menu">
+                   <li class="active">
+                       <a href="/">Home</a>
 
+                      
+                   </li>
+                   <li>
+                       <a href="/shop">Shop</a>
+                       
+                   </li>
+                  
+                   
+                  
+               </ul>
+           </nav><!-- End .mobile-nav -->
+
+          
+       </div><!-- End .mobile-menu-wrapper -->
+   </div><!-- End .mobile-menu-container -->
    
 
     <!-- Plugins JS File -->
@@ -829,47 +727,6 @@ function razorpayFunction(res) {
         var addAddressForm = document.getElementById('addAddressForm');
         addAddressForm.style.display = addAddressForm.style.display === 'none' ? 'block' : 'none';
     }
-
-//    async function submitform() {
-//         alert("//////")
-//     // Access form fields
-//     var fullname = document.getElementById('fullname').value;
-//     var contact = document.getElementById('contact').value;
-//     var address = document.getElementById('address').value;
-//     var locality = document.getElementById('locality').value;
-//     var district = document.getElementById('district').value;
-//     var state = document.getElementById('state').value;
-//     var pincode = document.getElementById('pincode').value;
-
-//     // Create FormData object to hold the form data
-//     var formData = new FormData();
-//     formData.append('fullname', fullname);
-//     formData.append('contact', contact);
-//     formData.append('address', address);
-//     formData.append('locality', locality);
-//     formData.append('district', district);
-//     formData.append('state', state);
-//     formData.append('pincode', pincode);
-// console.log("formData",formData)
-// alert(formData)
-//     // Make a POST request to your backend endpoint
-//     fetch('/add-address-chkout', {
-        
-//     method: 'POST',
-    
-//     body: formData
-// })
-// .then(response => response.json())
-// .then(data => {
-//     window.location.reload()
-//        console.log('Response from backend:', data);
-// })
-// .catch(error => {
-//     console.error('Error:', error);
-// });
-
-// }
-
 
 </script>
 
